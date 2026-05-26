@@ -1408,9 +1408,21 @@ function kaderColumn(managerName, colorIdx) {
   const totalAll   = allPts.reduce((a,b)=>a+b,0);
   const totalStart = starterPts.reduce((a,b)=>a+b,0);
   const bestForm   = bestFormation([...starter, ...bank]);
+  const allSquad   = [...starter, ...bank];
+  const [fAbw, fMfd, fStu] = bestForm.f.split('-').map(Number);
+  const sortedPos  = pos => allSquad.filter(p => p.pos === pos)
+    .sort((a, b) => (typeof b.pts === 'number' ? b.pts : 0) - (typeof a.pts === 'number' ? a.pts : 0));
+  const optStarter = [
+    ...sortedPos('TOR').slice(0, 1),
+    ...sortedPos('ABW').slice(0, fAbw),
+    ...sortedPos('MFD').slice(0, fMfd),
+    ...sortedPos('STU').slice(0, fStu),
+  ];
+  const optNames   = new Set(optStarter.map(p => p.name));
+  const optBank    = allSquad.filter(p => !optNames.has(p.name));
 
   const byPos = { TOR:[], ABW:[], MFD:[], STU:[] };
-  starter.forEach(p => { if (byPos[p.pos]) byPos[p.pos].push(p); });
+  optStarter.forEach(p => { if (byPos[p.pos]) byPos[p.pos].push(p); });
 
   const playerToken = (p, size) => {
     size = size || 52;
@@ -1505,13 +1517,13 @@ function kaderColumn(managerName, colorIdx) {
             <div style="margin-top:8px;border-radius:8px;background:#2d3748;padding:8px 6px;border:1px solid rgba(255,255,255,.1)">
               <div style="font-size:.6rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:rgba(255,255,255,.45);margin-bottom:6px;text-align:center">Bank</div>
               <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px">
-                ${bank.map(p => playerToken(p, 38)).join('')}
+                ${optBank.map(p => playerToken(p, 38)).join('')}
               </div>
             </div>
           </div>
           <div style="flex:0.8;min-width:170px;overflow-y:auto;max-height:380px">
-            ${renderListGroup(starter, 'Startelf')}
-            ${renderListGroup(bank, 'Bank')}
+            ${renderListGroup(optStarter, 'Opt. Startelf')}
+            ${renderListGroup(optBank, 'Bank')}
           </div>
         </div>
       </div>
