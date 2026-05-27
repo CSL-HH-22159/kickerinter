@@ -268,21 +268,21 @@
       <div class="selectors">
         <div class="selector-group">
           <label><span class="color-dot" style="background:#1a3a6b"></span>Spieler 1</label>
-          <select id="mgr-sel-1" onchange="updateManagerChart()">
+          <div style="display:flex;align-items:center;gap:6px"><img id="mgr-sel-1-av" src="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:none;border:2px solid rgba(255,255,255,0.18);flex-shrink:0"><select id="mgr-sel-1" onchange="updateManagerChart()">
             <option value="">— bitte wählen —</option>
-          </select>
+          </select></div>
         </div>
         <div class="selector-group">
           <label><span class="color-dot" style="background:#e8b800"></span>Spieler 2</label>
-          <select id="mgr-sel-2" onchange="updateManagerChart()">
+          <div style="display:flex;align-items:center;gap:6px"><img id="mgr-sel-2-av" src="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:none;border:2px solid rgba(255,255,255,0.18);flex-shrink:0"><select id="mgr-sel-2" onchange="updateManagerChart()">
             <option value="">— bitte wählen —</option>
-          </select>
+          </select></div>
         </div>
         <div class="selector-group">
           <label><span class="color-dot" style="background:#e05c2a"></span>Spieler 3 (optional)</label>
-          <select id="mgr-sel-3" onchange="updateManagerChart()">
+          <div style="display:flex;align-items:center;gap:6px"><img id="mgr-sel-3-av" src="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:none;border:2px solid rgba(255,255,255,0.18);flex-shrink:0"><select id="mgr-sel-3" onchange="updateManagerChart()">
             <option value="">— keiner —</option>
-          </select>
+          </select></div>
         </div>
         <div class="selector-group">
           <label>Ansicht</label>
@@ -427,21 +427,21 @@
       <div class="selectors">
         <div class="selector-group">
           <label><span class="color-dot" style="background:#1a3a6b"></span>Manager 1</label>
-          <select id="kdr-sel-1" onchange="renderKaderView()">
+          <div style="display:flex;align-items:center;gap:6px"><img id="kdr-sel-1-av" src="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:none;border:2px solid rgba(255,255,255,0.18);flex-shrink:0"><select id="kdr-sel-1" onchange="renderKaderView()">
             <option value="">— bitte wählen —</option>
-          </select>
+          </select></div>
         </div>
         <div class="selector-group">
           <label><span class="color-dot" style="background:#e8b800"></span>Manager 2</label>
-          <select id="kdr-sel-2" onchange="renderKaderView()">
+          <div style="display:flex;align-items:center;gap:6px"><img id="kdr-sel-2-av" src="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:none;border:2px solid rgba(255,255,255,0.18);flex-shrink:0"><select id="kdr-sel-2" onchange="renderKaderView()">
             <option value="">— bitte wählen —</option>
-          </select>
+          </select></div>
         </div>
         <div class="selector-group">
           <label><span class="color-dot" style="background:#e05c2a"></span>Manager 3 (optional)</label>
-          <select id="kdr-sel-3" onchange="renderKaderView()">
+          <div style="display:flex;align-items:center;gap:6px"><img id="kdr-sel-3-av" src="" style="width:30px;height:30px;border-radius:50%;object-fit:cover;display:none;border:2px solid rgba(255,255,255,0.18);flex-shrink:0"><select id="kdr-sel-3" onchange="renderKaderView()">
             <option value="">— keiner —</option>
-          </select>
+          </select></div>
         </div>
       </div>
     </div>
@@ -498,6 +498,36 @@ const COLORS = [
 const MGR_NAMES = Object.keys(MANAGER_DATA);
 const SPIELTAGE = Array.from({length:34}, (_,i) => `ST ${i+1}`);
 
+
+// ─── AVATAR MAP ───────────────────────────────────────────────────────────────
+const AVATAR_MAP = {
+  'Gordon Winkel':      'Avatare/Gordon.png',
+  'Tim Kurz':           'Avatare/Tim.png',
+  'Ditsche':            'Avatare/Mary.png',
+  'Oli Nicklisch':      'Avatare/Oli.png',
+  'Christoph Schlegel': 'Avatare/Chris.png',
+  'Nico Schneider':     'Avatare/Sche.png',
+  'Fabian Schulz':      'Avatare/Fabi.png',
+  'Nico Wechsel':       'Avatare/Nico.png',
+  'Marco Woelki':       'Avatare/Marco.png',
+};
+function mgrAvatar(name, size) {
+  size = size || 22;
+  const src = AVATAR_MAP[name];
+  if (!src) return '';
+  return `<img src="${src}" style="width:${size}px;height:${size}px;border-radius:50%;object-fit:cover;vertical-align:middle;margin-right:4px;border:1.5px solid rgba(255,255,255,0.25);flex-shrink:0" onerror="this.style.display='none'">`;
+}
+function updateSelectAvatars() {
+  ['mgr-sel-1','mgr-sel-2','mgr-sel-3','kdr-sel-1','kdr-sel-2','kdr-sel-3'].forEach(function(id) {
+    const sel = document.getElementById(id);
+    const av  = document.getElementById(id + '-av');
+    if (!sel || !av) return;
+    const src = AVATAR_MAP[sel.value] || '';
+    av.src = src;
+    av.style.display = src ? 'inline-block' : 'none';
+  });
+}
+
 let managerChart = null;
 
 // ─── INIT MANAGER SELECTS ─────────────────────────────────────────────────────
@@ -513,6 +543,10 @@ function initManagerSelects() {
   // pre-select first two
   document.getElementById('mgr-sel-1').value = MGR_NAMES[0];
   document.getElementById('mgr-sel-2').value = MGR_NAMES[1];
+  ['mgr-sel-1','mgr-sel-2','mgr-sel-3'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', updateSelectAvatars);
+  });
+  updateSelectAvatars();
 }
 
 // ─── UPDATE MANAGER CHART ─────────────────────────────────────────────────────
@@ -618,7 +652,7 @@ function renderManagerStats(selected) {
 
   let html = '<div style="overflow-x:auto"><table><thead><tr><th>Statistik</th>';
   selected.forEach((name, i) => {
-    html += `<th><span class="color-dot" style="background:${COLORS[MGR_NAMES.indexOf(name)]}"></span>${name}</th>`;
+    html += `<th style="white-space:nowrap"><span class="color-dot" style="background:${COLORS[MGR_NAMES.indexOf(name)]}"></span>${mgrAvatar(name,22)}${name}</th>`;
   });
   html += '</tr></thead><tbody>';
 
@@ -643,7 +677,7 @@ function renderManagerTable(selected) {
   const table = document.getElementById('mgr-table');
   let thead = '<tr><th>Spieltag</th>';
   selected.forEach((name, i) => {
-    thead += `<th><span class="color-dot" style="background:${COLORS[MGR_NAMES.indexOf(name)]}"></span>${name}</th>`;
+    thead += `<th style="white-space:nowrap"><span class="color-dot" style="background:${COLORS[MGR_NAMES.indexOf(name)]}"></span>${mgrAvatar(name,22)}${name}</th>`;
   });
   thead += '</tr>';
   table.querySelector('thead').innerHTML = thead;
@@ -679,7 +713,7 @@ function renderRanking() {
     const color = COLORS[MGR_NAMES.indexOf(s.name)];
     return `<tr>
       <td><span class="rank-badge ${rankClass}">${i+1}</span></td>
-      <td><span class="color-dot" style="background:${color}"></span><strong>${s.name}</strong></td>
+      <td style="white-space:nowrap">${mgrAvatar(s.name,28)}<strong>${s.name}</strong></td>
       <td style="font-weight:800;font-size:1.05rem">${s.total}</td>
       <td>${s.avg.toFixed(1)}</td>
       <td style="color:var(--green);font-weight:600">${s.best} <small style="color:var(--muted)">(ST ${s.bestST})</small></td>
@@ -1198,7 +1232,7 @@ function renderFormkurve(selected) {
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       ${stats.map(s => `
         <div style="flex:1;min-width:130px;background:var(--bg);border-radius:8px;padding:12px;border:1.5px solid ${s.color}22;text-align:center">
-          <div style="font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px">${s.name}</div>
+          <div style="font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px;display:flex;align-items:center;justify-content:center;gap:4px">${mgrAvatar(s.name,20)}${s.name}</div>
           <div style="font-size:1.5rem;font-weight:800;color:${s.color}">${s.total}</div>
           <div style="font-size:.78rem;color:var(--muted)">⌀ ${s.avg}/ST ${s.total===best?' 🔥':''}</div>
         </div>`).join('')}
@@ -1320,6 +1354,7 @@ const IMG_OVERRIDES = {
   'Ranos':       'https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755076344/games/manager/2025/pl-k00131628.png',
   'Kusi-Asare':  'https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1754903044/games/manager/2025/pl-k00164970.png',
   'Angely':      'https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755017601/games/manager/2025/pl-k00167084.png',
+  'Schmidt':     'https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00170954.png',
 };
 
 const FORMATIONS = ['4-3-3','4-5-1','5-3-2','5-4-1','3-5-2','3-4-3','4-4-2'];
@@ -1394,6 +1429,10 @@ function initKaderSelects() {
   });
   document.getElementById('kdr-sel-1').value = MGR_NAMES[0];
   document.getElementById('kdr-sel-2').value = MGR_NAMES[1];
+  ['kdr-sel-1','kdr-sel-2','kdr-sel-3'].forEach(function(id) {
+    document.getElementById(id).addEventListener('change', updateSelectAvatars);
+  });
+  updateSelectAvatars();
 }
 
 const POS_ORDER = ['TOR','ABW','MFD','STU'];
@@ -1553,7 +1592,7 @@ function renderKaderSummary(selected) {
 
   let html = `<div class="card"><h2>Kader-Vergleich</h2><div style="overflow-x:auto"><table><thead><tr>
     <th>Statistik</th>`;
-  selected.forEach((n,i) => html += `<th><span class="color-dot" style="background:${COLORS[i]}"></span>${n}</th>`);
+  selected.forEach((n,i) => html += `<th style="white-space:nowrap"><span class="color-dot" style="background:${COLORS[i]}"></span>${mgrAvatar(n,22)}${n}</th>`);
   html += `</tr></thead><tbody>`;
 
   const rows = [
@@ -1771,6 +1810,7 @@ renderKaderView();
 
 </body>
 </html>
+
 
 
 
