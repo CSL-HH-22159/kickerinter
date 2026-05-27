@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spreeliga Monolog · KickerInter</title>
+<style>
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:         #07101e;
+  --bg2:        #0d1b2d;
+  --card:       #0f2035;
+  --card-hover: #172b45;
+  --border:     #1a3050;
+  --blue:       #2563eb;
+  --blue-light: #3b82f6;
+  --blue-muted: #1e3a5f;
+  --gold:       #f5c518;
+  --green:      #22c55e;
+  --text:       #e2e8f0;
+  --muted:      #64748b;
+  --muted2:     #94a3b8;
+  --hero-h:     480px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  width: 100%;
+  height: var(--hero-h);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.hero-img-placeholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0d2040 0%, #1a3a6b 50%, #0a1628 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  opacity: 0.3;
+}
+/* Gradient fade: sides + bottom → background color */
+.hero-fade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right,  var(--bg) 0%, transparent 20%, transparent 80%, var(--bg) 100%),
+    linear-gradient(to bottom, rgba(7,16,30,.15) 0%, transparent 25%, transparent 45%, var(--bg) 90%);
+  pointer-events: none;
+}
+/* Subtle top vignette */
+.hero-top-fade {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Header bar inside hero */
+.site-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 40px;
+  z-index: 10;
+}
+.site-logo { height: 44px; width: auto; }
+.site-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.site-title small {
+  display: block;
+  font-size: .72rem;
+  color: var(--muted2);
+  font-weight: 400;
+}
+.header-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+.nav-link {
+  color: var(--muted2);
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  transition: all .2s;
+  background: rgba(13,27,45,.6);
+  backdrop-filter: blur(8px);
+}
+.nav-link:hover { color: var(--text); border-color: var(--blue-light); background: var(--blue-muted); }
+
+/* Hero content (bottom of hero) */
+.hero-content {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  padding: 0 20px 36px;
+  width: 100%;
+}
+.hero-season {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(245,197,24,.1);
+  border: 1px solid rgba(245,197,24,.3);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+.hero-headline {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  text-shadow: 0 2px 20px rgba(0,0,0,.6);
+}
+.hero-headline span { color: var(--blue-light); }
+.hero-sub {
+  margin-top: 8px;
+  font-size: .95rem;
+  color: var(--muted2);
+  max-width: 500px;
+  margin-inline: auto;
+}
+
+/* ── Main content ── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Section heading ── */
+.section { padding: 56px 0; }
+.section-label {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--blue-light);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin-bottom: 6px;
+}
+.section-desc {
+  color: var(--muted2);
+  font-size: .92rem;
+  max-width: 520px;
+}
+.section-header { margin-bottom: 32px; }
+
+/* ── Tool cards ── */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.tool-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--card-accent, var(--blue)), transparent);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.tool-card:hover { background: var(--card-hover); border-color: var(--blue-muted); transform: translateY(-2px); }
+.tool-card:hover::before { opacity: 1; }
+.tool-card.disabled { opacity: .55; cursor: default; pointer-events: none; }
+.tool-card.disabled:hover { transform: none; }
+
+.card-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.card-top { display: flex; align-items: flex-start; gap: 14px; }
+.card-badge {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+  align-self: center;
+}
+.badge-live   { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
+.badge-soon   { background: rgba(100,116,139,.1); color: var(--muted2); border: 1px solid var(--border); }
+.badge-mobile { background: rgba(59,130,246,.15); color: var(--blue-light); border: 1px solid rgba(59,130,246,.3); }
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.card-desc {
+  font-size: .83rem;
+  color: var(--muted2);
+  line-height: 1.5;
+}
+.card-link-hint {
+  font-size: .78rem;
+  color: var(--blue-light);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* ── Managers section ── */
+.managers-strip {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 32px 0;
+}
+.mgr-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 6px 14px 6px 6px;
+  transition: all .2s;
+}
+.mgr-chip:hover { border-color: var(--blue-muted); background: var(--card-hover); }
+.mgr-chip img {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--border);
+}
+.mgr-chip span {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--muted2);
+}
+
+/* ── Stats teaser ── */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 48px;
+}
+.stat-tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+}
+.stat-tile .val {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--blue-light);
+  letter-spacing: -.03em;
+}
+.stat-tile .lbl {
+  font-size: .75rem;
+  color: var(--muted2);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+  margin: 0;
+}
+
+/* ── Footer ── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 28px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+}
+footer img { height: 28px; vertical-align: middle; margin-right: 8px; opacity: .6; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  :root { --hero-h: 360px; }
+  .site-header { padding: 14px 16px; }
+  .header-nav { display: none; }
+  .hero-content { padding-bottom: 24px; }
+  .section { padding: 36px 0; }
+  .container { padding: 0 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <!-- Tausche hero.png gegen dein Teamfoto aus -->
+  <img class="hero-img" src="hero.png"
+       alt="Spreeliga Monolog Team"
+       onerror="this.style.display='none';document.querySelector('.hero-img-placeholder').style.display='flex'">
+  <div class="hero-img-placeholder" style="display:none">⚽</div>
+
+  <div class="hero-top-fade"></div>
+  <div class="hero-fade"></div>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <img class="site-logo" src="Spreeliga Monolog.png" alt="Spreeliga Monolog"
+         onerror="this.style.display='none'">
+    <div class="site-title">
+      KickerInter
+      <small>Saison 2024/25</small>
+    </div>
+    <nav class="header-nav">
+      <a class="nav-link" href="#tools">Tools</a>
+      <a class="nav-link" href="#manager">Manager</a>
+      <a class="nav-link" href="index.html">Desktop</a>
+      <a class="nav-link" href="mobile.html">📱 Mobil</a>
+    </nav>
+  </header>
+
+  <!-- Hero Text -->
+  <div class="hero-content">
+    <div class="hero-season">⚽ Saison 2024 / 25 · Liga k00012025</div>
+    <h1 class="hero-headline">Die <span>Spreeliga Monolog</span><br>Schaltzentrale</h1>
+    <p class="hero-sub">Alle Tools, Statistiken und Vergleiche der Liga auf einen Blick.</p>
+  </div>
+</section>
+
+<!-- ── MAIN ── -->
+<main>
+
+  <!-- Stats Teaser -->
+  <div class="container" style="padding-top:40px">
+    <div class="stats-row">
+      <div class="stat-tile">
+        <div class="val">9</div>
+        <div class="lbl">Manager</div>
+      </div>
+      <div class="stat-tile">
+        <div class="val">34</div>
+        <div class="lbl">Spieltage</div>
+      </div>
+      <div class="stat-tile">
+        <div class="val">k00012025</div>
+        <div class="lbl">Liga-ID</div>
+      </div>
+      <div class="stat-tile">
+        <div class="val">2024/25</div>
+        <div class="lbl">Saison</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Tools -->
+  <section class="section" id="tools">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Tools & Auswertungen</div>
+        <h2 class="section-title">Was kannst du hier machen?</h2>
+        <p class="section-desc">Alle Tools der Spreeliga Monolog – von der Rangliste bis zum detaillierten Kadervergleich.</p>
+      </div>
+
+      <div class="tools-grid">
+
+        <!-- Vergleichs-Generator Desktop -->
+        <a class="tool-card" href="index.html" style="--card-accent:#3b82f6">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(37,99,235,.15)">📊</div>
+            <span class="card-badge badge-live">Live</span>
+          </div>
+          <div>
+            <div class="card-title">Vergleichs-Generator</div>
+            <div class="card-desc">Manager-Vergleich, Kaderanalyse, Bundesliga-Spieler und Gesamtrangliste. Vollständige Desktop-Ansicht.</div>
+          </div>
+          <div class="card-link-hint">→ Desktop öffnen</div>
+        </a>
+
+        <!-- Mobile -->
+        <a class="tool-card" href="mobile.html" style="--card-accent:#0ea5e9">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(14,165,233,.15)">📱</div>
+            <span class="card-badge badge-mobile">Mobil</span>
+          </div>
+          <div>
+            <div class="card-title">Mobile Ansicht</div>
+            <div class="card-desc">Optimiert fürs Smartphone. Rangliste, Manager-Vergleich und Kaderübersicht – daumenfreundlich.</div>
+          </div>
+          <div class="card-link-hint">→ Mobil öffnen</div>
+        </a>
+
+        <!-- Traumelf PPTX placeholder -->
+        <div class="tool-card disabled" style="--card-accent:#f5c518">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(245,197,24,.1)">🏆</div>
+            <span class="card-badge badge-soon">Bald</span>
+          </div>
+          <div>
+            <div class="card-title">Traumelf der Saison</div>
+            <div class="card-desc">Die beste Kombination aus allen Managern – Tor, Abwehr, Mittelfeld und Sturm nach Punkten.</div>
+          </div>
+          <div class="card-link-hint" style="color:var(--muted)">→ In Entwicklung</div>
+        </div>
+
+        <!-- Liga-Übersicht placeholder -->
+        <div class="tool-card disabled" style="--card-accent:#22c55e">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(34,197,94,.1)">🗂️</div>
+            <span class="card-badge badge-soon">Bald</span>
+          </div>
+          <div>
+            <div class="card-title">Liga-Übersicht</div>
+            <div class="card-desc">Alle Ligen im Überblick. Tabellen, Spielpläne und Direktvergleiche auf einen Blick.</div>
+          </div>
+          <div class="card-link-hint" style="color:var(--muted)">→ In Entwicklung</div>
+        </div>
+
+        <!-- Statistiken placeholder -->
+        <div class="tool-card disabled" style="--card-accent:#8b5cf6">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(139,92,246,.1)">📈</div>
+            <span class="card-badge badge-soon">Bald</span>
+          </div>
+          <div>
+            <div class="card-title">Erweiterte Statistiken</div>
+            <div class="card-desc">Formkurven, Saisonphasen-Analyse, Head-to-Head Direktvergleiche und historische Daten.</div>
+          </div>
+          <div class="card-link-hint" style="color:var(--muted)">→ In Entwicklung</div>
+        </div>
+
+        <!-- Spieler-Datenbank placeholder -->
+        <div class="tool-card disabled" style="--card-accent:#f43f5e">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(244,63,94,.1)">⚽</div>
+            <span class="card-badge badge-soon">Bald</span>
+          </div>
+          <div>
+            <div class="card-title">Spieler-Datenbank</div>
+            <div class="card-desc">Alle Bundesliga-Spieler, ihre Punkte, Marktwerte und welcher Manager sie im Kader hat.</div>
+          </div>
+          <div class="card-link-hint" style="color:var(--muted)">→ In Entwicklung</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Manager Section -->
+  <section class="section" id="manager">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Die Teilnehmer</div>
+        <h2 class="section-title">9 Manager, 1 Liga</h2>
+        <p class="section-desc">Die Spreeliga Monolog – Saison 2024/25.</p>
+      </div>
+
+      <div class="managers-strip">
+        <div class="mgr-chip"><img src="Avatare/Gordon.png" alt="Gordon" onerror="this.style.display='none'"><span>Gordon Winkel</span></div>
+        <div class="mgr-chip"><img src="Avatare/Tim.png"    alt="Tim"    onerror="this.style.display='none'"><span>Tim Kurz</span></div>
+        <div class="mgr-chip"><img src="Avatare/Mary.png"   alt="Ditsche" onerror="this.style.display='none'"><span>Ditsche</span></div>
+        <div class="mgr-chip"><img src="Avatare/Oli.png"    alt="Oli"    onerror="this.style.display='none'"><span>Oli Nicklisch</span></div>
+        <div class="mgr-chip"><img src="Avatare/Chris.png"  alt="Chris"  onerror="this.style.display='none'"><span>Christoph Schlegel</span></div>
+        <div class="mgr-chip"><img src="Avatare/Sche.png"   alt="Nico S" onerror="this.style.display='none'"><span>Nico Schneider</span></div>
+        <div class="mgr-chip"><img src="Avatare/Fabi.png"   alt="Fabi"   onerror="this.style.display='none'"><span>Fabian Schulz</span></div>
+        <div class="mgr-chip"><img src="Avatare/Nico.png"   alt="Nico W" onerror="this.style.display='none'"><span>Nico Wechsel</span></div>
+        <div class="mgr-chip"><img src="Avatare/Marco.png"  alt="Marco"  onerror="this.style.display='none'"><span>Marco Woelki</span></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="divider"></div>
+
+<footer>
+  <img src="Spreeliga Monolog.png" alt="Logo" onerror="this.style.display='none'">
+  Spreeliga Monolog · KickerInter · Saison 2024/25
+</footer>
+
+</body>
+</html>
