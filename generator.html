@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vergleichs-Generator · KickerInter</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:         #07101e;
+  --bg2:        #0d1b2d;
+  --card:       #0f2035;
+  --card-hover: #132844;
+  --border:     #1a3050;
+  --blue:       #2563eb;
+  --blue-light: #3b82f6;
+  --blue-muted: #1e3a5f;
+  --gold:       #f5c518;
+  --text:       #e2e8f0;
+  --muted:      #64748b;
+  --muted2:     #94a3b8;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+/* ── Header ── */
+.site-header { display:flex; align-items:center; gap:14px; padding:18px 40px; border-bottom:1px solid var(--border); background:var(--bg2); position:sticky; top:0; z-index:100; }
+.header-center-logo { position:absolute; left:50%; transform:translateX(-50%); height:100px; width:auto; filter:drop-shadow(0 0 14px rgba(56,152,255,.3)); pointer-events:none; }
+.site-logo { height:100px; width:auto; }
+.header-nav { margin-left:auto; display:flex; gap:8px; }
+.nav-link { color:var(--muted2); text-decoration:none; font-size:.82rem; font-weight:500; padding:6px 14px; border-radius:20px; border:1px solid var(--border); transition:all .2s; background:rgba(13,27,45,.6); }
+.nav-link:hover { color:var(--text); border-color:var(--blue-light); background:var(--blue-muted); }
+
+/* ── Page ── */
+.page { max-width: 860px; margin: 0 auto; padding: 52px 24px 80px; }
+
+.back-link { display:inline-flex; align-items:center; gap:6px; font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted2); text-decoration:none; margin-bottom:22px; transition:color .2s; }
+.back-link:hover { color:var(--blue-light); }
+
+.page-badge { display:inline-flex; align-items:center; gap:7px; font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--blue-light); background:rgba(59,130,246,.08); border:1px solid rgba(59,130,246,.25); padding:4px 14px; border-radius:20px; margin-bottom:16px; }
+
+h1 { font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-.03em; line-height:1.1; margin-bottom:12px; }
+
+.lead { font-size:1rem; color:var(--muted2); line-height:1.75; max-width:600px; margin-bottom:48px; }
+
+/* ── Section label ── */
+.section-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.16em; color:var(--blue-light); margin-bottom:20px; display:flex; align-items:center; gap:12px; }
+.section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── Feature grid ── */
+.feature-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:48px; }
+.feature-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px 20px; }
+.feature-icon { font-size:1.6rem; margin-bottom:12px; display:block; }
+.feature-card h3 { font-size:.95rem; font-weight:700; color:var(--text); margin-bottom:7px; letter-spacing:-.01em; }
+.feature-card p { font-size:.84rem; line-height:1.7; color:var(--muted2); }
+.feature-tag { display:inline-block; font-size:.62rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; background:rgba(59,130,246,.1); border:1px solid rgba(59,130,246,.2); color:var(--blue-light); border-radius:8px; padding:2px 9px; margin-top:10px; }
+
+/* ── Season cards ── */
+.season-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+.season-card { display:block; text-decoration:none; background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px 26px; transition:transform .2s, border-color .2s, box-shadow .2s; position:relative; overflow:hidden; }
+.season-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg, rgba(37,99,235,.06) 0%, transparent 60%); pointer-events:none; }
+.season-card:hover { transform:translateY(-4px); border-color:var(--blue-muted); box-shadow:0 12px 32px rgba(0,0,0,.35); }
+.season-card.disabled { pointer-events:none; opacity:.6; }
+.season-card.disabled::before { background:none; }
+
+.sc-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; }
+.sc-year { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; font-size:2rem; font-weight:900; letter-spacing:-.04em; color:var(--text); line-height:1; }
+.sc-badge { font-size:.65rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:4px 12px; border-radius:20px; }
+.sc-badge.live { color:#22c55e; background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.3); }
+.sc-badge.soon { color:var(--muted); background:rgba(100,116,139,.1); border:1px solid rgba(100,116,139,.2); }
+
+.sc-title { font-size:1rem; font-weight:700; color:var(--text); margin-bottom:8px; }
+.sc-desc { font-size:.84rem; color:var(--muted2); line-height:1.65; margin-bottom:18px; }
+
+.sc-features { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px; }
+.sc-feat { font-size:.65rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted2); background:rgba(26,48,80,.6); border:1px solid var(--border); border-radius:8px; padding:3px 9px; }
+
+.sc-link { display:inline-flex; align-items:center; gap:6px; font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--blue-light); transition:gap .2s; }
+.season-card:hover .sc-link { gap:10px; }
+.sc-link-soon { font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); }
+
+/* ── Footer ── */
+footer { background:var(--bg); border-top:1px solid var(--border); padding:28px 24px; text-align:center; color:var(--muted); font-size:.8rem; }
+footer img { height:28px; vertical-align:middle; margin-right:8px; opacity:.6; }
+
+@media(max-width:640px){
+  .site-header{padding:14px 16px;} .site-logo{height:60px;} .header-center-logo{height:60px;} .header-nav{display:none;}
+  .page{padding:32px 14px 60px;}
+  .feature-grid{grid-template-columns:1fr;}
+  .season-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <img class="site-logo" src="Spreeliga Monolog.png" alt="Spreeliga Monolog" onerror="this.style.display='none'">
+  <img src="Spreeliga Logo frei fixed.png" alt="Spreeliga" class="header-center-logo" onerror="this.style.display='none'">
+  <nav class="header-nav">
+    <a class="nav-link" href="portal.html">← Portal</a>
+    <a class="nav-link" href="chronik.html">Chronik</a>
+    <a class="nav-link" href="index.html">Desktop</a>
+  </nav>
+</header>
+
+<div class="page">
+
+  <a href="portal.html" class="back-link">← Zurück zum Portal</a>
+  <div class="page-badge">📊 Analyse-Tool</div>
+  <h1>Vergleichs-Generator</h1>
+  <p class="lead">Der Vergleichs-Generator ist das zentrale Analyse-Werkzeug der Spreeliga. Er lädt Spieltagsdaten per CSV-Import und ermöglicht detaillierte Auswertungen – Manager gegen Manager, Kader gegen Kader, Spieler gegen Spieler.</p>
+
+  <!-- ── Was kann der Generator ── -->
+  <div class="section-label">Was kann der Generator?</div>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <span class="feature-icon">👤</span>
+      <h3>Manager-Vergleich</h3>
+      <p>Bis zu drei Manager gleichzeitig vergleichen – Spieltag für Spieltag oder kumulativ. Interaktives Liniendiagramm zeigt Verläufe, Formkurven und Direktvergleiche auf Knopfdruck.</p>
+      <span class="feature-tag">Chart.js Visualisierung</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🗂️</span>
+      <h3>Kader-Vergleich</h3>
+      <p>Detaillierter Blick auf die Kader: Welche Spieler hat ein Manager im Einsatz, wie punkten einzelne Positionen und wo liegen Stärken und Schwächen im Vergleich?</p>
+      <span class="feature-tag">Positionsanalyse</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⚽</span>
+      <h3>Bundesliga-Spieler</h3>
+      <p>Suche und vergleiche individuelle Bundesliga-Spieler nach Punkten, Einsätzen und Performance. Bis zu 3 Spieler gleichzeitig im direkten Duell.</p>
+      <span class="feature-tag">Spieler-Datenbank</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">📥</span>
+      <h3>CSV-Import</h3>
+      <p>Spieltagsdaten und Bundesliga-Spielerdaten werden per CSV-Datei importiert. Einfaches Aktualisieren mit jedem neuen Spieltag – keine Datenbank, keine Server.</p>
+      <span class="feature-tag">Spieltagspunkte-CSV</span>
+      <span class="feature-tag" style="margin-left:4px">BuLi-Spieler-CSV</span>
+    </div>
+  </div>
+
+  <!-- ── Saison-Auswahl ── -->
+  <div class="section-label">Saison auswählen</div>
+
+  <div class="season-grid">
+
+    <!-- 2025/26 – Live -->
+    <a class="season-card" href="vergleich.html">
+      <div class="sc-top">
+        <div class="sc-year">25/26</div>
+        <span class="sc-badge live">● Live</span>
+      </div>
+      <div class="sc-title">Saison 2025/2026</div>
+      <div class="sc-desc">Aktuelle Saison – alle Spieltagsdaten bis zum letzten Spieltag geladen. Manager-Verläufe, Kaderanalyse und Spielervergleiche in Echtzeit.</div>
+      <div class="sc-features">
+        <span class="sc-feat">Manager-Vergleich</span>
+        <span class="sc-feat">Kader-Vergleich</span>
+        <span class="sc-feat">BuLi-Spieler</span>
+        <span class="sc-feat">Direktvergleich</span>
+      </div>
+      <span class="sc-link">Generator öffnen →</span>
+    </a>
+
+    <!-- 2026/27 – Coming soon -->
+    <div class="season-card disabled">
+      <div class="sc-top">
+        <div class="sc-year" style="color:var(--muted)">26/27</div>
+        <span class="sc-badge soon">Bald</span>
+      </div>
+      <div class="sc-title" style="color:var(--muted2)">Saison 2026/2027</div>
+      <div class="sc-desc">Startet mit der neuen Bundesliga-Saison. Der Generator wird rechtzeitig aktualisiert und mit den neuen Spieltagsdaten bestückt.</div>
+      <div class="sc-features">
+        <span class="sc-feat">Manager-Vergleich</span>
+        <span class="sc-feat">Kader-Vergleich</span>
+        <span class="sc-feat">BuLi-Spieler</span>
+        <span class="sc-feat">Direktvergleich</span>
+      </div>
+      <span class="sc-link-soon">→ Noch nicht verfügbar</span>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  <img src="Spreeliga Monolog.png" alt="Logo" onerror="this.style.display='none'">
+  Spreeliga Monolog · KickerInter · Vergleichs-Generator
+</footer>
+
+</body>
+</html>

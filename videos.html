@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spreeliga Monolog – Videos</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:         #07101e;
+  --bg2:        #0d1b2d;
+  --card:       #0f2035;
+  --card-hover: #132844;
+  --border:     #1a3050;
+  --blue:       #2563eb;
+  --blue-light: #3b82f6;
+  --blue-muted: #1e3a5f;
+  --gold:       #f5c518;
+  --red:        #ff0000;
+  --text:       #e2e8f0;
+  --muted:      #64748b;
+  --muted2:     #94a3b8;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 40px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-center-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100px;
+  width: auto;
+  filter: drop-shadow(0 0 14px rgba(56,152,255,.3));
+  pointer-events: none;
+}
+.site-logo { height: 100px; width: auto; }
+.header-nav { margin-left: auto; display: flex; gap: 8px; }
+.nav-link {
+  color: var(--muted2);
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  transition: all .2s;
+  background: rgba(13,27,45,.6);
+  backdrop-filter: blur(8px);
+}
+.nav-link:hover { color: var(--text); border-color: var(--blue-light); background: var(--blue-muted); }
+
+/* ── Page Header ── */
+.page-header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 52px 24px 36px;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  text-decoration: none;
+  margin-bottom: 22px;
+  transition: color .2s;
+}
+.back-link:hover { color: var(--blue-light); }
+.page-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--red);
+  background: rgba(255,0,0,.08);
+  border: 1px solid rgba(255,0,0,.2);
+  padding: 4px 14px 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.page-badge svg { flex-shrink: 0; }
+.page-header h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+.page-header p {
+  font-size: .95rem;
+  color: var(--muted2);
+  line-height: 1.7;
+  max-width: 560px;
+}
+
+/* ── Filter Tabs ── */
+.filter-row {
+  max-width: 1100px;
+  margin: 0 auto 36px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.filter-btn {
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 7px 18px;
+  cursor: pointer;
+  transition: all .2s;
+}
+.filter-btn:hover { color: var(--text); border-color: var(--blue-light); }
+.filter-btn.active {
+  color: var(--bg);
+  background: var(--blue-light);
+  border-color: var(--blue-light);
+}
+.filter-count {
+  font-size: .65rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-left: auto;
+  letter-spacing: .08em;
+}
+
+/* ── Container ── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── Section Label ── */
+.section-label {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--blue-light);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+.section-wrap { margin-bottom: 56px; }
+.section-wrap.hidden { display: none; }
+
+/* ── Video Grid ── */
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.video-grid.specials {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 800px;
+}
+
+/* ── Video Card ── */
+.video-card {
+  display: block;
+  text-decoration: none;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform .22s, border-color .22s, box-shadow .22s;
+  position: relative;
+}
+.video-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--blue-muted);
+  box-shadow: 0 12px 32px rgba(0,0,0,.4);
+}
+.video-card:hover .play-overlay { opacity: 1; }
+.video-card:hover .thumb-img { filter: brightness(.75); }
+
+/* Thumbnail */
+.thumb-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0a1929;
+  overflow: hidden;
+}
+.thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: filter .22s;
+}
+.thumb-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0f2035 0%, #1a3050 100%);
+}
+.thumb-fallback svg { opacity: .3; }
+
+/* Play overlay */
+.play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .22s;
+  background: rgba(0,0,0,.25);
+}
+.play-btn {
+  width: 52px;
+  height: 52px;
+  background: rgba(255,0,0,.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,.5);
+}
+.play-btn svg { margin-left: 3px; }
+
+/* Card info */
+.card-info {
+  padding: 10px 12px 12px;
+}
+.card-type {
+  font-size: .63rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 3px;
+}
+.card-title {
+  font-size: .88rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.3;
+}
+.video-card.special .card-type { color: var(--gold); }
+.video-card.special { border-color: rgba(245,197,24,.2); }
+.video-card.special:hover { border-color: rgba(245,197,24,.5); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .video-grid { grid-template-columns: repeat(3, 1fr); }
+  .video-grid.specials { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 640px) {
+  .site-header { padding: 14px 16px; }
+  .site-logo { height: 60px; }
+  .header-center-logo { height: 60px; }
+  .header-nav { display: none; }
+  .page-header, .filter-row, .container { padding-left: 14px; padding-right: 14px; }
+  .video-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .video-grid.specials { grid-template-columns: repeat(1, 1fr); max-width: 100%; }
+}
+@media (max-width: 380px) {
+  .video-grid { grid-template-columns: 1fr; }
+}
+
+/* ── Footer ── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 28px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+}
+footer img { height: 28px; vertical-align: middle; margin-right: 8px; opacity: .6; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <img class="site-logo" src="Spreeliga Monolog.png" alt="Spreeliga Monolog"
+       onerror="this.style.display='none'">
+  <img src="Spreeliga Logo frei fixed.png" alt="Spreeliga"
+       class="header-center-logo"
+       onerror="this.style.display='none'">
+  <nav class="header-nav">
+    <a class="nav-link" href="portal.html">← Portal</a>
+    <a class="nav-link" href="chronik.html">Chronik</a>
+    <a class="nav-link" href="index.html">Desktop</a>
+    <a class="nav-link" href="mobile.html">📱 Mobil</a>
+  </nav>
+</header>
+
+<div class="page-header">
+  <a href="portal.html" class="back-link">← Zurück zum Portal</a>
+  <div class="page-badge">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>
+    Spreeliga Monolog auf YouTube
+  </div>
+  <h1>Die Videos</h1>
+  <p>Alle Folgen des Spreeliga Monologs – Spieltag für Spieltag, Transfers, Specials und Sonderfolgen. Saison 2025/26.</p>
+</div>
+
+<div class="filter-row">
+  <button class="filter-btn active" onclick="filter('all', this)">Alle</button>
+  <button class="filter-btn" onclick="filter('spieltage', this)">Spieltage</button>
+  <button class="filter-btn" onclick="filter('sonderfolgen', this)">Sonderfolgen</button>
+  <span class="filter-count" id="video-count">37 Videos</span>
+</div>
+
+<div class="container">
+
+  <!-- ── Spieltage ── -->
+  <div class="section-wrap" id="sec-spieltage">
+    <div class="section-label">Saison 2025/26 — Spieltage</div>
+    <div class="video-grid" id="grid-spieltage">
+    </div>
+  </div>
+
+  <!-- ── Sonderfolgen ── -->
+  <div class="section-wrap" id="sec-sonderfolgen">
+    <div class="section-label">Sonderfolgen</div>
+    <div class="video-grid specials" id="grid-specials">
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <img src="Spreeliga Monolog.png" alt="Logo" onerror="this.style.display='none'">
+  Spreeliga Monolog · KickerInter · 20 Jahre Liga
+</footer>
+
+<script>
+const spieltage = [
+  { nr: 1,  id: 'DJKxBcxpPho' },
+  { nr: 2,  id: 'Jlwchis6ZEo' },
+  { nr: 3,  id: 'bkb9SPYGM_Y' },
+  { nr: 4,  id: 'WewiJEiWynY' },
+  { nr: 5,  id: '3JsqkCbt8ds' },
+  { nr: 6,  id: 'ZuOuDxBKVqQ' },
+  { nr: 7,  id: 'g9ViaKsJieE' },
+  { nr: 8,  id: 'DM6Ppk1ROjc' },
+  { nr: 9,  id: 'xl9WT7sf08o' },
+  { nr: 10, id: 'EgXpEFZ9CIE' },
+  { nr: 11, id: 'rbhwD1NF71g' },
+  { nr: 12, id: 'doPT-k5jnWU' },
+  { nr: 13, id: 'dw-PdQgyAHg' },
+  { nr: 14, id: '73Cuq4uSfT0' },
+  { nr: 15, id: 'GgtwhZaGrAg' },
+  { nr: 16, id: 'lXkK1QPWTEU' },
+  { nr: 17, id: '1Z7yaN5Fcnc' },
+  { nr: 18, id: 'gREEmS8Yhfs' },
+  { nr: 19, id: 'fB-Eu61FsTo' },
+  { nr: 20, id: 'Swb3KsudHRA' },
+  { nr: 21, id: '6luhNZ1wtec' },
+  { nr: 22, id: 'XGUu1lCvWxs' },
+  { nr: 23, id: 'kt9zv1fIvPM' },
+  { nr: 24, id: '-hRoBYj2hms' },
+  { nr: 25, id: 'E-3_oeYd1VM' },
+  { nr: 26, id: '5dcJlI25rvo' },
+  { nr: 27, id: 'AMUQNHjQD1k' },
+  { nr: 28, id: 'WErWf5rUkMA' },
+  { nr: 29, id: 'avYXdHVEDmQ' },
+  { nr: 30, id: 'a71-H9COoB8' },
+  { nr: 31, id: '0nDA3Jgq_ic' },
+  { nr: 32, id: 'CDeGezX6Dzo' },
+  { nr: 33, id: 'Do5eyjhnJFg' },
+  { nr: 34, id: 'JC-LKnzoMss' },
+];
+
+const sonderfolgen = [
+  { label: 'Sonderfolge Eindhoven',   id: '0jinZV55u7I' },
+  { label: 'Sonderfolge Schneidi',    id: 'KZGb-om7j6c' },
+  { label: 'Sonderfolge Wintertransfer', id: 'YDfChTKggGQ' },
+];
+
+const PLAY_ICON = `<svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>`;
+const VIDEO_ICON = `<svg width="48" height="48" viewBox="0 0 24 24" fill="#3b82f6"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>`;
+
+function makeCard(videoId, typeLabel, titleLabel, isSpecial) {
+  const thumb = `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
+  const url   = `https://youtu.be/${videoId}`;
+  return `
+    <a class="video-card${isSpecial ? ' special' : ''}" href="${url}" target="_blank" rel="noopener">
+      <div class="thumb-wrap">
+        <img class="thumb-img" src="${thumb}" alt="${titleLabel}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="thumb-fallback" style="display:none">${VIDEO_ICON}</div>
+        <div class="play-overlay">
+          <div class="play-btn">${PLAY_ICON}</div>
+        </div>
+      </div>
+      <div class="card-info">
+        <div class="card-type">${typeLabel}</div>
+        <div class="card-title">${titleLabel}</div>
+      </div>
+    </a>`;
+}
+
+// Render Spieltage
+const gridST = document.getElementById('grid-spieltage');
+gridST.innerHTML = spieltage.map(s =>
+  makeCard(s.id, 'Saison 25/26', `Spieltag ${s.nr}`, false)
+).join('');
+
+// Render Sonderfolgen
+const gridSF = document.getElementById('grid-specials');
+gridSF.innerHTML = sonderfolgen.map(s =>
+  makeCard(s.id, 'Sonderfolge', s.label.replace('Sonderfolge ', ''), true)
+).join('');
+
+// Filter
+function filter(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const secST = document.getElementById('sec-spieltage');
+  const secSF = document.getElementById('sec-sonderfolgen');
+  const count = document.getElementById('video-count');
+
+  if (type === 'all') {
+    secST.classList.remove('hidden');
+    secSF.classList.remove('hidden');
+    count.textContent = '37 Videos';
+  } else if (type === 'spieltage') {
+    secST.classList.remove('hidden');
+    secSF.classList.add('hidden');
+    count.textContent = '34 Videos';
+  } else {
+    secST.classList.add('hidden');
+    secSF.classList.remove('hidden');
+    count.textContent = '3 Videos';
+  }
+}
+</script>
+</body>
+</html>

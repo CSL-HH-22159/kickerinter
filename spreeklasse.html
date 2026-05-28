@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spreeklasse – 2. Liga · KickerInter</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:         #07101e;
+  --bg2:        #0d1b2d;
+  --card:       #0f2035;
+  --border:     #1a3050;
+  --blue:       #2563eb;
+  --blue-light: #3b82f6;
+  --blue-muted: #1e3a5f;
+  --gold:       #f5c518;
+  --green:      #22c55e;
+  --green-d:    #16a34a;
+  --text:       #e2e8f0;
+  --muted:      #64748b;
+  --muted2:     #94a3b8;
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+/* Header */
+.site-header { display:flex; align-items:center; gap:14px; padding:18px 40px; border-bottom:1px solid var(--border); background:var(--bg2); position:sticky; top:0; z-index:100; }
+.header-center-logo { position:absolute; left:50%; transform:translateX(-50%); height:100px; width:auto; filter:drop-shadow(0 0 14px rgba(56,152,255,.3)); pointer-events:none; }
+.site-logo { height:100px; width:auto; }
+.header-nav { margin-left:auto; display:flex; gap:8px; }
+.nav-link { color:var(--muted2); text-decoration:none; font-size:.82rem; font-weight:500; padding:6px 14px; border-radius:20px; border:1px solid var(--border); transition:all .2s; background:rgba(13,27,45,.6); }
+.nav-link:hover { color:var(--text); border-color:var(--blue-light); background:var(--blue-muted); }
+
+/* Page header */
+.page-header { max-width:1000px; margin:0 auto; padding:52px 24px 32px; }
+.back-link { display:inline-flex; align-items:center; gap:6px; font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--muted2); text-decoration:none; margin-bottom:22px; transition:color .2s; }
+.back-link:hover { color:var(--blue-light); }
+.league-badge { display:inline-flex; align-items:center; gap:8px; font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--green); background:rgba(34,197,94,.08); border:1px solid rgba(34,197,94,.25); padding:4px 14px; border-radius:20px; margin-bottom:16px; }
+.page-header h1 { font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-.03em; line-height:1.1; margin-bottom:10px; }
+.page-header p { font-size:.95rem; color:var(--muted2); line-height:1.7; max-width:560px; margin-bottom:28px; }
+
+/* Stats row */
+.stats-row { display:flex; gap:12px; flex-wrap:wrap; }
+.stat-pill { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 18px; }
+.stat-pill .n { font-size:1.5rem; font-weight:800; color:var(--text); line-height:1; margin-bottom:2px; }
+.stat-pill .l { font-size:.7rem; color:var(--muted2); font-weight:600; letter-spacing:.08em; text-transform:uppercase; }
+
+/* Tabs */
+.tabs-wrap { max-width:1000px; margin:0 auto; padding:0 24px 0; }
+.tabs { display:flex; gap:4px; border-bottom:1px solid var(--border); overflow-x:auto; scrollbar-width:none; padding-bottom:0; }
+.tabs::-webkit-scrollbar { display:none; }
+.tab { flex-shrink:0; font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted2); background:none; border:none; border-bottom:2px solid transparent; padding:10px 18px; cursor:pointer; transition:all .2s; margin-bottom:-1px; }
+.tab:hover { color:var(--text); }
+.tab.active { color:var(--green); border-bottom-color:var(--green); }
+
+/* Container */
+.container { max-width:1000px; margin:0 auto; padding:28px 24px 80px; }
+
+/* Season champion banner */
+.champ-banner { background:linear-gradient(135deg, rgba(34,197,94,.08) 0%, rgba(34,197,94,.04) 100%); border:1px solid rgba(34,197,94,.2); border-radius:12px; padding:16px 20px; margin-bottom:24px; display:flex; align-items:center; gap:14px; }
+.champ-banner .trophy { font-size:1.6rem; }
+.champ-banner .info .label { font-size:.65rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--green); margin-bottom:3px; }
+.champ-banner .info .name { font-size:1.05rem; font-weight:800; color:var(--text); }
+.champ-banner .info .pts { font-size:.85rem; color:var(--muted2); margin-top:1px; }
+
+/* Gesamt champions strip */
+.champ-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-bottom:24px; }
+.champ-strip-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 12px; text-align:center; }
+.champ-strip-card .season { font-size:.62rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
+.champ-strip-card .winner { font-size:.82rem; font-weight:700; color:var(--gold); }
+.champ-strip-card .winner-pts { font-size:.72rem; color:var(--muted2); margin-top:1px; }
+
+/* Main table */
+.league-table { width:100%; border-collapse:collapse; font-size:.88rem; }
+.league-table thead tr { border-bottom:1px solid var(--border); }
+.league-table th { padding:9px 12px; text-align:left; font-size:.65rem; font-weight:700; letter-spacing:.13em; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+.league-table th.num { text-align:right; }
+.league-table td { padding:10px 12px; border-bottom:1px solid rgba(26,48,80,.4); vertical-align:middle; }
+.league-table tbody tr:last-child td { border-bottom:none; }
+.league-table tbody tr:hover td { background:rgba(23,43,69,.4); }
+.league-table .rk { font-weight:800; font-size:.95rem; width:32px; text-align:center; color:var(--muted); }
+.rk-1 { color:#ffd700 !important; }
+.rk-2 { color:#c0c0c0 !important; }
+.rk-3 { color:#cd7f32 !important; }
+.league-table .num { text-align:right; color:var(--muted2); white-space:nowrap; }
+.league-table .pts-main { text-align:right; font-weight:700; color:var(--text); }
+.league-table .name-cell { font-weight:600; color:var(--text); }
+.mgr-av { width:26px; height:26px; border-radius:50%; object-fit:cover; vertical-align:middle; margin-right:8px; border:1.5px solid var(--border); display:inline-block; }
+.champ-row td { background:rgba(245,197,24,.05); }
+.champ-row .name-cell { color:var(--gold); }
+.champ-row .pts-main { color:var(--gold); }
+
+/* Season pts column */
+.season-col { text-align:right; color:var(--muted2); font-size:.8rem; white-space:nowrap; }
+.season-col.winner { color:var(--green) !important; font-weight:700; }
+.season-col.absent { color:rgba(100,116,139,.35); }
+
+/* Title pill */
+.title-pill { display:inline-block; background:rgba(34,197,94,.1); border:1px solid rgba(34,197,94,.3); border-radius:10px; padding:1px 8px; color:var(--green); font-size:.65rem; font-weight:700; margin-left:6px; white-space:nowrap; }
+
+/* Section label */
+.section-label { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.16em; color:var(--blue-light); margin:24px 0 14px; display:flex; align-items:center; gap:12px; }
+.section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* Table card */
+.table-card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.table-card table { width:100%; }
+
+/* No data */
+.no-data { text-align:center; color:var(--muted); font-size:.85rem; padding:32px 0; font-style:italic; }
+
+/* Footer */
+footer { background:var(--bg); border-top:1px solid var(--border); padding:28px 24px; text-align:center; color:var(--muted); font-size:.8rem; }
+footer img { height:28px; vertical-align:middle; margin-right:8px; opacity:.6; }
+
+@media(max-width:640px){
+  .site-header{padding:14px 16px;} .site-logo{height:60px;} .header-center-logo{height:60px;} .header-nav{display:none;}
+  .page-header,.tabs-wrap,.container{padding-left:14px;padding-right:14px;}
+  .champ-strip{grid-template-columns:repeat(2,1fr);}
+  .league-table th,.league-table td{padding:7px 8px;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <img class="site-logo" src="Spreeliga Monolog.png" alt="Spreeliga Monolog" onerror="this.style.display='none'">
+  <img src="Spreeliga Logo frei fixed.png" alt="Spreeliga" class="header-center-logo" onerror="this.style.display='none'">
+  <nav class="header-nav">
+    <a class="nav-link" href="portal.html">← Portal</a>
+    <a class="nav-link" href="spreeoberliga.html">3. Liga</a>
+    <a class="nav-link" href="chronik.html">Chronik</a>
+  </nav>
+</header>
+
+<div class="page-header">
+  <a href="portal.html" class="back-link">← Zurück zum Portal</a>
+  <div class="league-badge">🥈 Spreeklasse · 2. Liga</div>
+  <h1>Spreeklasse</h1>
+  <p>Die zweite Liga im Spreeliga-Universum – gespielt nach den Regeln der 2. Bundesliga im Kicker Manager.</p>
+  <div class="stats-row" id="stats-row"></div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs" id="tabs"></div>
+</div>
+
+<div class="container" id="content"></div>
+
+<footer>
+  <img src="Spreeliga Monolog.png" alt="Logo" onerror="this.style.display='none'">
+  Spreeliga Monolog · KickerInter · Spreeklasse
+</footer>
+
+<script>
+// ── DATA ────────────────────────────────────────────────────────────────────
+const AVATARS = {
+  'Christoph Schlegel': 'Avatare/Chris.png',
+  'Oliver Nicklisch':   'Avatare/Oli.png',
+  'Gordon Winkel':      'Avatare/Gordon.png',
+  'Nico Schneider':     'Avatare/Sche.png',
+  'Nico Wechsel':       'Avatare/Nico.png',
+  'Tim Kurz':           'Avatare/Tim.png',
+  'Fabian Schulz':      'Avatare/Fabi.png',
+  'Marco Woelki':       'Avatare/Marco.png',
+};
+
+const SEASONS = ['21-22','22-23','23-24','24-25','25-26'];
+const SEASON_LABELS = ['2021/22','2022/23','2023/24','2024/25','2025/26'];
+
+// Gesamt table (sorted by total pts)
+const gesamt = [
+  { name:'Christoph Schlegel', pts:[2190,2058,1815,2373,2070], stg:[14,11,7,17,6], total:10506, totalStg:55, wins:3 },
+  { name:'Nico Schneider',     pts:[1828,1856,1546,1586,2110], stg:[4,10,4,3,4],  total:8926,  totalStg:25, wins:0 },
+  { name:'Nico Wechsel',       pts:[1763,1797,1488,1677,1904], stg:[3,6,2,1,4],   total:8629,  totalStg:16, wins:0 },
+  { name:'Oliver Nicklisch',   pts:[1815,null,2141,1844,2275], stg:[2,null,22,2,10], total:8075, totalStg:36, wins:2 },
+  { name:'Gordon Winkel',      pts:[1863,1799,null,2015,2054], stg:[3,6,null,4,8],   total:7731, totalStg:21, wins:0 },
+  { name:'Tim Kurz',           pts:[1866,312,null,2099,1937],  stg:[5,1,null,6,2],   total:6214, totalStg:14, wins:0 },
+  { name:'Fabian Schulz',      pts:[null,null,null,1651,1545], stg:[null,null,null,2,2], total:3196, totalStg:4, wins:0 },
+  { name:'Marco Woelki',       pts:[1701,null,null,null,null], stg:[4,null,null,null,null], total:1701, totalStg:4, wins:0 },
+];
+
+// Season champions (name, pts)
+const champions = [
+  { name:'Christoph Schlegel', pts:2190 },
+  { name:'Christoph Schlegel', pts:2058 },
+  { name:'Oliver Nicklisch',   pts:2141 },
+  { name:'Christoph Schlegel', pts:2373 },
+  { name:'Oliver Nicklisch',   pts:2275 },
+];
+
+// Per-season standings
+const seasonData = [
+  [ // 21-22
+    { name:'Christoph Schlegel', pts:2190, stg:14, champ:true },
+    { name:'Tim Kurz',           pts:1866, stg:5  },
+    { name:'Gordon Winkel',      pts:1863, stg:3  },
+    { name:'Nico Schneider',     pts:1828, stg:4  },
+    { name:'Oliver Nicklisch',   pts:1815, stg:2  },
+    { name:'Nico Wechsel',       pts:1763, stg:3  },
+    { name:'Marco Woelki',       pts:1701, stg:4  },
+  ],
+  [ // 22-23
+    { name:'Christoph Schlegel', pts:2058, stg:11, champ:true },
+    { name:'Nico Schneider',     pts:1856, stg:10 },
+    { name:'Gordon Winkel',      pts:1799, stg:6  },
+    { name:'Nico Wechsel',       pts:1797, stg:6  },
+    { name:'Tim Kurz',           pts:312,  stg:1, note:'* nur 5 Spieltage' },
+  ],
+  [ // 23-24
+    { name:'Oliver Nicklisch',   pts:2141, stg:22, champ:true },
+    { name:'Christoph Schlegel', pts:1815, stg:7  },
+    { name:'Nico Schneider',     pts:1546, stg:4  },
+    { name:'Nico Wechsel',       pts:1488, stg:2  },
+  ],
+  [ // 24-25
+    { name:'Christoph Schlegel', pts:2373, stg:17, champ:true },
+    { name:'Tim Kurz',           pts:2099, stg:6  },
+    { name:'Gordon Winkel',      pts:2015, stg:4  },
+    { name:'Oliver Nicklisch',   pts:1844, stg:2  },
+    { name:'Nico Wechsel',       pts:1677, stg:1  },
+    { name:'Fabian Schulz',      pts:1651, stg:2  },
+    { name:'Nico Schneider',     pts:1586, stg:3  },
+  ],
+  [ // 25-26
+    { name:'Oliver Nicklisch',   pts:2275, stg:10, champ:true },
+    { name:'Nico Schneider',     pts:2110, stg:4  },
+    { name:'Christoph Schlegel', pts:2070, stg:6  },
+    { name:'Gordon Winkel',      pts:2054, stg:8  },
+    { name:'Tim Kurz',           pts:1937, stg:2  },
+    { name:'Nico Wechsel',       pts:1904, stg:4  },
+    { name:'Fabian Schulz',      pts:1545, stg:2  },
+  ],
+];
+
+// ── RENDER ──────────────────────────────────────────────────────────────────
+
+function av(name) {
+  const src = AVATARS[name];
+  return src ? `<img class="mgr-av" src="${src}" alt="${name}" onerror="this.style.display='none'">` : '';
+}
+
+function rkColor(r) {
+  if(r===1) return 'rk-1';
+  if(r===2) return 'rk-2';
+  if(r===3) return 'rk-3';
+  return '';
+}
+
+function renderStats() {
+  const totalManagers = gesamt.length;
+  const totalSeasons  = SEASONS.length;
+  const topManager    = gesamt[0];
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-pill"><div class="n">${totalSeasons}</div><div class="l">Saisons</div></div>
+    <div class="stat-pill"><div class="n">${totalManagers}</div><div class="l">Manager</div></div>
+    <div class="stat-pill"><div class="n">${topManager.wins}×</div><div class="l">Rekordsieger: ${topManager.name.split(' ')[0]}</div></div>
+    <div class="stat-pill"><div class="n">34</div><div class="l">Spieltage / Saison</div></div>
+  `;
+}
+
+function renderTabs(activeIdx) {
+  const tabs = document.getElementById('tabs');
+  const items = [['Gesamt','Gesamt'], ...SEASONS.map((s,i)=>[s, SEASON_LABELS[i]])];
+  tabs.innerHTML = items.map(([key, label], i) =>
+    `<button class="tab${i===activeIdx?' active':''}" onclick="switchTab(${i})">${label}</button>`
+  ).join('');
+}
+
+function renderGesamt() {
+  // Champion strip
+  const strip = SEASONS.map((s,i)=>`
+    <div class="champ-strip-card">
+      <div class="season">${SEASON_LABELS[i]}</div>
+      <div class="winner">🏆 ${champions[i].name.split(' ')[0]}</div>
+      <div class="winner-pts">${champions[i].pts.toLocaleString('de')} Pkt</div>
+    </div>`).join('');
+
+  // Gesamt table
+  const rows = gesamt.map((m,i) => {
+    const rk = i+1;
+    const seasonCols = m.pts.map((p,j) => {
+      if(p===null) return `<td class="season-col absent">–</td>`;
+      const isWinner = champions[j].name === m.name;
+      return `<td class="season-col${isWinner?' winner':''}">${p.toLocaleString('de')}</td>`;
+    }).join('');
+    const titleBadge = m.wins > 0 ? `<span class="title-pill">🏆 ${m.wins}×</span>` : '';
+    return `<tr${rk===1?' class="champ-row"':''}>
+      <td class="rk ${rkColor(rk)}">${rk}</td>
+      <td class="name-cell">${av(m.name)}${m.name}${titleBadge}</td>
+      ${seasonCols}
+      <td class="pts-main">${m.total.toLocaleString('de')}</td>
+      <td class="num">★ ${m.totalStg}</td>
+    </tr>`;
+  }).join('');
+
+  const seasonHeaders = SEASON_LABELS.map(l => `<th class="num">${l}</th>`).join('');
+
+  return `
+    <div class="section-label">Saisonsieger auf einen Blick</div>
+    <div class="champ-strip">${strip}</div>
+
+    <div class="section-label">Ewige Tabelle</div>
+    <div class="table-card">
+      <table class="league-table">
+        <thead><tr>
+          <th>#</th><th>Manager</th>
+          ${seasonHeaders}
+          <th class="num">Gesamt</th>
+          <th class="num">★ ST-Siege</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <p style="margin-top:10px;font-size:.7rem;color:var(--muted)">★ = Spieltagssiege &nbsp;·&nbsp; 🏆 = Saisonmeister</p>
+  `;
+}
+
+function renderSeason(idx) {
+  const data  = seasonData[idx];
+  const champ = champions[idx];
+  const label = SEASON_LABELS[idx];
+
+  const banner = `
+    <div class="champ-banner">
+      <div class="trophy">🏆</div>
+      <div class="info">
+        <div class="label">Meister ${label}</div>
+        <div class="name">${champ.name}</div>
+        <div class="pts">${champ.pts.toLocaleString('de')} Punkte</div>
+      </div>
+    </div>`;
+
+  const rows = data.map((m,i) => {
+    const rk = i+1;
+    const note = m.note ? ` <span style="font-size:.7rem;color:var(--muted)">${m.note}</span>` : '';
+    return `<tr${m.champ?' class="champ-row"':''}>
+      <td class="rk ${rkColor(rk)}">${rk}</td>
+      <td class="name-cell">${av(m.name)}${m.name}${m.champ?'<span class="title-pill">Meister</span>':''}${note}</td>
+      <td class="pts-main">${m.pts.toLocaleString('de')}</td>
+      <td class="num">★ ${m.stg}</td>
+    </tr>`;
+  }).join('');
+
+  const managersCount = data.length;
+  const avgPts = Math.round(data.reduce((s,m)=>s+m.pts,0)/managersCount);
+
+  return `
+    ${banner}
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:22px">
+      <div class="stat-pill"><div class="n">${managersCount}</div><div class="l">Manager</div></div>
+      <div class="stat-pill"><div class="n">${avgPts.toLocaleString('de')}</div><div class="l">Ø Punkte</div></div>
+      <div class="stat-pill"><div class="n">34</div><div class="l">Spieltage</div></div>
+    </div>
+    <div class="table-card">
+      <table class="league-table">
+        <thead><tr>
+          <th>#</th><th>Manager</th>
+          <th class="num">Punkte</th>
+          <th class="num">★ ST-Siege</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <p style="margin-top:10px;font-size:.7rem;color:var(--muted)">★ = Spieltagssiege · 2. Bundesliga · ${label}</p>
+  `;
+}
+
+let currentTab = 0;
+function switchTab(idx) {
+  currentTab = idx;
+  renderTabs(idx);
+  document.getElementById('content').innerHTML =
+    idx === 0 ? renderGesamt() : renderSeason(idx - 1);
+}
+
+// Init
+renderStats();
+switchTab(0);
+</script>
+</body>
+</html>

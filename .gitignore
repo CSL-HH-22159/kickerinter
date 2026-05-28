@@ -1,0 +1,16 @@
+# Office-Dateien (nicht Teil der Website)
+*.xlsx
+*.docx
+*.pptx
+
+# Kader-Fotos (große JPGs, nicht im Web verwendet)
+Kader *.jpg
+Saisonwertung*.jpg
+Traumelf*.jpg
+
+# Ordner mit Rohdaten
+Finale Punkte Manager/
+
+# System
+Thumbs.db
+.DS_Store

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>KickerInter</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0f172a;--card:#1e293b;--card2:#263347;--border:#334155;
+  --text:#f1f5f9;--muted:#94a3b8;--accent:#3b82f6;
+  --green:#4ade80;--red:#f87171;--gold:#f5c518;
+  --nav-h:64px;--safe-b:env(safe-area-inset-bottom,0px);
+}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;overflow:hidden}
+/* ── Header ── */
+.app-header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:#0d1b2a;
+  padding:10px 16px env(safe-area-inset-top,0px);
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+  min-height:52px;
+}
+.app-header img{height:36px;width:auto}
+.app-header h1{font-size:.95rem;font-weight:700;color:var(--text);line-height:1.2}
+.app-header small{font-size:.72rem;color:var(--muted)}
+/* ── Scroll container ── */
+.scroll-area{
+  position:fixed;
+  top:52px;bottom:calc(var(--nav-h) + var(--safe-b));
+  left:0;right:0;overflow-y:auto;-webkit-overflow-scrolling:touch;
+}
+.tab-content{display:none;padding:12px 12px 8px}
+.tab-content.active{display:block}
+/* ── Bottom nav ── */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  height:calc(var(--nav-h) + var(--safe-b));
+  padding-bottom:var(--safe-b);
+  background:#0d1b2a;border-top:1px solid var(--border);
+  display:flex;
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;border:none;background:none;
+  color:var(--muted);font-size:.68rem;font-weight:600;cursor:pointer;
+  padding:6px 0;transition:color .15s;
+}
+.nav-btn .icon{font-size:1.4rem;line-height:1}
+.nav-btn.active{color:var(--accent)}
+.nav-btn.active .icon{filter:drop-shadow(0 0 6px rgba(59,130,246,.6))}
+/* ── Cards ── */
+.card{background:var(--card);border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid var(--border)}
+.card-title{font-size:.78rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+/* ── Ranking ── */
+.rank-item{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 0;border-bottom:1px solid var(--border);
+}
+.rank-item:last-child{border-bottom:none}
+.rank-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem;flex-shrink:0}
+.rank-gold{background:linear-gradient(135deg,#f5c518,#e6a800);color:#000}
+.rank-silver{background:linear-gradient(135deg,#c0c0c0,#a8a8a8);color:#000}
+.rank-bronze{background:linear-gradient(135deg,#cd7f32,#b06820);color:#fff}
+.rank-other{background:var(--card2);color:var(--muted)}
+.rank-avatar{width:42px;height:42px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid var(--border)}
+.rank-avatar-fallback{width:42px;height:42px;border-radius:50%;flex-shrink:0;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}
+.rank-info{flex:1;min-width:0}
+.rank-name{font-weight:700;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rank-sub{font-size:.75rem;color:var(--muted);margin-top:1px}
+.rank-pts{font-weight:800;font-size:1.15rem;text-align:right;flex-shrink:0}
+.color-bar{width:3px;height:42px;border-radius:2px;flex-shrink:0}
+/* ── Selectors ── */
+.sel-group{margin-bottom:12px}
+.sel-label{font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.sel-wrap{display:flex;align-items:center;gap:8px}
+.sel-av{width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--border);flex-shrink:0;display:none}
+select{
+  width:100%;background:var(--card2);color:var(--text);
+  border:1px solid var(--border);border-radius:10px;
+  padding:10px 12px;font-size:.92rem;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2394a3b8' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;
+  padding-right:32px;
+}
+/* ── Chart ── */
+.chart-wrap{position:relative;height:220px;margin-top:4px}
+/* ── Stat grid ── */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.stat-card{background:var(--card2);border-radius:10px;padding:10px;text-align:center}
+.stat-card .val{font-size:1.3rem;font-weight:800}
+.stat-card .lbl{font-size:.68rem;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.winner-badge{color:var(--green)}
+/* ── Kader ── */
+.pos-section{margin-bottom:10px}
+.pos-header{
+  display:flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:10px;margin-bottom:8px;font-weight:700;font-size:.8rem;
+}
+.player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px}
+.player-card{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px}
+.player-img{width:54px;height:54px;border-radius:50%;object-fit:cover;border:2px solid var(--border)}
+.player-img-fb{width:54px;height:54px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem}
+.player-name{font-size:.67rem;text-align:center;font-weight:600;line-height:1.2;max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.player-pts{font-size:.72rem;font-weight:800;color:var(--text)}
+.bank-label{font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:6px 0 2px;border-top:1px solid var(--border);margin-top:4px}
+.mgr-select-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.mgr-select-row .mgr-big-av{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);flex-shrink:0;display:none}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <img src="Spreeliga Monolog.png" alt="Logo" onerror="this.style.display='none'">
+  <div>
+    <h1>KickerInter</h1>
+    <small>Saison 2024/25 · Liga k00012025</small>
+  </div>
+</header>
+
+<div class="scroll-area">
+
+  <!-- ── TAB 1: RANGLISTE ── -->
+  <div id="tab-rangliste" class="tab-content active">
+    <div class="card">
+      <div class="card-title">Gesamtrangliste</div>
+      <div id="ranking-list"></div>
+    </div>
+  </div>
+
+  <!-- ── TAB 2: VERGLEICH ── -->
+  <div id="tab-vergleich" class="tab-content">
+    <div class="card">
+      <div class="sel-group">
+        <div class="sel-label"><span id="dot1" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#1a3a6b"></span>Spieler 1</div>
+        <div class="sel-wrap">
+          <img id="av1" class="sel-av" src="" alt="">
+          <select id="sel1" onchange="onSelChange()"></select>
+        </div>
+      </div>
+      <div class="sel-group">
+        <div class="sel-label"><span id="dot2" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e8b800"></span>Spieler 2</div>
+        <div class="sel-wrap">
+          <img id="av2" class="sel-av" src="" alt="">
+          <select id="sel2" onchange="onSelChange()"></select>
+        </div>
+      </div>
+      <div class="sel-group">
+        <div class="sel-label"><span id="dot3" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e05c2a"></span>Spieler 3 (optional)</div>
+        <div class="sel-wrap">
+          <img id="av3" class="sel-av" src="" alt="">
+          <select id="sel3" onchange="onSelChange()"></select>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas id="chart"></canvas></div>
+    </div>
+    <div id="stats-grid"></div>
+  </div>
+
+  <!-- ── TAB 3: KADER ── -->
+  <div id="tab-kader" class="tab-content">
+    <div class="card">
+      <div class="mgr-select-row">
+        <img id="kdr-av" class="mgr-big-av" src="" alt="">
+        <select id="kdr-sel" onchange="renderKader()" style="flex:1"></select>
+      </div>
+      <div id="kader-content"><p style="color:var(--muted);text-align:center;padding:20px">Manager auswählen</p></div>
+    </div>
+  </div>
+
+</div><!-- end scroll-area -->
+
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-tab="rangliste" onclick="switchTab('rangliste',this)">
+    <span class="icon">🏆</span>Rangliste
+  </button>
+  <button class="nav-btn" data-tab="vergleich" onclick="switchTab('vergleich',this)">
+    <span class="icon">📊</span>Vergleich
+  </button>
+  <button class="nav-btn" data-tab="kader" onclick="switchTab('kader',this)">
+    <span class="icon">👥</span>Kader
+  </button>
+</nav>
+
+<script>
+const MANAGER_DATA = {"Gordon Winkel":[82,54,85,30,52,65,52,53,49,70,70,72,44,50,41,107,58,80,65,63,103,91,71,62,94,54,56,55,68,71,86,56,71,60],"Tim Kurz":[46,69,105,48,84,53,76,83,34,69,57,20,56,41,34,55,52,41,46,50,81,83,69,62,84,54,85,68,79,61,71,56,52,76],"Ditsche":[43,66,35,59,76,55,59,65,26,40,108,38,32,52,43,99,62,59,46,69,74,60,56,61,84,57,65,59,80,77,88,46,55,46],"Oli Nicklisch":[84,97,67,44,74,59,48,45,32,60,63,38,33,42,39,71,72,20,66,53,99,65,73,51,70,51,69,58,70,70,101,80,37,46],"Christoph Schlegel":[55,60,52,59,53,65,37,42,43,65,63,75,55,52,49,86,63,35,39,46,97,72,61,69,57,50,79,42,48,74,72,36,43,78],"Nico Schneider":[75,60,49,18,34,68,45,52,52,51,44,43,47,24,55,92,65,73,45,46,116,71,91,50,56,49,77,52,64,68,54,27,36,97],"Fabian Schulz":[66,74,51,30,49,24,61,71,22,48,24,42,22,68,27,53,60,49,37,55,95,58,89,61,69,36,61,70,36,36,56,52,30,88],"Nico Wechsel":[43,34,42,68,37,36,70,76,56,36,51,47,39,54,26,83,72,18,37,41,65,54,77,49,62,39,77,33,40,65,68,46,44,39],"Marco Woelki":[84,77,74,18,42,43,22,29,21,42,50,36,64,52,97,72,45,45,41,35,42,67,62,36,59,42,47,33,32,78,64,58,47,63]};
+const KADER_DATA   = {"Gordon Winkel":{"starter":[{"name":"Zetterer","pos":"TOR","pts":94,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00076053.png"},{"name":"L. Vuskovic","pos":"ABW","pts":122,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00155823.png"},{"name":"Diks","pos":"ABW","pts":119,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00087292.png"},{"name":"Coufal","pos":"ABW","pts":121,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00081053.png"},{"name":"Baumgartner","pos":"MFD","pts":118,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00102800.png"},{"name":"Fujita","pos":"MFD","pts":72,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00123688.png"},{"name":"Burger","pos":"MFD","pts":197,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00107842.png"},{"name":"Olise","pos":"MFD","pts":346,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00125181.png"},{"name":"Asllani","pos":"STU","pts":224,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00119669.png"},{"name":"Luis Diaz","pos":"STU","pts":275,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00115737.png"},{"name":"Diomande","pos":"STU","pts":158,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00176299.png"}],"bank":[{"name":"Mounié","pos":"STU","pts":0,"imgUrl":""},{"name":"Ranos","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755076344/games/manager/2025/pl-k00131628.png"},{"name":"Prömel","pos":"MFD","pts":52,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00080088.png"},{"name":"Covic","pos":"MFD","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00168200.png"},{"name":"Rössing-Lelesiit","pos":"MFD","pts":5,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00167928.png"},{"name":"Coulibaly","pos":"ABW","pts":46,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00161346.png"},{"name":"Ogbus","pos":"ABW","pts":20,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149407.png"},{"name":"Jaquez","pos":"ABW","pts":12,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00143407.png"},{"name":"Mane","pos":"ABW","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00143858.png"},{"name":"Kaua Santos","pos":"TOR","pts":30,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00155136.png"},{"name":"Grahl","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00040891.png"}]},"Tim Kurz":{"starter":[{"name":"Zetterer","pos":"TOR","pts":94,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00076053.png"},{"name":"Grimaldo","pos":"ABW","pts":239,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00081465.png"},{"name":"Laimer","pos":"ABW","pts":85,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00084943.png"},{"name":"Upamecano","pos":"ABW","pts":135,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00088151.png"},{"name":"Baumgartner","pos":"MFD","pts":118,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00102800.png"},{"name":"Kömür","pos":"MFD","pts":75,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00139273.png"},{"name":"Aleix Garcia","pos":"MFD","pts":115,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00088240.png"},{"name":"Ouedraogo","pos":"MFD","pts":16,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00139342.png"},{"name":"Diomande","pos":"STU","pts":261,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00176299.png"},{"name":"Asllani","pos":"STU","pts":224,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00119669.png"},{"name":"Kane","pos":"STU","pts":159,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00070605.png"}],"bank":[{"name":"Ranos","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755076344/games/manager/2025/pl-k00131628.png"},{"name":"Kusi-Asare","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1754903044/games/manager/2025/pl-k00164970.png"},{"name":"Majer","pos":"MFD","pts":44,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00095291.png"},{"name":"Covic","pos":"MFD","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00168200.png"},{"name":"Nuha Jatta","pos":"MFD","pts":0,"imgUrl":"https://derivates.kicker.de/image/fetch/c_fill,g_face,h_140,w_140/https://derivates.kicker.de/image/fetch/b_rgb:00000000,f_png,c_lpad,w_755,h_755,g_north/https://mediadb.kicker.de/2025/fussball/spieler/xl/158918_31646_20240912148.jpg"},{"name":"Behrens","pos":"ABW","pts":46,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149673.png"},{"name":"Ogbus","pos":"ABW","pts":14,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149407.png"},{"name":"Svensson","pos":"ABW","pts":95,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00133786.png"},{"name":"Mane","pos":"ABW","pts":2,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00143858.png"},{"name":"Grahl","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00040891.png"},{"name":"Kaua Santos","pos":"TOR","pts":30,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00155136.png"}]},"Ditsche":{"starter":[{"name":"Nübel","pos":"TOR","pts":226,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00072755.png"},{"name":"Coufal","pos":"ABW","pts":100,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00081053.png"},{"name":"Svensson","pos":"ABW","pts":118,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00133786.png"},{"name":"Behrens","pos":"ABW","pts":44,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149673.png"},{"name":"Ogbus","pos":"ABW","pts":22,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149407.png"},{"name":"Olise","pos":"MFD","pts":346,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00125181.png"},{"name":"Doan","pos":"MFD","pts":95,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00102817.png"},{"name":"Nebel","pos":"MFD","pts":94,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00100591.png"},{"name":"Asllani","pos":"STU","pts":130,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00119669.png"},{"name":"Luis Diaz","pos":"STU","pts":267,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00115737.png"},{"name":"Diomande","pos":"STU","pts":164,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00176299.png"}],"bank":[{"name":"Sarco","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00169014.png"},{"name":"Ranos","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755076344/games/manager/2025/pl-k00131628.png"},{"name":"Karl","pos":"MFD","pts":122,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00156015.png"},{"name":"Covic","pos":"MFD","pts":8,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00168200.png"},{"name":"Rössing-Lelesiit","pos":"MFD","pts":-4,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00167928.png"},{"name":"Niehues","pos":"MFD","pts":50,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00104010.png"},{"name":"Trimmel","pos":"ABW","pts":96,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00058938.png"},{"name":"Lührs","pos":"ABW","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00126766.png"},{"name":"Mane","pos":"ABW","pts":-10,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00143858.png"},{"name":"Hellstern","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00151362.png"},{"name":"Bredlow","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00082119.png"}]},"Oli Nicklisch":{"starter":[{"name":"Vasilj","pos":"TOR","pts":193,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00079078.png"},{"name":"R. Baku","pos":"ABW","pts":134,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00089892.png"},{"name":"Coufal","pos":"ABW","pts":125,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00081053.png"},{"name":"Laimer","pos":"ABW","pts":97,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00084943.png"},{"name":"S. El Mala","pos":"MFD","pts":103,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00159629.png"},{"name":"Doan","pos":"MFD","pts":103,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00102817.png"},{"name":"Baumgartner","pos":"MFD","pts":120,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00102800.png"},{"name":"Amiri","pos":"MFD","pts":190,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00080083.png"},{"name":"Asllani","pos":"STU","pts":226,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00119669.png"},{"name":"Luis Diaz","pos":"STU","pts":287,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00115737.png"},{"name":"Schick","pos":"STU","pts":174,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00085778.png"}],"bank":[{"name":"Ranos","pos":"STU","pts":6,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755076344/games/manager/2025/pl-k00131628.png"},{"name":"M. El Mala","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00159630.png"},{"name":"Covic","pos":"MFD","pts":2,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00168200.png"},{"name":"Herrmann","pos":"MFD","pts":0,"imgUrl":""},{"name":"Janes","pos":"MFD","pts":0,"imgUrl":""},{"name":"Ogbus","pos":"ABW","pts":20,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149407.png"},{"name":"Behrens","pos":"ABW","pts":57,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149673.png"},{"name":"Mane","pos":"ABW","pts":2,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00143858.png"},{"name":"Lührs","pos":"ABW","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00126766.png"},{"name":"Voll","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00110890.png"},{"name":"Spari","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00129770.png"}]},"Christoph Schlegel":{"starter":[{"name":"Backhaus","pos":"TOR","pts":230,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00118051.png"},{"name":"Svensson","pos":"ABW","pts":118,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00133786.png"},{"name":"Coufal","pos":"ABW","pts":125,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00081053.png"},{"name":"Behrens","pos":"ABW","pts":65,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149673.png"},{"name":"Coulibaly","pos":"ABW","pts":59,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00161346.png"},{"name":"Baumgartner","pos":"MFD","pts":120,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00102800.png"},{"name":"Honorat","pos":"MFD","pts":89,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00091126.png"},{"name":"Grifo","pos":"MFD","pts":148,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00072759.png"},{"name":"Kane","pos":"STU","pts":185,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00070605.png"},{"name":"Lemperle","pos":"STU","pts":64,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00111937.png"},{"name":"Luis Diaz","pos":"STU","pts":283,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00115737.png"}],"bank":[{"name":"Ranos","pos":"STU","pts":4,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755076344/games/manager/2025/pl-k00131628.png"},{"name":"Kusi-Asare","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1754903044/games/manager/2025/pl-k00164970.png"},{"name":"Covic","pos":"MFD","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00168200.png"},{"name":"Majer","pos":"MFD","pts":52,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00095291.png"},{"name":"Schmidt","pos":"MFD","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00170954.png"},{"name":"Rössing-Lelesiit","pos":"MFD","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00167928.png"},{"name":"Raum","pos":"ABW","pts":208,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00087750.png"},{"name":"Mane","pos":"ABW","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00143858.png"},{"name":"Angely","pos":"ABW","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755017601/games/manager/2025/pl-k00167084.png"},{"name":"Hein","pos":"TOR","pts":18,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00130808.png"},{"name":"Kolke","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00057797.png"}]},"Nico Schneider":{"starter":[{"name":"Backhaus","pos":"TOR","pts":215,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00118051.png"},{"name":"Kristensen","pos":"ABW","pts":75,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00096680.png"},{"name":"Behrens","pos":"ABW","pts":59,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149673.png"},{"name":"Stanisic","pos":"ABW","pts":160,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00102731.png"},{"name":"S. El Mala","pos":"MFD","pts":91,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00159629.png"},{"name":"Amiri","pos":"MFD","pts":172,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00080083.png"},{"name":"Seiwald","pos":"MFD","pts":138,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00130252.png"},{"name":"Kömür","pos":"MFD","pts":89,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00139273.png"},{"name":"Karl","pos":"MFD","pts":48,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00156015.png"},{"name":"Luis Diaz","pos":"STU","pts":275,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00115737.png"},{"name":"Kane","pos":"STU","pts":159,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00070605.png"}],"bank":[{"name":"Ache","pos":"STU","pts":153,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00099747.png"},{"name":"M. El Mala","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00159630.png"},{"name":"Ranos","pos":"STU","pts":4,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755076344/games/manager/2025/pl-k00131628.png"},{"name":"Covic","pos":"MFD","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00168200.png"},{"name":"Rössing-Lelesiit","pos":"MFD","pts":5,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00167928.png"},{"name":"Querfeld","pos":"ABW","pts":58,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00137082.png"},{"name":"Jenz","pos":"ABW","pts":46,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00130593.png"},{"name":"Köhler","pos":"ABW","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149443.png"},{"name":"Mane","pos":"ABW","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00143858.png"},{"name":"Smarkalev","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00169915.png"},{"name":"Kolke","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00057797.png"}]},"Fabian Schulz":{"starter":[{"name":"Zetterer","pos":"TOR","pts":96,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00076053.png"},{"name":"Wahl","pos":"ABW","pts":112,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00077817.png"},{"name":"Oppie","pos":"ABW","pts":37,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00119596.png"},{"name":"Mane","pos":"ABW","pts":2,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00143858.png"},{"name":"Baumgartner","pos":"MFD","pts":120,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00102800.png"},{"name":"Kimmich","pos":"MFD","pts":222,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00071150.png"},{"name":"Karl","pos":"MFD","pts":62,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00156015.png"},{"name":"Amiri","pos":"MFD","pts":169,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00080083.png"},{"name":"P. Tietz","pos":"STU","pts":107,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00086106.png"},{"name":"Asllani","pos":"STU","pts":226,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00119669.png"},{"name":"Kane","pos":"STU","pts":174,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00070605.png"}],"bank":[{"name":"Kusi-Asare","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1754903044/games/manager/2025/pl-k00164970.png"},{"name":"Sarco","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00169014.png"},{"name":"Covic","pos":"MFD","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00168200.png"},{"name":"Kaminski","pos":"MFD","pts":100,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00125604.png"},{"name":"Rössing-Lelesiit","pos":"MFD","pts":4,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00167928.png"},{"name":"Muheim","pos":"ABW","pts":66,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00098905.png"},{"name":"Agyekum","pos":"ABW","pts":0,"imgUrl":""},{"name":"Gimber","pos":"ABW","pts":16,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00072676.png"},{"name":"Angely","pos":"ABW","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755017601/games/manager/2025/pl-k00167084.png"},{"name":"Kaua Santos","pos":"TOR","pts":30,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00155136.png"},{"name":"Grahl","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00040891.png"}]},"Nico Wechsel":{"starter":[{"name":"Ramaj","pos":"TOR","pts":161,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00097893.png"},{"name":"Giannoulis","pos":"ABW","pts":76,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00097350.png"},{"name":"Laimer","pos":"ABW","pts":97,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00084943.png"},{"name":"Bensebaini","pos":"ABW","pts":154,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00089649.png"},{"name":"Kristensen","pos":"ABW","pts":69,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00096680.png"},{"name":"Coulibaly","pos":"ABW","pts":70,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00161346.png"},{"name":"Baumgartner","pos":"MFD","pts":120,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00102800.png"},{"name":"Grifo","pos":"MFD","pts":148,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00072759.png"},{"name":"Kramaric","pos":"MFD","pts":276,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00059041.png"},{"name":"Undav","pos":"STU","pts":165,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00087885.png"},{"name":"Burkardt","pos":"STU","pts":141,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00088192.png"}],"bank":[{"name":"Sarco","pos":"STU","pts":2,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00169014.png"},{"name":"Leal Costa","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00151360.png"},{"name":"Kusi-Asare","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1754903044/games/manager/2025/pl-k00164970.png"},{"name":"Prömel","pos":"MFD","pts":70,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00080088.png"},{"name":"Swider","pos":"MFD","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00146034.png"},{"name":"Lisztes","pos":"MFD","pts":0,"imgUrl":""},{"name":"J. Mensah","pos":"MFD","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00156018.png"},{"name":"Mane","pos":"ABW","pts":-10,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00143858.png"},{"name":"Ogbemudia","pos":"ABW","pts":0,"imgUrl":""},{"name":"Ke. Müller","pos":"TOR","pts":0,"imgUrl":""},{"name":"Feller","pos":"TOR","pts":6,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00132204.png"}]},"Marco Woelki":{"starter":[{"name":"Schwäbe","pos":"TOR","pts":224,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00070374.png"},{"name":"Coufal","pos":"ABW","pts":125,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00081053.png"},{"name":"Wahl","pos":"ABW","pts":110,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00077817.png"},{"name":"Ogbus","pos":"ABW","pts":40,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149407.png"},{"name":"Manzambi","pos":"MFD","pts":153,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00153779.png"},{"name":"Uzun","pos":"MFD","pts":142,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00146292.png"},{"name":"Prömel","pos":"MFD","pts":64,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00080088.png"},{"name":"Majer","pos":"MFD","pts":54,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00095291.png"},{"name":"Kane","pos":"STU","pts":185,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00070605.png"},{"name":"Schick","pos":"STU","pts":174,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00085778.png"},{"name":"Pejcinovic","pos":"STU","pts":80,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00132190.png"}],"bank":[{"name":"Schimmer","pos":"STU","pts":8,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00094599.png"},{"name":"Ranos","pos":"STU","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755076344/games/manager/2025/pl-k00131628.png"},{"name":"Larsson","pos":"MFD","pts":62,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00151054.png"},{"name":"Covic","pos":"MFD","pts":2,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00168200.png"},{"name":"Rössing-Lelesiit","pos":"MFD","pts":8,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00167928.png"},{"name":"Günter","pos":"ABW","pts":66,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00072706.png"},{"name":"Muheim","pos":"ABW","pts":72,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00098905.png"},{"name":"Mane","pos":"ABW","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00143858.png"},{"name":"Angely","pos":"ABW","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755017601/games/manager/2025/pl-k00167084.png"},{"name":"Zieler","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00039284.png"},{"name":"Köbbing","pos":"TOR","pts":0,"imgUrl":"https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00072675.png"}]}};
+const RANKING      = [{"name":"Gordon Winkel","color":"#1a3a6b","avatar":"Avatare/Gordon.png","total":2240,"avg":65.88235294117646,"best":107,"worst":30,"played":34},{"name":"Tim Kurz","color":"#e8b800","avatar":"Avatare/Tim.png","total":2100,"avg":61.76470588235294,"best":105,"worst":20,"played":34},{"name":"Oli Nicklisch","color":"#16a34a","avatar":"Avatare/Oli.png","total":2047,"avg":60.205882352941174,"best":101,"worst":20,"played":34},{"name":"Ditsche","color":"#e05c2a","avatar":"Avatare/Mary.png","total":2040,"avg":60,"best":108,"worst":26,"played":34},{"name":"Christoph Schlegel","color":"#9333ea","avatar":"Avatare/Chris.png","total":1972,"avg":58,"best":97,"worst":35,"played":34},{"name":"Nico Schneider","color":"#0ea5e9","avatar":"Avatare/Sche.png","total":1946,"avg":57.23529411764706,"best":116,"worst":18,"played":34},{"name":"Fabian Schulz","color":"#f43f5e","avatar":"Avatare/Fabi.png","total":1770,"avg":52.05882352941177,"best":95,"worst":22,"played":34},{"name":"Nico Wechsel","color":"#64748b","avatar":"Avatare/Nico.png","total":1724,"avg":50.705882352941174,"best":83,"worst":18,"played":34},{"name":"Marco Woelki","color":"#059669","avatar":"Avatare/Marco.png","total":1719,"avg":50.55882352941177,"best":97,"worst":18,"played":34}];
+const COLORS       = ["#1a3a6b","#e8b800","#e05c2a","#16a34a","#9333ea","#0ea5e9","#f43f5e","#64748b","#059669"];
+const MGR_NAMES    = ["Gordon Winkel","Tim Kurz","Ditsche","Oli Nicklisch","Christoph Schlegel","Nico Schneider","Fabian Schulz","Nico Wechsel","Marco Woelki"];
+const AVATAR_MAP   = {"Gordon Winkel":"Avatare/Gordon.png","Tim Kurz":"Avatare/Tim.png","Ditsche":"Avatare/Mary.png","Oli Nicklisch":"Avatare/Oli.png","Christoph Schlegel":"Avatare/Chris.png","Nico Schneider":"Avatare/Sche.png","Fabian Schulz":"Avatare/Fabi.png","Nico Wechsel":"Avatare/Nico.png","Marco Woelki":"Avatare/Marco.png"};
+const SPIELTAGE    = Array.from({length:34},(_,i)=>'ST '+(i+1));
+
+const POS_COLOR = {TOR:'#854d0e',ABW:'#166534',MFD:'#1e40af',STU:'#991b1b'};
+const POS_BG    = {TOR:'#fef3c7',ABW:'#dcfce7',MFD:'#dbeafe',STU:'#fee2e2'};
+const POS_LABEL = {TOR:'Torwart',ABW:'Abwehr',MFD:'Mittelfeld',STU:'Sturm'};
+
+// ── Tab switching ─────────────────────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  (btn || document.querySelector('[data-tab='+name+']')).classList.add('active');
+  document.querySelector('.scroll-area').scrollTop = 0;
+}
+
+// ── Ranking ───────────────────────────────────────────────────────────────────
+function renderRanking() {
+  const badges = ['rank-gold','rank-silver','rank-bronze'];
+  const list = document.getElementById('ranking-list');
+  list.innerHTML = RANKING.map((r, i) => {
+    const badgeClass = i < 3 ? badges[i] : 'rank-other';
+    const avgStr = r.avg.toFixed(1);
+    return `<div class="rank-item">
+      <div class="rank-num ${badgeClass}">${i+1}</div>
+      <div class="color-bar" style="background:${r.color}"></div>
+      <img class="rank-avatar" src="${r.avatar}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="">
+      <div class="rank-avatar-fallback" style="background:${r.color};display:none">${r.name.slice(0,2).toUpperCase()}</div>
+      <div class="rank-info">
+        <div class="rank-name">${r.name}</div>
+        <div class="rank-sub">⌀ ${avgStr}/ST · Beste: ${r.best}</div>
+      </div>
+      <div class="rank-pts" style="color:${i===0?'var(--gold)':i===1?'var(--muted)':i===2?'#cd7f32':'var(--text)'}">${r.total}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Vergleich ─────────────────────────────────────────────────────────────────
+let chartInst = null;
+
+function initSelects() {
+  ['sel1','sel2','sel3'].forEach((id, idx) => {
+    const sel = document.getElementById(id);
+    sel.innerHTML = (idx===2?'<option value="">— keiner —</option>':'<option value="">— wählen —</option>');
+    MGR_NAMES.forEach(n => sel.innerHTML += `<option value="${n}">${n}</option>`);
+  });
+  document.getElementById('sel1').value = MGR_NAMES[0];
+  document.getElementById('sel2').value = MGR_NAMES[1];
+  syncAvatars();
+  updateChart();
+}
+
+function syncAvatars() {
+  ['sel1','sel2','sel3'].forEach((id, idx) => {
+    const val = document.getElementById(id).value;
+    const av  = document.getElementById('av'+(idx+1));
+    const src = AVATAR_MAP[val] || '';
+    av.src = src; av.style.display = src ? 'block' : 'none';
+    const dot = document.getElementById('dot'+(idx+1));
+    dot.style.background = val ? COLORS[MGR_NAMES.indexOf(val)] : (idx===0?'#1a3a6b':idx===1?'#e8b800':'#e05c2a');
+  });
+}
+
+function onSelChange() { syncAvatars(); updateChart(); }
+
+function calcStats(name) {
+  const vals = MANAGER_DATA[name].filter(v => v !== null);
+  const total = vals.reduce((a,b)=>a+b,0);
+  return { total, avg: total/vals.length, best: Math.max(...vals), worst: Math.min(...vals), played: vals.length };
+}
+
+function updateChart() {
+  const selected = ['sel1','sel2','sel3'].map(id => document.getElementById(id).value).filter(Boolean);
+  if (selected.length < 2) { document.getElementById('stats-grid').innerHTML=''; return; }
+
+  const datasets = selected.map(name => {
+    const cidx = MGR_NAMES.indexOf(name);
+    const vals  = MANAGER_DATA[name].map(v => v === null ? null : v);
+    return { label: name, data: vals, borderColor: COLORS[cidx], backgroundColor: COLORS[cidx]+'22',
+      tension:.35, pointRadius:2, pointHoverRadius:5, fill:false, spanGaps:true };
+  });
+
+  const ctx = document.getElementById('chart').getContext('2d');
+  if (chartInst) chartInst.destroy();
+  chartInst = new Chart(ctx, {
+    type:'line',
+    data:{ labels: SPIELTAGE, datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false, animation:false,
+      plugins:{ legend:{ position:'top', labels:{ color:'#94a3b8', font:{size:11}, boxWidth:12, padding:8 } } },
+      scales:{
+        x:{ ticks:{ color:'#64748b', font:{size:9}, maxRotation:0, autoSkip:true, maxTicksLimit:10 }, grid:{ color:'#1e293b' } },
+        y:{ ticks:{ color:'#64748b', font:{size:10} }, grid:{ color:'#334155' } }
+      }
+    }
+  });
+
+  // Stats grid
+  const stats = selected.map(n => ({ name: n, color: COLORS[MGR_NAMES.indexOf(n)], avatar: AVATAR_MAP[n]||'', ...calcStats(n) }));
+  const bestTotal = Math.max(...stats.map(s=>s.total));
+  const bestAvg   = Math.max(...stats.map(s=>s.avg));
+
+  let html = '';
+  stats.forEach(s => {
+    const isTopTotal = s.total === bestTotal;
+    const isTopAvg   = s.avg   === bestAvg;
+    html += `<div class="card" style="border-left:3px solid ${s.color}">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <img src="${s.avatar}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid ${s.color}" onerror="this.style.display='none'">
+        <span style="font-weight:700;font-size:.95rem">${s.name}</span>
+        ${isTopTotal ? '<span style="font-size:.75rem;color:var(--green)"> 🏆</span>' : ''}
+      </div>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="val ${isTopTotal?'winner-badge':''}">${s.total}</div><div class="lbl">Gesamt</div></div>
+        <div class="stat-card"><div class="val ${isTopAvg?'winner-badge':''}">${s.avg.toFixed(1)}</div><div class="lbl">Schnitt/ST</div></div>
+        <div class="stat-card"><div class="val" style="color:var(--green)">${s.best}</div><div class="lbl">Bester ST</div></div>
+        <div class="stat-card"><div class="val" style="color:var(--red)">${s.worst}</div><div class="lbl">Schlechtester</div></div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('stats-grid').innerHTML = html;
+}
+
+// ── Kader ─────────────────────────────────────────────────────────────────────
+function initKaderSel() {
+  const sel = document.getElementById('kdr-sel');
+  sel.innerHTML = '<option value="">— Manager wählen —</option>';
+  MGR_NAMES.forEach(n => sel.innerHTML += `<option value="${n}">${n}</option>`);
+}
+
+function renderKader() {
+  const name = document.getElementById('kdr-sel').value;
+  const av = document.getElementById('kdr-av');
+  const src = AVATAR_MAP[name] || '';
+  av.src = src; av.style.display = src ? 'block' : 'none';
+
+  const container = document.getElementById('kader-content');
+  if (!name || !KADER_DATA[name]) {
+    container.innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px">Manager auswählen</p>';
+    return;
+  }
+
+  const { starter, bank } = KADER_DATA[name];
+  const POS_ORDER = ['TOR','ABW','MFD','STU'];
+  const mgrColor  = COLORS[MGR_NAMES.indexOf(name)];
+
+  function playerCard(p) {
+    const nameParts = p.name.trim().split(/\s+/);
+    const initials = (nameParts.length>1 ? nameParts[0][0]+nameParts[nameParts.length-1][0] : nameParts[0].slice(0,2)).toUpperCase();
+    const shortName = nameParts[nameParts.length-1];
+    const ptsColor = p.pts >= 150 ? 'var(--green)' : p.pts < 0 ? 'var(--red)' : 'var(--text)';
+    const imgHtml = p.imgUrl
+      ? `<img class="player-img" src="${p.imgUrl}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt=""><div class="player-img-fb" style="background:${mgrColor};display:none">${initials}</div>`
+      : `<div class="player-img-fb" style="background:${mgrColor}">${initials}</div>`;
+    return `<div class="player-card">${imgHtml}<div class="player-name">${shortName}</div><div class="player-pts" style="color:${ptsColor}">${p.pts} Pkt</div></div>`;
+  }
+
+  let html = '';
+  POS_ORDER.forEach(pos => {
+    const posStarter = starter.filter(p=>p.pos===pos);
+    const posBank    = bank.filter(p=>p.pos===pos);
+    if (!posStarter.length && !posBank.length) return;
+    html += `<div class="pos-section">
+      <div class="pos-header" style="background:${POS_BG[pos]}22;color:${POS_BG[pos]};border-left:3px solid ${POS_BG[pos]}">
+        ${POS_LABEL[pos]}
+      </div>
+      <div class="player-grid">${posStarter.map(playerCard).join('')}</div>`;
+    if (posBank.length) {
+      html += `<div class="bank-label">Bank</div><div class="player-grid">${posBank.map(playerCard).join('')}</div>`;
+    }
+    html += '</div>';
+  });
+  container.innerHTML = html;
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────────
+renderRanking();
+initSelects();
+initKaderSel();
+</script>
+</body>
+</html>

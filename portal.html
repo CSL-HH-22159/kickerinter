@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spreeliga Monolog · KickerInter</title>
+<style>
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:         #07101e;
+  --bg2:        #0d1b2d;
+  --card:       #0f2035;
+  --card-hover: #172b45;
+  --border:     #1a3050;
+  --blue:       #2563eb;
+  --blue-light: #3b82f6;
+  --blue-muted: #1e3a5f;
+  --gold:       #f5c518;
+  --green:      #22c55e;
+  --text:       #e2e8f0;
+  --muted:      #64748b;
+  --muted2:     #94a3b8;
+  --hero-h:     480px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  width: 100%;
+  height: var(--hero-h);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.hero-img-placeholder {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0d2040 0%, #1a3a6b 50%, #0a1628 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  opacity: 0.3;
+}
+/* Gradient fade: sides + bottom → background color */
+.hero-fade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to right,  var(--bg) 0%, transparent 20%, transparent 80%, var(--bg) 100%),
+    linear-gradient(to bottom, rgba(7,16,30,.15) 0%, transparent 25%, transparent 45%, var(--bg) 90%);
+  pointer-events: none;
+}
+/* Subtle top vignette */
+.hero-top-fade {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, var(--bg) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Header bar inside hero */
+.site-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 40px;
+  z-index: 10;
+}
+.site-logo { height: 100px; width: auto; }
+.site-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.site-title small {
+  display: block;
+  font-size: .72rem;
+  color: var(--muted2);
+  font-weight: 400;
+}
+.header-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 8px;
+}
+.nav-link {
+  color: var(--muted2);
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  transition: all .2s;
+  background: rgba(13,27,45,.6);
+  backdrop-filter: blur(8px);
+}
+.nav-link:hover { color: var(--text); border-color: var(--blue-light); background: var(--blue-muted); }
+
+/* Title block below hero */
+.title-block {
+  text-align: center;
+  padding: 36px 20px 12px;
+  background: var(--bg);
+}
+.hero-season {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(245,197,24,.1);
+  border: 1px solid rgba(245,197,24,.3);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+.hero-headline {
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  text-shadow: 0 2px 20px rgba(0,0,0,.6);
+}
+.hero-headline span { color: var(--blue-light); }
+.headline-logo {
+  height: clamp(7rem, 22vw, 14rem);
+  width: auto;
+  display: block;
+  margin: 0 auto 10px;
+  background: transparent;
+  filter: drop-shadow(0 0 20px rgba(56,152,255,.25));
+}
+.schaltzentrale {
+  font-size: clamp(1.6rem, 4.5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text);
+  text-shadow: 0 2px 20px rgba(0,0,0,.8);
+}
+.hero-sub {
+  margin-top: 8px;
+  font-size: .95rem;
+  color: var(--muted2);
+  max-width: 500px;
+  margin-inline: auto;
+}
+
+/* ── Main content ── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ── Section heading ── */
+.section { padding: 56px 0; }
+.section-label {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--blue-light);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin-bottom: 6px;
+}
+.section-desc {
+  color: var(--muted2);
+  font-size: .92rem;
+  max-width: 520px;
+}
+.section-header { margin-bottom: 32px; }
+
+/* ── Tool cards ── */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.tool-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  text-decoration: none;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+}
+.tool-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--card-accent, var(--blue)), transparent);
+  opacity: 0;
+  transition: opacity .2s;
+}
+.tool-card:hover { background: var(--card-hover); border-color: var(--blue-muted); transform: translateY(-2px); }
+.tool-card:hover::before { opacity: 1; }
+.tool-card.disabled { opacity: .55; cursor: default; pointer-events: none; }
+.tool-card.disabled:hover { transform: none; }
+
+.card-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.card-top { display: flex; align-items: flex-start; gap: 14px; }
+.card-badge {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+  align-self: center;
+}
+.badge-live   { background: rgba(34,197,94,.15); color: var(--green); border: 1px solid rgba(34,197,94,.3); }
+.badge-soon   { background: rgba(100,116,139,.1); color: var(--muted2); border: 1px solid var(--border); }
+.badge-mobile { background: rgba(59,130,246,.15); color: var(--blue-light); border: 1px solid rgba(59,130,246,.3); }
+
+.card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.card-desc {
+  font-size: .83rem;
+  color: var(--muted2);
+  line-height: 1.5;
+}
+.card-link-hint {
+  font-size: .78rem;
+  color: var(--blue-light);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* ── Managers section ── */
+.managers-strip {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 32px 0;
+}
+.mgr-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 30px;
+  padding: 6px 14px 6px 6px;
+  transition: all .2s;
+}
+.mgr-chip:hover { border-color: var(--blue-muted); background: var(--card-hover); }
+a.mgr-chip { text-decoration: none; cursor: pointer; }
+a.mgr-chip:hover span { color: var(--blue-light); }
+.mgr-chip img {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid var(--border);
+}
+.mgr-chip span {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--muted2);
+}
+
+/* ── Stats teaser ── */
+.stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 48px;
+}
+.stat-tile {
+  flex: 0 0 auto;
+  min-width: 160px;
+}
+.stat-tile {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  text-align: center;
+}
+.stat-tile .val {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--blue-light);
+  letter-spacing: -.03em;
+}
+.stat-tile .lbl {
+  font-size: .75rem;
+  color: var(--muted2);
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+/* ── Quote block ── */
+.quote-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--blue-light);
+  border-radius: 16px;
+  padding: 28px 32px;
+}
+.quote-block blockquote {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--muted2);
+  font-style: italic;
+  margin-bottom: 12px;
+}
+.quote-block cite {
+  font-size: .78rem;
+  letter-spacing: .1em;
+  color: var(--blue-light);
+  font-style: normal;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+  margin: 0;
+}
+
+/* ── Poll / Umfrage ── */
+.poll-wrap { max-width: 700px; margin: 0 auto; }
+.poll-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; margin-bottom: 24px; }
+.poll-opt { display: flex; flex-direction: column; align-items: center; gap: 8px; background: var(--bg2); border: 2px solid var(--border); border-radius: 12px; padding: 14px 8px; cursor: pointer; transition: border-color .18s, background .18s; user-select: none; }
+.poll-opt:hover { border-color: var(--blue-light); background: var(--blue-muted); }
+.poll-opt input[type="radio"] { display: none; }
+.poll-opt.selected { border-color: var(--blue-light); background: rgba(59,130,246,.12); }
+.poll-opt img { width: 54px; height: 54px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); display: block; }
+.poll-opt.selected img { border-color: var(--blue-light); }
+.poll-opt span { font-size: .74rem; font-weight: 700; color: var(--muted2); text-align: center; line-height: 1.3; }
+.poll-opt.selected span { color: var(--text); }
+.poll-btn { width: 100%; padding: 13px; background: var(--blue); color: #fff; border: none; border-radius: 10px; font-size: .88rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; transition: background .2s, opacity .2s; }
+.poll-btn:hover:not(:disabled) { background: var(--blue-light); }
+.poll-btn:disabled { opacity: .35; cursor: not-allowed; }
+.poll-thanks { text-align: center; padding: 44px 28px; background: var(--card); border: 1px solid rgba(34,197,94,.25); border-radius: 16px; }
+.poll-thanks .pt-icon { font-size: 2.8rem; margin-bottom: 14px; }
+.poll-thanks .pt-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 8px; }
+.poll-thanks .pt-sub { font-size: .84rem; color: var(--muted2); line-height: 1.7; }
+
+/* ── Footer ── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 28px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+}
+footer img { height: 28px; vertical-align: middle; margin-right: 8px; opacity: .6; }
+
+/* ── Ewige Tabelle ── */
+.ewige-wrap {
+  overflow-x: auto;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+}
+.ewige-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+}
+.ewige-table thead tr {
+  background: var(--bg2);
+  border-bottom: 2px solid var(--border);
+}
+.ewige-table th {
+  padding: 11px 16px;
+  text-align: left;
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.ewige-table th.num { text-align: right; }
+.ewige-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid rgba(26,48,80,.5);
+  white-space: nowrap;
+}
+.ewige-table td.num { text-align: right; color: var(--muted2); }
+.ewige-table tbody tr:last-child td { border-bottom: none; }
+.ewige-table tbody tr:hover td { background: rgba(23,43,69,.5); }
+.ewige-table .rk { font-weight: 800; font-size: .95rem; text-align: center; width: 36px; }
+.ewige-table .rk-1 { color: #ffd700; }
+.ewige-table .rk-2 { color: #c0c0c0; }
+.ewige-table .rk-3 { color: #cd7f32; }
+.ewige-table .name { font-weight: 600; color: var(--text); }
+.ewige-table .title-pill {
+  display: inline-block;
+  background: rgba(245,197,24,.12);
+  border: 1px solid rgba(245,197,24,.3);
+  border-radius: 12px;
+  padding: 1px 9px;
+  color: var(--gold);
+  font-size: .78rem;
+  font-weight: 700;
+}
+.ewige-table .former td { opacity: .5; }
+.ewige-table .mgr-av {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 9px;
+  border: 1.5px solid var(--border);
+  display: inline-block;
+}
+.ewige-sep td {
+  background: var(--bg2);
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 6px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  :root { --hero-h: 360px; }
+  .site-header { padding: 14px 16px; }
+  .header-nav { display: none; }
+  .hero-content { padding-bottom: 24px; }
+  .section { padding: 36px 0; }
+  .container { padding: 0 14px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <!-- Tausche hero.png gegen dein Teamfoto aus -->
+  <img class="hero-img" src="hero.png"
+       alt="Spreeliga Monolog Team"
+       onerror="this.style.display='none';document.querySelector('.hero-img-placeholder').style.display='flex'">
+  <div class="hero-img-placeholder" style="display:none">⚽</div>
+
+  <div class="hero-top-fade"></div>
+  <div class="hero-fade"></div>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <img class="site-logo" src="Spreeliga Monolog.png" alt="Spreeliga Monolog"
+         onerror="this.style.display='none'">
+    <nav class="header-nav">
+      <a class="nav-link" href="#spreeliga">Die Liga</a>
+      <a class="nav-link" href="#tools">Tools</a>
+      <a class="nav-link" href="#ewige-tabelle">Tabelle</a>
+      <a class="nav-link" href="#manager">Manager</a>
+      <a class="nav-link" href="#umfrage">🗳️ Umfrage</a>
+    </nav>
+  </header>
+
+</section>
+
+<!-- ── TITLE BLOCK (unterhalb des Hero) ── -->
+<div class="title-block">
+  <div class="hero-season">⚽ Die Beste Kicker-Interactive-Managerliga</div>
+  <h1 class="hero-headline">
+    <img src="Spreeliga Logo frei fixed.png" alt="Spreeliga" class="headline-logo">
+    <span class="schaltzentrale">Schaltzentrale</span>
+  </h1>
+  <p class="hero-sub">Alle Tools, Statistiken und Vergleiche der Liga auf einen Blick.</p>
+</div>
+
+<!-- ── MAIN ── -->
+<main>
+
+  <!-- Stats Teaser -->
+  <div class="container" style="padding-top:40px">
+    <div class="stats-row">
+      <div class="stat-tile">
+        <div class="val">9</div>
+        <div class="lbl">Manager</div>
+      </div>
+      <div class="stat-tile">
+        <div class="val">34</div>
+        <div class="lbl">Spieltage</div>
+      </div>
+      <div class="stat-tile">
+        <div class="val">1A</div>
+        <div class="lbl">Expertenwissen</div>
+      </div>
+      <div class="stat-tile">
+        <div class="val">💡</div>
+        <div class="lbl">Noch mehr Klugscheißen</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Was ist die Spreeliga? -->
+  <section class="section" id="spreeliga">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Hintergrund</div>
+        <h2 class="section-title">Was ist die Spreeliga?</h2>
+        <p class="section-desc" style="max-width:100%">Eine private Fantasy-Fußball-Liga seit 2005 – gegründet von Nico „Sche" Schneider, verbindet sie eine feste Gruppe von Freunden, die sich seit der Schulzeit kennen und die Leidenschaft für Fußball und Managerspiele teilen – über Wohnorte, Lebensumstände und mittlerweile zwei Jahrzehnte hinweg.</p>
+      </div>
+
+      <!-- Liga-Stats -->
+      <div class="stats-row" style="margin-bottom:32px">
+        <div class="stat-tile"><div class="val">20</div><div class="lbl">Saisons</div></div>
+        <div class="stat-tile"><div class="val">9</div><div class="lbl">Verschiedene Meister</div></div>
+        <div class="stat-tile"><div class="val">9</div><div class="lbl">Aktive Manager</div></div>
+        <div class="stat-tile"><div class="val">4</div><div class="lbl">Gründungsmitglieder</div></div>
+      </div>
+
+      <!-- Feature Cards -->
+      <div class="tools-grid" style="margin-bottom:32px;grid-template-columns:1fr 1fr">
+        <div class="tool-card" style="cursor:default">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(59,130,246,.15)">📊</div>
+          </div>
+          <div>
+            <div class="card-title">Echte Leistung zählt</div>
+            <div class="card-desc">Kein Zufall, keine Würfelei. Punkte werden ausschließlich durch die realen Bundesliga-Leistungen der Spieler vergeben – bewertet nach der legendären Kicker-Notengebung.</div>
+          </div>
+        </div>
+        <div class="tool-card" style="cursor:default">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(34,197,94,.1)">🤝</div>
+          </div>
+          <div>
+            <div class="card-title">Freundschaft über Jahre</div>
+            <div class="card-desc">Was 2005 als Schulfreundschafts-Projekt begann, ist heute ein verbindendes Ritual – jede Woche ein Anlass, sich zu freuen, aufzuregen und wieder neu anzufeuern.</div>
+          </div>
+        </div>
+        <div class="tool-card" style="cursor:default">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(245,197,24,.1)">🏆</div>
+          </div>
+          <div>
+            <div class="card-title">Unvergessliche Momente</div>
+            <div class="card-desc">Geteilte Meisterschaften, ein historischer Skandal, Tabellenletzter-zu-Erster-Tausch in einer Saison – die Spreeliga schreibt ihre eigene Geschichte.</div>
+          </div>
+        </div>
+        <div class="tool-card" style="cursor:default">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(139,92,246,.1)">📈</div>
+          </div>
+          <div>
+            <div class="card-title">Lebendige Statistikkultur</div>
+            <div class="card-desc">Ewige Tabelle, Hin- und Rückrundenvergleich, Spieltagssiege – über zwei Dekaden gewachsene Datenpflege macht jede Saison messbar und vergleichbar.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote -->
+      <div class="quote-block">
+        <blockquote>„Etwas, worauf man sich jede Woche neu freuen konnte und worüber man sich jeden Montag neu aufregen konnte."</blockquote>
+        <cite>— Aus der Chronik der Spreeliga</cite>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Abschlusstabelle 25/26 -->
+  <section class="section" id="saison2526">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Saison 2025/26 · Spreeliga Bundesliga</div>
+        <h2 class="section-title">Abschlusstabelle</h2>
+        <p class="section-desc">Endstand der aktuellen Saison – Spieltagspunkte kumuliert über alle 34 Spieltage.</p>
+      </div>
+      <div class="ewige-wrap">
+        <table class="ewige-table">
+          <thead>
+            <tr>
+              <th style="text-align:center">#</th>
+              <th>Manager</th>
+              <th class="num" style="color:var(--gold)">Punkte</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="rk rk-1">1</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Gordon.png" onerror="this.style.display='none'">Gordon Winkel <span class="title-pill" style="margin-left:6px">🏆 Meister</span></td>
+              <td class="num" style="font-weight:900;color:var(--gold)">2.240</td>
+            </tr>
+            <tr>
+              <td class="rk rk-2">2</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Tim.png" onerror="this.style.display='none'">Tim Kurz</td>
+              <td class="num" style="font-weight:800">2.100</td>
+            </tr>
+            <tr>
+              <td class="rk rk-3">3</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Oli.png" onerror="this.style.display='none'">Oliver Nicklisch</td>
+              <td class="num" style="font-weight:800">2.047</td>
+            </tr>
+            <tr>
+              <td class="rk">4</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Mary.png" onerror="this.style.display='none'">Michael Marienwald</td>
+              <td class="num">2.040</td>
+            </tr>
+            <tr>
+              <td class="rk">5</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Chris.png" onerror="this.style.display='none'">Christoph Schlegel</td>
+              <td class="num">1.972</td>
+            </tr>
+            <tr>
+              <td class="rk">6</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Sche.png" onerror="this.style.display='none'">Nico Schneider</td>
+              <td class="num">1.946</td>
+            </tr>
+            <tr>
+              <td class="rk">7</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Fabi.png" onerror="this.style.display='none'">Fabian Schulz</td>
+              <td class="num">1.770</td>
+            </tr>
+            <tr>
+              <td class="rk">8</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Nico.png" onerror="this.style.display='none'">Nico Wechsel</td>
+              <td class="num">1.724</td>
+            </tr>
+            <tr>
+              <td class="rk">9</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Marco.png" onerror="this.style.display='none'">Marco Woelki</td>
+              <td class="num">1.719</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Umfrage -->
+  <section class="section" id="umfrage">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">🗳️ Abstimmung · Saison 2025/26</div>
+        <h2 class="section-title">Meister der Herzen</h2>
+        <p class="section-desc">Wer war dein persönlicher Favorit der Saison – unabhängig von der Tabelle? Einmalige, anonyme Abstimmung.</p>
+      </div>
+
+      <div class="poll-wrap">
+        <!-- Aktive Umfrage -->
+        <div id="ki-poll">
+          <div class="poll-grid">
+            <label class="poll-opt" for="v-gordon">
+              <input type="radio" name="ki-vote" id="v-gordon" value="Gordon Winkel">
+              <img src="Avatare/Gordon.png" alt="Gordon" onerror="this.style.display='none'">
+              <span>Gordon Winkel</span>
+            </label>
+            <label class="poll-opt" for="v-tim">
+              <input type="radio" name="ki-vote" id="v-tim" value="Tim Kurz">
+              <img src="Avatare/Tim.png" alt="Tim" onerror="this.style.display='none'">
+              <span>Tim Kurz</span>
+            </label>
+            <label class="poll-opt" for="v-oli">
+              <input type="radio" name="ki-vote" id="v-oli" value="Oliver Nicklisch">
+              <img src="Avatare/Oli.png" alt="Oli" onerror="this.style.display='none'">
+              <span>Oliver Nicklisch</span>
+            </label>
+            <label class="poll-opt" for="v-mary">
+              <input type="radio" name="ki-vote" id="v-mary" value="Michael Marienwald">
+              <img src="Avatare/Mary.png" alt="Mary" onerror="this.style.display='none'">
+              <span>Michael Marienwald</span>
+            </label>
+            <label class="poll-opt" for="v-chris">
+              <input type="radio" name="ki-vote" id="v-chris" value="Christoph Schlegel">
+              <img src="Avatare/Chris.png" alt="Chris" onerror="this.style.display='none'">
+              <span>Christoph Schlegel</span>
+            </label>
+            <label class="poll-opt" for="v-sche">
+              <input type="radio" name="ki-vote" id="v-sche" value="Nico Schneider">
+              <img src="Avatare/Sche.png" alt="Nico S" onerror="this.style.display='none'">
+              <span>Nico Schneider</span>
+            </label>
+            <label class="poll-opt" for="v-fabi">
+              <input type="radio" name="ki-vote" id="v-fabi" value="Fabian Schulz">
+              <img src="Avatare/Fabi.png" alt="Fabi" onerror="this.style.display='none'">
+              <span>Fabian Schulz</span>
+            </label>
+            <label class="poll-opt" for="v-nico">
+              <input type="radio" name="ki-vote" id="v-nico" value="Nico Wechsel">
+              <img src="Avatare/Nico.png" alt="Nico W" onerror="this.style.display='none'">
+              <span>Nico Wechsel</span>
+            </label>
+            <label class="poll-opt" for="v-marco">
+              <input type="radio" name="ki-vote" id="v-marco" value="Marco Woelki">
+              <img src="Avatare/Marco.png" alt="Marco" onerror="this.style.display='none'">
+              <span>Marco Woelki</span>
+            </label>
+          </div>
+          <button class="poll-btn" id="ki-poll-btn" disabled onclick="kiSubmitVote()">Abstimmen</button>
+        </div>
+
+        <!-- Danke-Zustand (nach Abstimmung) -->
+        <div class="poll-thanks" id="ki-poll-thanks" style="display:none">
+          <div class="pt-icon">🗳️</div>
+          <div class="pt-title">Danke für deine Stimme!</div>
+          <div class="pt-sub">Das Ergebnis wird nach Ende der Abstimmung<br>bekannt gegeben.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Tools -->
+  <section class="section" id="tools">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Tools & Auswertungen</div>
+        <h2 class="section-title">Was kannst du hier machen?</h2>
+        <p class="section-desc">Alle Tools der Spreeliga Monolog – von der Rangliste bis zum detaillierten Kadervergleich.</p>
+      </div>
+
+      <div class="tools-grid">
+
+        <!-- Vergleichs-Generator -->
+        <a class="tool-card" href="generator.html" style="--card-accent:#3b82f6">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(37,99,235,.15)">📊</div>
+            <span class="card-badge badge-live">Live</span>
+          </div>
+          <div>
+            <div class="card-title">Vergleichs-Generator</div>
+            <div class="card-desc">Manager-Vergleich, Kaderanalyse und Bundesliga-Spieler im direkten Duell. Saison 2025/26 live.</div>
+          </div>
+          <div class="card-link-hint">→ Zur Übersicht</div>
+        </a>
+
+        <!-- Spreeklasse -->
+        <a class="tool-card" href="spreeklasse.html" style="--card-accent:#22c55e">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(34,197,94,.12)">🥈</div>
+            <span class="card-badge" style="background:rgba(34,197,94,.15);color:#22c55e;border:1px solid rgba(34,197,94,.3)">Live</span>
+          </div>
+          <div>
+            <div class="card-title">Spreeklasse</div>
+            <div class="card-desc">Die zweite Liga des Spreeliga-Universums. Gesamtübersicht und alle Saisons der Spreeklasse (2. Bundesliga).</div>
+          </div>
+          <div class="card-link-hint" style="color:#22c55e">→ Zur Spreeklasse</div>
+        </a>
+
+        <!-- YouTube Videos -->
+        <a class="tool-card" href="videos.html" style="--card-accent:#ff0000">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(255,0,0,.12)">
+              <img src="Spreeliga Monolog.png" alt="Spreeliga" style="height:30px;width:auto;object-fit:contain" onerror="this.replaceWith(document.createTextNode('▶️'))">
+            </div>
+            <span class="card-badge" style="background:rgba(255,0,0,.15);color:#ff4444;border:1px solid rgba(255,0,0,.3)">YouTube</span>
+          </div>
+          <div>
+            <div class="card-title">Spreeliga Monolog · Videos</div>
+            <div class="card-desc">Alle Spieltage als Monolog, Dialog &amp; Triolog – plus Transfer-Updates und Specials direkt auf YouTube.</div>
+          </div>
+          <div class="card-link-hint" style="color:#ff4444">→ Alle Videos ansehen</div>
+        </a>
+
+        <!-- Umfragen -->
+        <div class="tool-card disabled" style="--card-accent:#a855f7">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(168,85,247,.12)">🗳️</div>
+            <span class="card-badge badge-soon">Bald</span>
+          </div>
+          <div>
+            <div class="card-title">Umfragen</div>
+            <div class="card-desc">Abstimmungen und Umfragen rund um die Liga – Transfers, Topelf der Saison, Manager-Awards und mehr.</div>
+          </div>
+          <div class="card-link-hint" style="color:var(--muted)">→ In Entwicklung</div>
+        </div>
+
+        <!-- Statistiken placeholder -->
+        <div class="tool-card disabled" style="--card-accent:#8b5cf6">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(139,92,246,.1)">📈</div>
+            <span class="card-badge badge-soon">Bald</span>
+          </div>
+          <div>
+            <div class="card-title">Erweiterte Statistiken</div>
+            <div class="card-desc">Formkurven, Saisonphasen-Analyse, Head-to-Head Direktvergleiche und historische Daten.</div>
+          </div>
+          <div class="card-link-hint" style="color:var(--muted)">→ In Entwicklung</div>
+        </div>
+
+        <!-- Geschichte der Spreeliga -->
+        <a class="tool-card" href="chronik.html" style="--card-accent:#f5c518">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(245,197,24,.1)">📜</div>
+            <span class="card-badge" style="background:rgba(245,197,24,.15);color:var(--gold);border:1px solid rgba(245,197,24,.35)">Live</span>
+          </div>
+          <div>
+            <div class="card-title">Geschichte der Spreeliga</div>
+            <div class="card-desc">Alles aus der Chronik – über 20 Jahre Spreeliga. Meister, Skandale, Transfers und unvergessliche Spieltage aus zwei Jahrzehnten.</div>
+          </div>
+          <div class="card-link-hint" style="color:var(--gold)">→ Zur Chronik</div>
+        </a>
+
+        <!-- Spreeoberliga -->
+        <a class="tool-card" href="spreeoberliga.html" style="--card-accent:#f97316">
+          <div class="card-top">
+            <div class="card-icon" style="background:rgba(249,115,22,.12)">🥉</div>
+            <span class="card-badge" style="background:rgba(249,115,22,.15);color:#f97316;border:1px solid rgba(249,115,22,.3)">Live</span>
+          </div>
+          <div>
+            <div class="card-title">Spreeoberliga</div>
+            <div class="card-desc">Die dritte Liga des Spreeliga-Universums. Gesamtübersicht und alle Saisons der Spreeoberliga (3. Liga).</div>
+          </div>
+          <div class="card-link-hint" style="color:#f97316">→ Zur Spreeoberliga</div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Ewige Tabelle -->
+  <section class="section" id="ewige-tabelle">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Gesamtwertung seit 2005/06</div>
+        <h2 class="section-title">Die Ewige Tabelle</h2>
+        <p class="section-desc">Kumulierte Punkte aller Manager seit Ligagründung. Stand: Mai 2026.</p>
+      </div>
+      <div class="ewige-wrap">
+        <table class="ewige-table">
+          <thead>
+            <tr>
+              <th style="text-align:center">#</th>
+              <th>Name</th>
+              <th class="num">Saisons</th>
+              <th class="num">Punkte</th>
+              <th class="num">Ø / Saison</th>
+              <th style="text-align:center">Titel</th>
+              <th class="num">Ø Platz</th>
+              <th class="num">Spieltagssiege<br><span style="font-size:.6rem;font-weight:400;opacity:.6;letter-spacing:0;text-transform:none">ab 2020/21</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Aktive Manager -->
+            <tr class="ewige-sep"><td colspan="8">Aktive Manager</td></tr>
+            <tr>
+              <td class="rk rk-1">1</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Oli.png" onerror="this.style.display='none'">Oliver Nicklisch</td>
+              <td class="num">21</td><td class="num">28.433</td><td class="num">1.354</td>
+              <td style="text-align:center"><span class="title-pill">8 ×</span></td>
+              <td class="num">2,7</td><td class="num">31</td>
+            </tr>
+            <tr>
+              <td class="rk rk-2">2</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Gordon.png" onerror="this.style.display='none'">Gordon Winkel</td>
+              <td class="num">21</td><td class="num">26.691</td><td class="num">1.271</td>
+              <td style="text-align:center"><span class="title-pill">4 ×</span></td>
+              <td class="num">4,0</td><td class="num">34</td>
+            </tr>
+            <tr>
+              <td class="rk rk-3">3</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Sche.png" onerror="this.style.display='none'">Nico Schneider</td>
+              <td class="num">21</td><td class="num">25.468</td><td class="num">1.213</td>
+              <td style="text-align:center"><span class="title-pill">3 × *</span></td>
+              <td class="num">4,5</td><td class="num">23</td>
+            </tr>
+            <tr>
+              <td class="rk">4</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Marco.png" onerror="this.style.display='none'">Marco Woelki</td>
+              <td class="num">21</td><td class="num">24.702</td><td class="num">1.176</td>
+              <td style="text-align:center"><span class="title-pill">2 ×</span></td>
+              <td class="num">5,3</td><td class="num">25</td>
+            </tr>
+            <tr>
+              <td class="rk">5</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Nico.png" onerror="this.style.display='none'">Nico Wechsel</td>
+              <td class="num">20</td><td class="num">24.582</td><td class="num">1.229</td>
+              <td style="text-align:center"><span class="title-pill">1 ×</span></td>
+              <td class="num">4,5</td><td class="num">23,5</td>
+            </tr>
+            <tr>
+              <td class="rk">6</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Chris.png" onerror="this.style.display='none'">Christoph Schlegel</td>
+              <td class="num">16</td><td class="num">19.722</td><td class="num">1.233</td>
+              <td style="text-align:center"><span class="title-pill">2 ×</span></td>
+              <td class="num">4,8</td><td class="num">30</td>
+            </tr>
+            <tr>
+              <td class="rk">7</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Tim.png" onerror="this.style.display='none'">Tim Kurz</td>
+              <td class="num">11</td><td class="num">16.952</td><td class="num">1.541</td>
+              <td style="text-align:center"><span class="title-pill">1 ×</span></td>
+              <td class="num">3,2</td><td class="num">23</td>
+            </tr>
+            <tr>
+              <td class="rk">11</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Mary.png" onerror="this.style.display='none'">Michael Marienwald</td>
+              <td class="num">2</td><td class="num">3.726</td><td class="num">1.863</td>
+              <td style="text-align:center">–</td>
+              <td class="num">5,5</td><td class="num">6,5</td>
+            </tr>
+            <tr>
+              <td class="rk">12</td>
+              <td class="name"><img class="mgr-av" src="Avatare/Fabi.png" onerror="this.style.display='none'">Fabian Schulz</td>
+              <td class="num">2</td><td class="num">3.588</td><td class="num">1.794</td>
+              <td style="text-align:center">–</td>
+              <td class="num">4,5</td><td class="num">8</td>
+            </tr>
+            <!-- Ehemalige -->
+            <tr class="ewige-sep"><td colspan="8">Ehemalige Manager</td></tr>
+            <tr class="former">
+              <td class="rk">8</td><td class="name">Jack Neca</td>
+              <td class="num">12</td><td class="num">9.920</td><td class="num">827</td>
+              <td style="text-align:center">–</td><td class="num">6,5</td><td class="num">–</td>
+            </tr>
+            <tr class="former">
+              <td class="rk">9</td><td class="name">Matthias Steinicke</td>
+              <td class="num">8</td><td class="num">6.170</td><td class="num">771</td>
+              <td style="text-align:center">–</td><td class="num">7,0</td><td class="num">–</td>
+            </tr>
+            <tr class="former">
+              <td class="rk">10</td><td class="name">Gordan Tremer</td>
+              <td class="num">4</td><td class="num">4.240</td><td class="num">1.060</td>
+              <td style="text-align:center"><span class="title-pill">1 × *</span></td><td class="num">4,3</td><td class="num">–</td>
+            </tr>
+            <tr class="former">
+              <td class="rk">13</td><td class="name">Martin Barth</td>
+              <td class="num">3</td><td class="num">1.910</td><td class="num">637</td>
+              <td style="text-align:center">–</td><td class="num">7,0</td><td class="num">–</td>
+            </tr>
+            <tr class="former">
+              <td class="rk">14</td><td class="name">Julian Schrobbach</td>
+              <td class="num">2</td><td class="num">1.824</td><td class="num">912</td>
+              <td style="text-align:center">–</td><td class="num">4,5</td><td class="num">–</td>
+            </tr>
+            <tr class="former">
+              <td class="rk">15–23</td><td class="name" colspan="7" style="color:var(--muted2);font-size:.8rem">
+                Jörg Lindemann · Gabor Fischer · Marco Krüger · Friderike Stiehr · Nils Urdahl · Wilhelm Hufnagel · Nico Egal · Jan Rogge · Sebastian Schwiening &nbsp;(je 1 Saison)
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:10px;font-size:.72rem;color:var(--muted)">* geteilte Meisterschaft 2011/12 &nbsp;·&nbsp; Spieltagssiege werden seit 2020/21 erfasst</p>
+      <div style="margin-top:20px;text-align:center">
+        <a href="chronik.html" style="display:inline-flex;align-items:center;gap:8px;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(245,197,24,.3);border-radius:20px;padding:8px 22px;background:rgba(245,197,24,.06);transition:all .2s"
+           onmouseover="this.style.background='rgba(245,197,24,.14)';this.style.borderColor='rgba(245,197,24,.6)'"
+           onmouseout="this.style.background='rgba(245,197,24,.06)';this.style.borderColor='rgba(245,197,24,.3)'">
+          📜 Zur vollständigen Chronik →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Manager Section -->
+  <section class="section" id="manager">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Die Teilnehmer</div>
+        <h2 class="section-title">9 Manager, 1 Liga</h2>
+      </div>
+
+      <div class="managers-strip">
+        <a class="mgr-chip" href="manager-gordon.html"><img src="Avatare/Gordon.png" alt="Gordon" onerror="this.style.display='none'"><span>Gordon Winkel</span></a>
+        <a class="mgr-chip" href="manager-tim.html"><img src="Avatare/Tim.png"    alt="Tim"    onerror="this.style.display='none'"><span>Tim Kurz</span></a>
+        <a class="mgr-chip" href="manager-mary.html"><img src="Avatare/Mary.png"   alt="Ditsche" onerror="this.style.display='none'"><span>Michael Marienwald</span></a>
+        <a class="mgr-chip" href="manager-oli.html"><img src="Avatare/Oli.png"    alt="Oli"    onerror="this.style.display='none'"><span>Oli Nicklisch</span></a>
+        <a class="mgr-chip" href="manager-chris.html"><img src="Avatare/Chris.png"  alt="Chris"  onerror="this.style.display='none'"><span>Christoph Schlegel</span></a>
+        <a class="mgr-chip" href="manager-sche.html"><img src="Avatare/Sche.png"   alt="Nico S" onerror="this.style.display='none'"><span>Nico Schneider</span></a>
+        <a class="mgr-chip" href="manager-fabi.html"><img src="Avatare/Fabi.png"   alt="Fabi"   onerror="this.style.display='none'"><span>Fabian Schulz</span></a>
+        <a class="mgr-chip" href="manager-nico.html"><img src="Avatare/Nico.png"   alt="Nico W" onerror="this.style.display='none'"><span>Nico Wechsel</span></a>
+        <a class="mgr-chip" href="manager-marco.html"><img src="Avatare/Marco.png"  alt="Marco"  onerror="this.style.display='none'"><span>Marco Woelki</span></a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="divider"></div>
+
+<footer>
+  <img src="Spreeliga Monolog.png" alt="Logo" onerror="this.style.display='none'">
+  Spreeliga Monolog · KickerInter · Saison 2024/25
+</footer>
+
+<script>
+// ── KickerInter Umfrage ──
+(function () {
+  const VOTE_KEY   = 'ki_vote_meister_herzen_2526';
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwNEHdUUSOeIVGqbrq6nW-bLlJoEWL-7pvAMCDVidCBsg9eqMh9f-RWKOcC62OKlETkQw/exec';
+
+  // Bereits abgestimmt? → Danke-Ansicht direkt zeigen
+  if (localStorage.getItem(VOTE_KEY)) {
+    var poll = document.getElementById('ki-poll');
+    var thanks = document.getElementById('ki-poll-thanks');
+    if (poll) poll.style.display = 'none';
+    if (thanks) thanks.style.display = '';
+  }
+
+  // Option auswählen
+  document.querySelectorAll('.poll-opt').forEach(function (label) {
+    label.addEventListener('click', function () {
+      document.querySelectorAll('.poll-opt').forEach(function (l) { l.classList.remove('selected'); });
+      this.classList.add('selected');
+      var btn = document.getElementById('ki-poll-btn');
+      if (btn) btn.disabled = false;
+    });
+  });
+
+  window.kiSubmitVote = async function () {
+    var radio = document.querySelector('input[name="ki-vote"]:checked');
+    if (!radio) return;
+    var btn = document.getElementById('ki-poll-btn');
+    btn.disabled = true;
+    btn.textContent = 'Wird gespeichert …';
+
+    try {
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ umfrage: 'Meister der Herzen 2025/26', auswahl: radio.value })
+      });
+    } catch (e) { /* no-cors – Response nicht lesbar, Daten kommen trotzdem an */ }
+
+    localStorage.setItem(VOTE_KEY, '1');
+    document.getElementById('ki-poll').style.display = 'none';
+    document.getElementById('ki-poll-thanks').style.display = '';
+  };
+})();
+</script>
+
+</body>
+</html>

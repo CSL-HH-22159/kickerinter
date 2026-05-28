@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Die Chronik · Spreeliga Monolog</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:         #07101e;
+  --bg2:        #0d1b2d;
+  --card:       #0f2035;
+  --card-hover: #172b45;
+  --border:     #1a3050;
+  --blue:       #2563eb;
+  --blue-light: #3b82f6;
+  --blue-muted: #1e3a5f;
+  --gold:       #f5c518;
+  --green:      #22c55e;
+  --text:       #e2e8f0;
+  --muted:      #64748b;
+  --muted2:     #94a3b8;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 40px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-center-logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100px;
+  width: auto;
+  filter: drop-shadow(0 0 14px rgba(56,152,255,.3));
+  pointer-events: none;
+}
+.site-logo { height: 100px; width: auto; }
+.header-nav { margin-left: auto; display: flex; gap: 8px; }
+.nav-link {
+  color: var(--muted2);
+  text-decoration: none;
+  font-size: .82rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  transition: all .2s;
+  background: rgba(13,27,45,.6);
+  backdrop-filter: blur(8px);
+}
+.nav-link:hover { color: var(--text); border-color: var(--blue-light); background: var(--blue-muted); }
+
+/* ── Page header ── */
+.page-header {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 56px 24px 40px;
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted2);
+  text-decoration: none;
+  margin-bottom: 24px;
+  transition: color .2s;
+}
+.back-link:hover { color: var(--blue-light); }
+.season-chip {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(245,197,24,.1);
+  border: 1px solid rgba(245,197,24,.3);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.page-header h1 {
+  font-size: clamp(2.2rem, 5vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: -.03em;
+  line-height: 1.1;
+  margin-bottom: 14px;
+}
+.page-header p {
+  font-size: .95rem;
+  color: var(--muted2);
+  line-height: 1.75;
+  max-width: 620px;
+}
+
+/* ── Container ── */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+
+/* ── Section label ── */
+.section-label {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--blue-light);
+  margin: 56px 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Era ── */
+.era { margin-bottom: 44px; }
+.era-title {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.era-title::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* ── Timeline ── */
+.timeline {
+  border-left: 1.5px solid var(--border);
+  padding-left: 32px;
+}
+.t-item {
+  position: relative;
+  padding-bottom: 32px;
+}
+.t-item:last-child { padding-bottom: 0; }
+.t-item::before {
+  content: '';
+  position: absolute;
+  left: -39px;
+  top: 8px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--blue-light);
+  border: 2px solid var(--bg);
+}
+.t-item.highlight::before {
+  background: var(--gold);
+  width: 13px;
+  height: 13px;
+  left: -40px;
+  border-color: var(--bg);
+  box-shadow: 0 0 0 3px rgba(245,197,24,.25);
+}
+.t-year {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  margin-bottom: 5px;
+}
+.t-item.highlight .t-year { color: var(--gold); }
+.t-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 7px;
+}
+.t-text {
+  font-size: .88rem;
+  line-height: 1.75;
+  color: var(--muted2);
+}
+.t-champ {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(245,197,24,.1);
+  border: 1px solid rgba(245,197,24,.3);
+  border-radius: 20px;
+  padding: 3px 12px;
+}
+
+/* ── Fazit ── */
+.fazit {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--blue-light);
+  border-radius: 0 14px 14px 0;
+  padding: 20px 26px;
+  margin: 32px 0 48px;
+}
+.fazit-label {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  margin-bottom: 8px;
+}
+.fazit p {
+  font-size: .88rem;
+  line-height: 1.75;
+  color: var(--muted2);
+  font-style: italic;
+}
+
+/* ── Records ── */
+.records {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 40px;
+}
+.record {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px 20px;
+  transition: border-color .2s;
+}
+.record:hover { border-color: var(--blue-muted); }
+.record-icon { font-size: 22px; margin-bottom: 10px; display: block; }
+.record-label {
+  font-size: .65rem;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.record-val {
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+/* ── Quote ── */
+.quote-block {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--blue-light);
+  border-radius: 16px;
+  padding: 28px 32px;
+}
+.quote-block blockquote {
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: var(--muted2);
+  font-style: italic;
+  margin-bottom: 14px;
+}
+.quote-block cite {
+  font-size: .73rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* ── Season Table ── */
+.season-table {
+  margin-top: 14px;
+  background: rgba(15,32,53,.5);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  max-width: 460px;
+}
+.season-table table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+.season-table td { padding: 5px 12px; border-bottom: 1px solid rgba(26,48,80,.35); }
+.season-table tr:last-child td { border-bottom: none; }
+.s-rk { width: 26px; color: var(--muted); text-align: center; font-weight: 700; font-size: .75rem; }
+.s-name { color: var(--muted2); }
+.s-pts { text-align: right; color: var(--muted2); font-size: .78rem; white-space: nowrap; }
+.s-stg { text-align: right; color: var(--muted); font-size: .72rem; white-space: nowrap; }
+.s-champ td { background: rgba(245,197,24,.06); }
+.s-champ .s-rk { color: var(--gold); }
+.s-champ .s-name { color: var(--text); font-weight: 600; }
+.s-champ .s-pts { color: var(--gold); font-weight: 700; }
+.season-footer {
+  font-size: .65rem; color: var(--muted); text-align: right;
+  padding: 4px 12px; background: rgba(7,16,30,.2);
+  border-top: 1px solid rgba(26,48,80,.35);
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+  margin: 0 0 48px;
+}
+
+/* ── Footer ── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  padding: 28px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: .8rem;
+}
+footer img { height: 28px; vertical-align: middle; margin-right: 8px; opacity: .6; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .site-header { padding: 14px 16px; }
+  .site-logo { height: 60px; }
+  .header-nav { display: none; }
+  .page-header { padding: 36px 14px 28px; }
+  .container { padding: 0 14px 60px; }
+  .records { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── Chronik Link ── */
+.chronik-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  text-decoration: none;
+  opacity: .85;
+  transition: opacity .2s, color .2s;
+}
+.chronik-link:hover { opacity: 1; color: var(--text); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <img class="site-logo" src="Spreeliga Monolog.png" alt="Spreeliga Monolog"
+       onerror="this.style.display='none'">
+  <img src="Spreeliga Logo frei fixed.png" alt="Spreeliga"
+       class="header-center-logo"
+       onerror="this.style.display='none'">
+  <nav class="header-nav">
+    <a class="nav-link" href="portal.html">← Portal</a>
+    <a class="nav-link" href="index.html">Desktop</a>
+    <a class="nav-link" href="mobile.html">📱 Mobil</a>
+  </nav>
+</header>
+
+<div class="page-header">
+  <a href="portal.html" class="back-link">← Zurück zum Portal</a>
+  <div class="season-chip">📜 20 Jahre Spreeliga</div>
+  <h1>Die Chronik</h1>
+  <p>20 Jahre Spreeliga – Saison für Saison. Meister, Skandale, Rekorde und die Momente, die eine Liga unsterblich machen.</p>
+</div>
+
+<div class="container">
+
+  <!-- ── ERA 1 ── -->
+  <div class="era">
+    <div class="era-title">Die Gründerjahre — 2005 bis 2010</div>
+    <div class="timeline">
+
+      <div class="t-item">
+        <div class="t-year">Jahr 1 — 2005/06</div>
+        <div class="t-title">Der Anfang</div>
+        <p class="t-text">Zehn Manager starten in die erste Saison. Ein knappes Kopf-an-Kopf-Rennen zwischen Oli und Sche – am Ende entscheidet Oli mit sechs Punkten Vorsprung für sich.</p>
+        <span class="t-champ">🏆 Meister: Oli</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.089</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.083</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Jörg Lindemann</td><td class="s-pts">960</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">890</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Gordon Winkel</td><td class="s-pts">823</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Marco Woelki</td><td class="s-pts">813</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Wilhelm Hufnagel</td><td class="s-pts">651</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Jan Rogge</td><td class="s-pts">620</td></tr>
+          <tr><td class="s-rk">9</td><td class="s-name">Jack Neca</td><td class="s-pts">511</td></tr>
+          <tr><td class="s-rk">10</td><td class="s-name">Matthias Steinicke *</td><td class="s-pts">221</td></tr>
+        </table><div class="season-footer">10 Manager · Ø 766 Pkt &nbsp;·&nbsp; * erst im Saisonverlauf dazu</div></div>
+        <a href="saison-1.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item">
+        <div class="t-year">Jahr 2 — 2006/07</div>
+        <div class="t-title">Erste Verstärkungen</div>
+        <p class="t-text">Elf Manager, darunter Nico und Achim als Neuzugänge mit Langzeitpotenzial. Erstmalige – und leider auch einmalige – Steigerung der Frauenquote in der Liga.</p>
+        <span class="t-champ">🏆 Meister: Gordon</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Gordon Winkel</td><td class="s-pts">973</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">942</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">917</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Nico Wechsel</td><td class="s-pts">875</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Jack Neca</td><td class="s-pts">826</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Friderike Stiehr</td><td class="s-pts">721</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Martin Barth</td><td class="s-pts">688</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Marco Woelki</td><td class="s-pts">669</td></tr>
+          <tr><td class="s-rk">9</td><td class="s-name">Nico Schneider</td><td class="s-pts">627</td></tr>
+          <tr><td class="s-rk">10</td><td class="s-name">Sebastian Schwiening</td><td class="s-pts">602</td></tr>
+          <tr><td class="s-rk">11</td><td class="s-name">Matthias Steinicke</td><td class="s-pts">533</td></tr>
+        </table><div class="season-footer">11 Manager · Ø 761 Pkt</div></div>
+        <a href="saison-2.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item">
+        <div class="t-year">Jahr 3 — 2007/08</div>
+        <div class="t-title">Der Kern formt sich</div>
+        <p class="t-text">Statistisch schlechtester Punkteschnitt aller Zeiten. Nur noch neun Teilnehmer – der Kern der Liga kristallisiert sich heraus. Christoph landet so weit abgeschlagen, dass er eine Saison Pause einlegt.</p>
+        <span class="t-champ">🏆 Meister: Oli</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">872</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Gordon Winkel</td><td class="s-pts">768</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Marco Woelki</td><td class="s-pts">672</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Matthias Steinicke</td><td class="s-pts">652</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Martin Barth</td><td class="s-pts">612</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Nico Wechsel</td><td class="s-pts">611</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Nico Schneider</td><td class="s-pts">550</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Jack Neca</td><td class="s-pts">434</td></tr>
+          <tr><td class="s-rk">9</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">288</td></tr>
+        </table><div class="season-footer">9 Manager · Ø 607 Pkt</div></div>
+        <a href="saison-3.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item">
+        <div class="t-year">Jahr 4 — 2008/09</div>
+        <div class="t-title">Packender Zweikampf</div>
+        <p class="t-text">Wieder ein Finale zwischen Oli und Sche – diesmal mit dem besseren Ende für Sche. Die Saison enthält auch den Kuriosposten „Manager Nico EGAL!" als Lückenfüller.</p>
+        <span class="t-champ">🏆 Meister: Sche</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Nico Schneider</td><td class="s-pts">940</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">913</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Marco Woelki</td><td class="s-pts">852</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Nico Wechsel</td><td class="s-pts">832</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Julian Schrobbach</td><td class="s-pts">818</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Marco Krüger</td><td class="s-pts">721</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Gordon Winkel</td><td class="s-pts">712</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Nico Egal</td><td class="s-pts">638</td></tr>
+          <tr><td class="s-rk">9</td><td class="s-name">Matthias Steinicke</td><td class="s-pts">563</td></tr>
+        </table><div class="season-footer">9 Manager · Ø 777 Pkt</div></div>
+        <a href="saison-4.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item highlight">
+        <div class="t-year">Jahr 5 — 2009/10</div>
+        <div class="t-title">Der große Skandal</div>
+        <p class="t-text">Ein Manager steigt erst zum zweiten Spieltag ein und gewinnt am Ende trotzdem die Meisterschaft. Der Shitstorm ist geboren – bis heute erkennen manche den Titel nicht an. Die umstrittenste Saison der Ligageschichte.</p>
+        <span class="t-champ">🏆 Meister: Marco (umstritten)</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.190</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Jack Neca</td><td class="s-pts">1.130</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.074</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Julian Schrobbach</td><td class="s-pts">1.006</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Nico Wechsel</td><td class="s-pts">966</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Nico Schneider</td><td class="s-pts">883</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Matthias Steinicke</td><td class="s-pts">874</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">819</td></tr>
+          <tr><td class="s-rk">9</td><td class="s-name">Gordon Winkel</td><td class="s-pts">810</td></tr>
+          <tr><td class="s-rk">10</td><td class="s-name">Nils Urdahl</td><td class="s-pts">706</td></tr>
+        </table><div class="season-footer">10 Manager · Ø 946 Pkt</div></div>
+        <a href="saison-5.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="fazit">
+    <div class="fazit-label">Fazit 2005–2010</div>
+    <p>Hohe Fluktuation, packende Meisterschaftsduelle und vier unterschiedliche Meister in fünf Jahren. Die Anfangsjahre waren die unbeschwertesten – eine Nostalgie, die ihresgleichen sucht.</p>
+  </div>
+
+  <!-- ── ERA 2 ── -->
+  <div class="era">
+    <div class="era-title">Konsolidierung und Dominanz — 2010 bis 2015</div>
+    <div class="timeline">
+
+      <div class="t-item">
+        <div class="t-year">Jahr 6 — 2010/11</div>
+        <div class="t-title">Neuer Meister, neue Ära</div>
+        <p class="t-text">Arno holt mit damaliger Rekordpunkteausbeute seinen ersten Titel. Christoph nistete sich hingegen gemütlich im Tabellenkeller ein.</p>
+        <span class="t-champ">🏆 Meister: Arno</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.222</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.151</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.022</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Nico Schneider</td><td class="s-pts">908</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Jack Neca</td><td class="s-pts">885</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Gordan Tremer</td><td class="s-pts">872</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Gabor Fischer</td><td class="s-pts">801</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">718</td></tr>
+          <tr><td class="s-rk">9</td><td class="s-name">Achim Achimski</td><td class="s-pts">610</td></tr>
+          <tr><td class="s-rk">10</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">560</td></tr>
+        </table><div class="season-footer">10 Manager · Ø 875 Pkt &nbsp;·&nbsp; Meister: Arno (Nico Wechsel-Konto)</div></div>
+        <a href="saison-6.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item highlight">
+        <div class="t-year">Jahr 7 — 2011/12</div>
+        <div class="t-title">Das Jahrhundertfinale</div>
+        <p class="t-text">Die spannendste Meisterschaft aller Zeiten: sieben Manager, ein Vierkampf bis zum Schluss, höchster Punkteschnitt der Liga. Am Ende steht das Unglaubliche – Sche und Gordan punktgleich. Die Meisterschale wird geteilt.</p>
+        <span class="t-champ">🏆 Meister: Sche &amp; Gordan (geteilt)</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.173</td></tr>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Gordan Tremer</td><td class="s-pts">1.173</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.159</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.137</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.023</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.016</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Jack Neca</td><td class="s-pts">843</td></tr>
+        </table><div class="season-footer">7 Manager · Ø 1.075 Pkt</div></div>
+        <a href="saison-7.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item">
+        <div class="t-year">Jahr 8 — 2012/13</div>
+        <div class="t-title">Dunkle Wolken ziehen auf</div>
+        <p class="t-text">Die Meisterfrage wird erst am letzten Spieltag entschieden. Gordan muss sich Oli mit lächerlichen sechs Punkten Vorsprung geschlagen geben – seine dritte Meisterschaft.</p>
+        <span class="t-champ">🏆 Meister: Oli</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.323</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.316</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.263</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Gordan Tremer</td><td class="s-pts">1.145</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.008</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Nico Schneider</td><td class="s-pts">998</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Jack Neca</td><td class="s-pts">956</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Matthias Steinicke</td><td class="s-pts">839</td></tr>
+        </table><div class="season-footer">8 Manager · Ø 1.106 Pkt</div></div>
+        <a href="saison-8.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item">
+        <div class="t-year">Jahr 9 — 2013/14</div>
+        <div class="t-title">Olis Rekordsaison</div>
+        <p class="t-text">Mit 199 Punkten Vorsprung demontiert Oli die Konkurrenz. Eine neue Rekordpunkteausbeute – doch keine Spannung. Gordan beendet danach seine aktive Managerkarriere.</p>
+        <span class="t-champ">🏆 Meister: Oli</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.466</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.267</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Matthias Steinicke</td><td class="s-pts">1.220</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.109</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Jack Neca</td><td class="s-pts">1.096</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Gordan Tremer *</td><td class="s-pts">1.050</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.044</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.023</td></tr>
+        </table><div class="season-footer">8 Manager · Ø 1.159 Pkt &nbsp;·&nbsp; * Punktzahl geschätzt</div></div>
+        <a href="saison-9.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item">
+        <div class="t-year">Jahr 10 — 2014/15</div>
+        <div class="t-title">Das Jubiläum der Resignation</div>
+        <p class="t-text">Zum dritten Mal in Folge Oli – etwas, was bis dahin niemand für möglich hielt. Langsam sehen die anderen ihre Felle davonschwimmen. Resignation macht sich breit.</p>
+        <span class="t-champ">🏆 Meister: Oli (3× in Serie)</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.484</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.309</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.275</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Matthias Steinicke</td><td class="s-pts">1.268</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.235</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.054</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Jack Neca</td><td class="s-pts">956</td></tr>
+        </table><div class="season-footer">7 Manager · Ø 1.226 Pkt</div></div>
+        <a href="saison-10.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="fazit">
+    <div class="fazit-label">Fazit 2010–2015</div>
+    <p>Die Spreu trennte sich vom Weizen. Qualitativ legte die Liga zu, doch der Rekordmeister wuchs zu einer Dominanz heran, die die anderen lähmte. Der dunkle Lord war geboren.</p>
+  </div>
+
+  <!-- ── ERA 3 ── -->
+  <div class="era">
+    <div class="era-title">Frisches Blut und neue Rekorde — 2015 bis 2020</div>
+    <div class="timeline">
+
+      <div class="t-item highlight">
+        <div class="t-year">Jahr 11 — 2015/16</div>
+        <div class="t-title">Tim bricht den Fluch</div>
+        <p class="t-text">Ein waschechter Rheinländer kommt neu in die Liga – und gewinnt direkt im ersten Jahr. Tim beendet Olis Alleinherrschaft. Endlich wieder weiße Schäfchenwolken am Himmel.</p>
+        <span class="t-champ">🏆 Meister: Tim (1. Saison!)</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Tim Kurz</td><td class="s-pts">1.431</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.290</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.259</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.180</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.128</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.122</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Jack Neca</td><td class="s-pts">991</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">934</td></tr>
+        </table><div class="season-footer">8 Manager · Ø 1.167 Pkt</div></div>
+        <a href="saison-11.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item">
+        <div class="t-year">Jahr 12 — 2016/17</div>
+        <div class="t-title">Gordons Comeback</div>
+        <p class="t-text">Nahezu perfekte Saison mit bis heute höchster Einzelausbeute – wäre Jack nicht mit über 400 Punkten Rückstand den Schnitt nach unten gezogen. Gordon holt seinen zweiten Titel.</p>
+        <span class="t-champ">🏆 Meister: Gordon</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.582</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.424</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.233</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Tim Kurz</td><td class="s-pts">1.198</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.119</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">1.092</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.027</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Jack Neca</td><td class="s-pts">611</td></tr>
+        </table><div class="season-footer">8 Manager · Ø 1.161 Pkt</div></div>
+        <a href="saison-12.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item">
+        <div class="t-year">Jahr 13 — 2017/18</div>
+        <div class="t-title">Das Seuchenjahr</div>
+        <p class="t-text">Der Punkteschnitt fällt nach sieben Jahren unter 1.000. Jack verlässt die Liga schweren Herzens. Sche holt dennoch seinen dritten Titel – in Zeiten, in denen andere versagen, zeigt sich wahres Managergeschick.</p>
+        <span class="t-champ">🏆 Meister: Sche</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.209</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.081</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.075</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">1.057</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Tim Kurz</td><td class="s-pts">1.036</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Nico Wechsel</td><td class="s-pts">957</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Marco Woelki</td><td class="s-pts">844</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Jack Neca</td><td class="s-pts">681</td></tr>
+        </table><div class="season-footer">8 Manager · Ø 993 Pkt</div></div>
+        <a href="saison-13.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item highlight">
+        <div class="t-year">Jahr 14 — 2018/19</div>
+        <div class="t-title">Beste Saison aller Zeiten</div>
+        <p class="t-text">Bester Ligaschnitt ever, zweitbeste Einzelausbeute ever, erstmals Hin- und Rückrundenstatistik. Gordon sammelt in der Rückrunde fast 500 Punkte mehr als in der Hinrunde. Konstanz zahlt sich aus.</p>
+        <span class="t-champ">🏆 Meister: Oli</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.548</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.432</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Tim Kurz</td><td class="s-pts">1.310</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">1.270</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.150</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.130</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.067</td></tr>
+        </table><div class="season-footer">7 Manager · Ø 1.272 Pkt</div></div>
+        <a href="saison-14.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item">
+        <div class="t-year">Jahr 15 — 2019/20</div>
+        <div class="t-title">Die Corona-Saison</div>
+        <p class="t-text">Eine Saison, die jeder gerne vergessen würde. Schlechter Ligaschnitt, Unterbrechung durch Corona, trotzdem statistisch überraschend stabil. Oli macht seine siebte Meisterschaft frühzeitig klar.</p>
+        <span class="t-champ">🏆 Meister: Oli (7. Titel)</span>
+        <div class="season-table"><table>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.297</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Tim Kurz</td><td class="s-pts">1.100</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.089</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">901</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Nico Wechsel</td><td class="s-pts">864</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Gordon Winkel</td><td class="s-pts">836</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Marco Woelki</td><td class="s-pts">705</td></tr>
+        </table><div class="season-footer">7 Manager · Ø 970 Pkt &nbsp;·&nbsp; ⚠ Corona-Unterbrechung</div></div>
+        <a href="saison-15.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="fazit">
+    <div class="fazit-label">Fazit 2015–2020</div>
+    <p>Einem guten Jahr folgte ein schlechtes – ein Auf und Ab der Extreme. Nur ein neuer Meister in fünf Jahren, aber Momente, die die Liga wieder lebendig machten. Tim und Gordon sorgten dafür, dass der Rekordmeister nicht davonzog.</p>
+  </div>
+
+  <!-- ── ERA 4 ── -->
+  <div class="era">
+    <div class="era-title">Reife und Ausgeglichenheit — 2020 bis 2025</div>
+    <div class="timeline">
+
+      <div class="t-item">
+        <div class="t-year">Jahr 16 — 2020/21</div>
+        <div class="t-title">Spieltagssiege als neue Statistik</div>
+        <p class="t-text">Olis achter Titel – aber diesmal nur mit 17 Punkten Vorsprung. Erstmals werden Spieltagssiege erfasst. Gordon und Nico S. teilen sich die rote Laterne, ein weiteres Novum.</p>
+        <span class="t-champ">🏆 Meister: Oli (8. Titel, 50% aller möglichen)</span>
+        <div class="season-table"><table>
+          <tr><th class="s-rk">#</th><th class="s-name" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Name</th><th class="s-pts" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Pkt</th><th class="s-stg" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">★ ST</th></tr>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.413</td><td class="s-stg">9</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Tim Kurz</td><td class="s-pts">1.396</td><td class="s-stg">7</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.340</td><td class="s-stg">10</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">1.087</td><td class="s-stg">4</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.051</td><td class="s-stg">1</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.008</td><td class="s-stg">2</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.008</td><td class="s-stg">1</td></tr>
+        </table><div class="season-footer">7 Manager · Ø 1.186 Pkt &nbsp;·&nbsp; ★ = Spieltagssiege (erstmals erfasst)</div></div>
+        <a href="saison-16.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item highlight">
+        <div class="t-year">Jahr 17 — 2021/22</div>
+        <div class="t-title">Der große Tausch</div>
+        <p class="t-text">Regeländerung: doppelte Punkte für Einsätze. Gordon gewinnt mit 2.200 Punkten. Das Sensationelle: Vorjahresmeister Oli landet erstmals auf dem letzten Platz. Tabellenerster und -letzter tauschen einfach die Plätze.</p>
+        <span class="t-champ">🏆 Meister: Gordon (3. Titel)</span>
+        <div class="season-table"><table>
+          <tr><th class="s-rk">#</th><th class="s-name" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Name</th><th class="s-pts" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Pkt</th><th class="s-stg" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">★ ST</th></tr>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Gordon Winkel</td><td class="s-pts">2.201</td><td class="s-stg">13</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.894</td><td class="s-stg">7</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">1.864</td><td class="s-stg">3</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.840</td><td class="s-stg">5</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.701</td><td class="s-stg">5</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Tim Kurz</td><td class="s-pts">1.684</td><td class="s-stg">–</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.648</td><td class="s-stg">1</td></tr>
+        </table><div class="season-footer">7 Manager · Ø 1.833 Pkt &nbsp;·&nbsp; Regeländerung: doppelte Punkte für Einsätze</div></div>
+        <a href="saison-17.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item">
+        <div class="t-year">Jahr 18 — 2022/23</div>
+        <div class="t-title">Volljährig!</div>
+        <p class="t-text">Beste Saison aller Zeiten nach Gesamtpunkten. Marco holt seinen zweiten Titel (oder für manche den ersten anerkannten). Erstmals geteilte Spieltagssiege. Am letzten Spieltag trennen die letzten drei Plätze nur acht Punkte.</p>
+        <span class="t-champ">🏆 Meister: Marco</span>
+        <div class="season-table"><table>
+          <tr><th class="s-rk">#</th><th class="s-name" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Name</th><th class="s-pts" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Pkt</th><th class="s-stg" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">★ ST</th></tr>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Marco Woelki</td><td class="s-pts">2.009</td><td class="s-stg">7,5</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.951</td><td class="s-stg">6,5</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">1.928</td><td class="s-stg">9</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.825</td><td class="s-stg">3</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Tim Kurz</td><td class="s-pts">1.735</td><td class="s-stg">4</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.729</td><td class="s-stg">1</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.727</td><td class="s-stg">3</td></tr>
+        </table><div class="season-footer">7 Manager · Ø 1.843 Pkt</div></div>
+        <a href="saison-18.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item highlight">
+        <div class="t-year">Jahr 19 — 2023/24</div>
+        <div class="t-title">Christoph nach 14 Jahren</div>
+        <p class="t-text">In seiner 14. Saison holt Christoph endlich seinen ersten Titel – mit Rekordpunktzahl und sieben Spieltagssiegen in der Rückrunde allein. Nach der Hinrunde noch Dritter, dreht er in der zweiten Hälfte voll auf.</p>
+        <span class="t-champ">🏆 Meister: Christoph (1. Titel nach 14 Jahren)</span>
+        <div class="season-table"><table>
+          <tr><th class="s-rk">#</th><th class="s-name" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Name</th><th class="s-pts" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Pkt</th><th class="s-stg" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">★ ST</th></tr>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">2.254</td><td class="s-stg">9</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Tim Kurz</td><td class="s-pts">2.186</td><td class="s-stg">5</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Gordon Winkel</td><td class="s-pts">2.139</td><td class="s-stg">4</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">2.114</td><td class="s-stg">9</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Marco Woelki</td><td class="s-pts">2.095</td><td class="s-stg">6</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.885</td><td class="s-stg">0</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.723</td><td class="s-stg">1</td></tr>
+        </table><div class="season-footer">7 Manager · Ø 2.057 Pkt</div></div>
+        <a href="saison-19.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+      <div class="t-item highlight">
+        <div class="t-year">Jahr 20 — 2024/25</div>
+        <div class="t-title">Jubiläum &amp; Pokal</div>
+        <p class="t-text">Zwei neue Manager (Fabian &amp; Mary) bereichern die Liga. Nico S. führt die Tabelle von Spieltag 2 bis 30 – verliert die Spitze dann an Spieltag 31 an Fabian Schulz. Christoph schnappt Fabi am allerletzten Spieltag den Titel weg. Der erste physische Meisterpokal wird eingeführt.</p>
+        <span class="t-champ">🏆 Meister: Christoph (2× in Folge)</span>
+        <div class="season-table"><table>
+          <tr><th class="s-rk">#</th><th class="s-name" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Name</th><th class="s-pts" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">Pkt</th><th class="s-stg" style="color:var(--muted);font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase">★ ST</th></tr>
+          <tr class="s-champ"><td class="s-rk">1</td><td class="s-name">Christoph Schlegel</td><td class="s-pts">1.864</td><td class="s-stg">3</td></tr>
+          <tr><td class="s-rk">2</td><td class="s-name">Fabian Schulz</td><td class="s-pts">1.818</td><td class="s-stg">6</td></tr>
+          <tr><td class="s-rk">3</td><td class="s-name">Tim Kurz</td><td class="s-pts">1.776</td><td class="s-stg">2</td></tr>
+          <tr><td class="s-rk">4</td><td class="s-name">Oliver Nicklisch</td><td class="s-pts">1.759</td><td class="s-stg">4</td></tr>
+          <tr><td class="s-rk">5</td><td class="s-name">Gordon Winkel</td><td class="s-pts">1.754</td><td class="s-stg">6</td></tr>
+          <tr><td class="s-rk">6</td><td class="s-name">Nico Schneider</td><td class="s-pts">1.693</td><td class="s-stg">6,5</td></tr>
+          <tr><td class="s-rk">7</td><td class="s-name">Michael Marienwald</td><td class="s-pts">1.686</td><td class="s-stg">2,5</td></tr>
+          <tr><td class="s-rk">8</td><td class="s-name">Marco Woelki</td><td class="s-pts">1.638</td><td class="s-stg">2</td></tr>
+          <tr><td class="s-rk">9</td><td class="s-name">Nico Wechsel</td><td class="s-pts">1.308</td><td class="s-stg">2</td></tr>
+        </table><div class="season-footer">9 Manager · Ø 1.700 Pkt &nbsp;·&nbsp; Regeländerung: doppelte Punkte für Assists</div></div>
+        <a href="saison-20.html" class="chronik-link">Zur ausführlichen Chronik →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="fazit">
+    <div class="fazit-label">Fazit 2020–2025</div>
+    <p>Vier unterschiedliche Titelträger in fünf Jahren – die Liga wird ausgeglichener. Christoph, 15 Jahre dabei, feiert endlich seine ersten zwei Meisterschaften. Der erste Pokal krönt das Jubiläumsjahrzehnt.</p>
+  </div>
+
+  <!-- ── Rekorde ── -->
+  <div class="section-label">Besondere Rekorde</div>
+
+  <div class="records">
+    <div class="record">
+      <span class="record-icon">🥇</span>
+      <div class="record-label">Rekordmeister</div>
+      <div class="record-val">Oli — 8 Titel</div>
+    </div>
+    <div class="record">
+      <span class="record-icon">📅</span>
+      <div class="record-label">Treuester Neuling</div>
+      <div class="record-val">Christoph — 1. Titel nach 14 Saisons</div>
+    </div>
+    <div class="record">
+      <span class="record-icon">⚡</span>
+      <div class="record-label">Schnellster Titel</div>
+      <div class="record-val">Tim — 1. Saison, sofort Meister</div>
+    </div>
+    <div class="record">
+      <span class="record-icon">🤝</span>
+      <div class="record-label">Geteilte Meisterschaft</div>
+      <div class="record-val">Sche &amp; Gordan — 2011/12</div>
+    </div>
+    <div class="record">
+      <span class="record-icon">🔄</span>
+      <div class="record-label">Größter Absturz</div>
+      <div class="record-val">Oli — Erster zu Letzter (2021/22)</div>
+    </div>
+    <div class="record">
+      <span class="record-icon">🎖️</span>
+      <div class="record-label">Ununterbrochen seit 2005</div>
+      <div class="record-val">Oli, Sche, Gordon, Marco</div>
+    </div>
+  </div>
+
+  <div class="quote-block">
+    <blockquote>„Die Liga hat immer wieder bewiesen, dass sie für eine Überraschung gut ist. Mit der langjährigen Historie und dem unveränderten Drang, der beste Manager sein zu wollen, kann diese Liga auch in den nächsten Jahren fortbestehen."</blockquote>
+    <cite>— Aus der Chronik der Spreeliga, Zwischenfazit 2015–2020</cite>
+  </div>
+
+</div>
+
+<footer>
+  <img src="Spreeliga Monolog.png" alt="Logo" onerror="this.style.display='none'">
+  Spreeliga Monolog · KickerInter · 20 Jahre Liga
+</footer>
+
+</body>
+</html>
