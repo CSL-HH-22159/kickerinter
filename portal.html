@@ -1063,23 +1063,25 @@ footer img { height: 28px; vertical-align: middle; margin-right: 8px; opacity: .
     });
   });
 
-  window.kiSubmitVote = async function () {
+  window.kiSubmitVote = function () {
     var radio = document.querySelector('input[name="ki-vote"]:checked');
     if (!radio) return;
     var btn = document.getElementById('ki-poll-btn');
     btn.disabled = true;
     btn.textContent = 'Wird gespeichert …';
 
-    try {
-      var url = SCRIPT_URL
-        + '?umfrage=' + encodeURIComponent('Meister der Herzen 2025/26')
-        + '&auswahl=' + encodeURIComponent(radio.value);
-      await fetch(url, { mode: 'no-cors' });
-    } catch (e) {}
+    // Bild-Request: funktioniert immer ohne CORS-Probleme
+    var url = SCRIPT_URL
+      + '?umfrage=' + encodeURIComponent('Meister der Herzen 2025/26')
+      + '&auswahl=' + encodeURIComponent(radio.value);
+    var img = new Image();
+    img.src = url;
 
-    localStorage.setItem(VOTE_KEY, '1');
-    document.getElementById('ki-poll').style.display = 'none';
-    document.getElementById('ki-poll-thanks').style.display = '';
+    setTimeout(function () {
+      localStorage.setItem(VOTE_KEY, '1');
+      document.getElementById('ki-poll').style.display = 'none';
+      document.getElementById('ki-poll-thanks').style.display = '';
+    }, 800);
   };
 })();
 </script>
