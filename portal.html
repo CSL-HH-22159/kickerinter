@@ -1071,13 +1071,11 @@ footer img { height: 28px; vertical-align: middle; margin-right: 8px; opacity: .
     btn.textContent = 'Wird gespeichert …';
 
     try {
-      await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ umfrage: 'Meister der Herzen 2025/26', auswahl: radio.value })
-      });
-    } catch (e) { /* no-cors – Response nicht lesbar, Daten kommen trotzdem an */ }
+      var url = SCRIPT_URL
+        + '?umfrage=' + encodeURIComponent('Meister der Herzen 2025/26')
+        + '&auswahl=' + encodeURIComponent(radio.value);
+      await fetch(url, { mode: 'no-cors' });
+    } catch (e) {}
 
     localStorage.setItem(VOTE_KEY, '1');
     document.getElementById('ki-poll').style.display = 'none';
