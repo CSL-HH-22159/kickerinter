@@ -1042,8 +1042,8 @@ footer img { height: 28px; vertical-align: middle; margin-right: 8px; opacity: .
 <script>
 // ── KickerInter Umfrage ──
 (function () {
-  const VOTE_KEY   = 'ki_vote_meister_herzen_2526';
-  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwNEHdUUSOeIVGqbrq6nW-bLlJoEWL-7pvAMCDVidCBsg9eqMh9f-RWKOcC62OKlETkQw/exec';
+  const VOTE_KEY    = 'ki_vote_meister_herzen_2526';
+  const FORMSPREE   = 'https://formspree.io/f/mqejjvby';
 
   // Bereits abgestimmt? → Danke-Ansicht direkt zeigen
   if (localStorage.getItem(VOTE_KEY)) {
@@ -1063,25 +1063,24 @@ footer img { height: 28px; vertical-align: middle; margin-right: 8px; opacity: .
     });
   });
 
-  window.kiSubmitVote = function () {
+  window.kiSubmitVote = async function () {
     var radio = document.querySelector('input[name="ki-vote"]:checked');
     if (!radio) return;
     var btn = document.getElementById('ki-poll-btn');
     btn.disabled = true;
     btn.textContent = 'Wird gespeichert …';
 
-    // Bild-Request: funktioniert immer ohne CORS-Probleme
-    var url = SCRIPT_URL
-      + '?umfrage=' + encodeURIComponent('Meister der Herzen 2025/26')
-      + '&auswahl=' + encodeURIComponent(radio.value);
-    var img = new Image();
-    img.src = url;
+    try {
+      await fetch(FORMSPREE, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ umfrage: 'Meister der Herzen 2025/26', auswahl: radio.value })
+      });
+    } catch (e) {}
 
-    setTimeout(function () {
-      localStorage.setItem(VOTE_KEY, '1');
-      document.getElementById('ki-poll').style.display = 'none';
-      document.getElementById('ki-poll-thanks').style.display = '';
-    }, 800);
+    localStorage.setItem(VOTE_KEY, '1');
+    document.getElementById('ki-poll').style.display = 'none';
+    document.getElementById('ki-poll-thanks').style.display = '';
   };
 })();
 </script>
