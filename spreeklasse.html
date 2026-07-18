@@ -104,7 +104,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
 .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
 
 /* Table card */
-.table-card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.table-card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow-x:auto; overflow-y:hidden; }
 .table-card table { width:100%; }
 
 /* No data */
@@ -125,8 +125,8 @@ footer img { height:28px; vertical-align:middle; margin-right:8px; opacity:.6; }
 <body>
 
 <header class="site-header">
-  <img class="site-logo" src="Spreeliga Monolog.png" alt="Spreeliga Monolog" onerror="this.style.display='none'">
-  <img src="Spreeliga Logo frei fixed.png" alt="Spreeliga" class="header-center-logo" onerror="this.style.display='none'">
+  <img class="site-logo" src="Spreeliga Monolog.webp" alt="Spreeliga Monolog" onerror="this.style.display='none'">
+  <img src="Spreeliga Logo frei fixed.webp" alt="Spreeliga" class="header-center-logo" onerror="this.style.display='none'">
   <nav class="header-nav">
     <a class="nav-link" href="portal.html">← Portal</a>
     <a class="nav-link" href="spreeoberliga.html">3. Liga</a>
@@ -149,21 +149,21 @@ footer img { height:28px; vertical-align:middle; margin-right:8px; opacity:.6; }
 <div class="container" id="content"></div>
 
 <footer>
-  <img src="Spreeliga Monolog.png" alt="Logo" onerror="this.style.display='none'">
+  <img src="Spreeliga Monolog.webp" alt="Logo" onerror="this.style.display='none'">
   Spreeliga Monolog · KickerInter · Spreeklasse
 </footer>
 
 <script>
 // ── DATA ────────────────────────────────────────────────────────────────────
 const AVATARS = {
-  'Christoph Schlegel': 'Avatare/Chris.png',
-  'Oliver Nicklisch':   'Avatare/Oli.png',
-  'Gordon Winkel':      'Avatare/Gordon.png',
-  'Nico Schneider':     'Avatare/Sche.png',
-  'Nico Wechsel':       'Avatare/Nico.png',
-  'Tim Kurz':           'Avatare/Tim.png',
-  'Fabian Schulz':      'Avatare/Fabi.png',
-  'Marco Woelki':       'Avatare/Marco.png',
+  'Christoph Schlegel': 'Avatare/Chris.webp',
+  'Oliver Nicklisch':   'Avatare/Oli.webp',
+  'Gordon Winkel':      'Avatare/Gordon.webp',
+  'Nico Schneider':     'Avatare/Sche.webp',
+  'Nico Wechsel':       'Avatare/Nico.webp',
+  'Tim Kurz':           'Avatare/Tim.webp',
+  'Fabian Schulz':      'Avatare/Fabi.webp',
+  'Marco Woelki':       'Avatare/Marco.webp',
 };
 
 const SEASONS = ['21-22','22-23','23-24','24-25','25-26'];
