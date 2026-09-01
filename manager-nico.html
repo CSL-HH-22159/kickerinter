@@ -87,6 +87,27 @@ footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
   .mgr-hero{gap:16px;}.mgr-avatar{width:68px;height:68px;}
   .player-card{min-width:88px;}
 }
+
+.pitch-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px}
+.pitch-card .mc-body{display:flex;flex-wrap:wrap}
+.pitch{flex:1 1 320px;min-width:280px;padding:18px 8px;display:flex;flex-direction:column;justify-content:space-around;gap:10px;
+  background-color:#2e9e4f;
+  background-image:
+    repeating-linear-gradient(180deg,rgba(255,255,255,.07) 0 34px,rgba(0,0,0,.07) 34px 68px),
+    linear-gradient(180deg,#35ad58 0%,#1f7038 100%);
+}
+.p-row{display:flex;justify-content:space-evenly}
+.p-chip{display:flex;flex-direction:column;align-items:center;width:64px}
+.p-chip img,.p-chip .initials{width:44px;height:44px;border-radius:50%;border:2px solid #fff;background:#fff;object-fit:cover}
+.p-chip .initials{display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;color:#1a3050}
+.p-chip .pn{font-size:.64rem;color:#fff;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.85),0 0 2px rgba(0,0,0,.6);margin-top:3px;max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+.p-chip .pp{font-size:.66rem;font-weight:800;background:rgba(0,0,0,.62);color:var(--gold);border-radius:8px;padding:1px 7px;margin-top:2px}
+.bench-side{flex:1 1 240px;min-width:220px;padding:16px 18px;background:var(--card)}
+.bench-side h4{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:12px 0 6px}
+.bench-side h4:first-child{margin-top:0}
+.bench-side .b-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed var(--border);font-size:.82rem;color:var(--text)}
+.bench-side .b-row .b-pts{font-weight:700}
+@media(max-width:640px){ .pitch{min-width:100%} .bench-side{min-width:100%} }
 </style>
 </head>
 <body>
@@ -137,96 +158,18 @@ footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
   </div>
 
   <!-- Startelf -->
-  <div class="section-label">Startelf · 3-4-3 (11)</div>
-      <div class="pos-group">
-        <div class="pos-label" style="color:#7c3aed">Torwart</div>
-        <div class="pos-cards"><div class="player-card" style="border-top-color:#7c3aed">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00117115.png" alt="Kristof" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(124,58,237,.12);color:#7c3aed">TOR</div>
-        <div class="player-name">Kristof</div>
-        <div class="player-pts" style="color:#7c3aed">6</div>
-      </div></div>
+  <!-- Startelf + Bank (Spielfeld-Kachel, wie in der Vergleichszentrale) -->
+  <div class="section-label">Aufstellung · 3-4-3 · Spieltag 1</div>
+  <div class="pitch-card">
+    <div class="mc-body">
+      <div class="pitch">
+<div class="p-row"><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00087885.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'U'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00087885.png'"><span class="pn">Undav</span><span class="pp">-2</span></div><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00076954.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'K'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00076954.png'"><span class="pn">Kleindienst</span><span class="pp">0</span></div><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00132190.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'P'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00132190.png'"><span class="pn">Pejcinovic</span><span class="pp">0</span></div></div><div class="p-row"><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00105180.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'L'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00105180.png'"><span class="pn">Leweling</span><span class="pp">0</span></div><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00149146.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'M'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00149146.png'"><span class="pn">Maza</span><span class="pp">8</span></div><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00080088.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'P'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00080088.png'"><span class="pn">Prömel</span><span class="pp">2</span></div><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00118068.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'G'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00118068.png'"><span class="pn">Gruda</span><span class="pp">8</span></div></div><div class="p-row"><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00084943.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'L'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00084943.png'"><span class="pn">Laimer</span><span class="pp">6</span></div><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00090213.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'P'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00090213.png'"><span class="pn">Posch</span><span class="pp">0</span></div><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00133558.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'VD'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00133558.png'"><span class="pn">van den Bosch</span><span class="pp">4</span></div></div><div class="p-row"><div class="p-chip"><img src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00117115.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'initials',textContent:'K'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00117115.png'"><span class="pn">Kristof</span><span class="pp">6</span></div></div>
       </div>
-      <div class="pos-group">
-        <div class="pos-label" style="color:#2563eb">Abwehr</div>
-        <div class="pos-cards"><div class="player-card" style="border-top-color:#2563eb">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00084943.png" alt="Laimer" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
-        <div class="player-name">Laimer</div>
-        <div class="player-pts" style="color:#2563eb">6</div>
-      </div><div class="player-card" style="border-top-color:#2563eb">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00090213.png" alt="Posch" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
-        <div class="player-name">Posch</div>
-        <div class="player-pts" style="color:#64748b">0</div>
-      </div><div class="player-card" style="border-top-color:#2563eb">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00133558.png" alt="van den Bosch" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
-        <div class="player-name">van den Bosch</div>
-        <div class="player-pts" style="color:#2563eb">4</div>
-      </div></div>
+      <div class="bench-side">
+        <h4 style="margin-top:0;color:var(--muted)">Bank</h4>
+<h4 style="color:#7c3aed">Tor</h4><div class="b-row"><span>Lehmann</span><span class="b-pts">0</span></div><div class="b-row"><span>Etringer</span><span class="b-pts">0</span></div><h4 style="color:#2563eb">Abwehr</h4><div class="b-row"><span>Schmetgens</span><span class="b-pts">2</span></div><div class="b-row"><span>Chandler</span><span class="b-pts">0</span></div><div class="b-row"><span>Ogbemudia</span><span class="b-pts">0</span></div><div class="b-row"><span>Steinmann</span><span class="b-pts">0</span></div><h4 style="color:#16a34a">Mittelfeld</h4><div class="b-row"><span>Gebel</span><span class="b-pts">0</span></div><div class="b-row"><span>Tarnutzer</span><span class="b-pts">0</span></div><div class="b-row"><span>Azhil</span><span class="b-pts">0</span></div><h4 style="color:#dc2626">Sturm</h4><div class="b-row"><span>M. El Mala</span><span class="b-pts">0</span></div><div class="b-row"><span>A. Millgramm</span><span class="b-pts">0</span></div>
       </div>
-      <div class="pos-group">
-        <div class="pos-label" style="color:#16a34a">Mittelfeld</div>
-        <div class="pos-cards"><div class="player-card" style="border-top-color:#16a34a">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00105180.png" alt="Leweling" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
-        <div class="player-name">Leweling</div>
-        <div class="player-pts" style="color:#64748b">0</div>
-      </div><div class="player-card" style="border-top-color:#16a34a">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00149146.png" alt="Maza" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
-        <div class="player-name">Maza</div>
-        <div class="player-pts" style="color:#16a34a">8</div>
-      </div><div class="player-card" style="border-top-color:#16a34a">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00080088.png" alt="Prömel" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
-        <div class="player-name">Prömel</div>
-        <div class="player-pts" style="color:#16a34a">2</div>
-      </div><div class="player-card" style="border-top-color:#16a34a">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00118068.png" alt="Gruda" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
-        <div class="player-name">Gruda</div>
-        <div class="player-pts" style="color:#16a34a">8</div>
-      </div></div>
-      </div>
-      <div class="pos-group">
-        <div class="pos-label" style="color:#dc2626">Sturm</div>
-        <div class="pos-cards"><div class="player-card" style="border-top-color:#dc2626">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00087885.png" alt="Undav" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(220,38,38,.12);color:#dc2626">STU</div>
-        <div class="player-name">Undav</div>
-        <div class="player-pts" style="color:#dc2626">-2</div>
-      </div><div class="player-card" style="border-top-color:#dc2626">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00076954.png" alt="Kleindienst" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(220,38,38,.12);color:#dc2626">STU</div>
-        <div class="player-name">Kleindienst</div>
-        <div class="player-pts" style="color:#64748b">0</div>
-      </div><div class="player-card" style="border-top-color:#dc2626">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00132190.png" alt="Pejcinovic" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(220,38,38,.12);color:#dc2626">STU</div>
-        <div class="player-name">Pejcinovic</div>
-        <div class="player-pts" style="color:#64748b">0</div>
-      </div></div>
-      </div>
-
-  <!-- Bank -->
-  <div class="bank-section">
-    <div class="section-label">Bank (11)</div>
-      <div class="pos-group">
-        <div class="pos-label" style="color:#7c3aed">Torwart</div>
-        <div class="pos-cards"><div class="player-card" style="border-top-color:#7c3aed">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00045037.png" alt="Lehmann" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(124,58,237,.12);color:#7c3aed">TOR</div>
-        <div class="player-name">Lehmann</div>
-        <div class="player-pts" style="color:#64748b">0</div>
-      </div><div class="player-card" style="border-top-color:#7c3aed">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00169821.png" alt="Etringer" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(124,58,237,.12);color:#7c3aed">TOR</div>
-        <div class="player-name">Etringer</div>
-        <div class="player-pts" style="color:#64748b">0</div>
-      </div></div>
-      </div>
+    </div>
   </div>
 
   <!-- Navigation -->
