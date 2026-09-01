@@ -30,7 +30,27 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 /* Manager hero */
 .mgr-hero{display:flex;align-items:center;gap:24px;margin-bottom:36px;}
 .mgr-avatar-wrap{flex-shrink:0;position:relative;}
-.mgr-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid var(--border);display:block;}
+.mgr-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #64748b;display:block;}
+.mgr-rank-badge{position:absolute;bottom:-4px;right:-4px;width:28px;height:28px;border-radius:50%;background:#64748b;color:#000;font-size:.72rem;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);}
+.stats-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;flex:1;min-width:110px;}
+.stat-box .n{font-size:1.5rem;font-weight:900;color:var(--text);line-height:1;margin-bottom:3px;}
+.stat-box .l{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+.stat-box.highlight{border-color:#ffd700;background:rgba(0,0,0,.1);}
+.stat-box.highlight .n{color:#ffd700;}
+.transfer-note{font-size:.78rem;color:var(--muted2);background:rgba(37,99,235,.06);border:1px solid rgba(37,99,235,.15);border-radius:8px;padding:10px 14px;margin-bottom:28px;line-height:1.6;}
+.transfer-note strong{color:var(--text);}
+.section-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.16em;color:var(--blue-light);margin-bottom:18px;display:flex;align-items:center;gap:12px;}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.pos-group{margin-bottom:18px;}
+.pos-label{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px;}
+.pos-cards{display:flex;flex-wrap:wrap;gap:10px;}
+.player-card{background:var(--card);border:1px solid var(--border);border-top:3px solid;border-radius:10px;padding:12px 10px 10px;min-width:108px;flex:0 0 auto;text-align:center;}
+.player-img{width:68px;height:68px;border-radius:50%;object-fit:cover;object-position:top center;display:block;margin:0 auto 8px;border:2px solid rgba(255,255,255,.08);background:var(--bg2);}
+.player-pos{display:inline-block;font-size:.55rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;border-radius:5px;padding:2px 7px;margin-bottom:7px;}
+.player-name{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:5px;white-space:nowrap;}
+.player-pts{font-size:1.15rem;font-weight:900;line-height:1;}
+.bank-section{margin-top:32px;opacity:.8;}
 .mgr-info{}
 .mgr-season{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:4px;}
 .mgr-name{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px;}
@@ -58,6 +78,7 @@ footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
   .site-header{padding:14px 16px;}.site-logo{height:60px;}.header-center-logo{height:60px;}.header-nav{display:none;}
   .page{padding:28px 14px 60px;}
   .mgr-hero{gap:16px;}.mgr-avatar{width:68px;height:68px;}
+  .player-card{min-width:88px;}
 }
 </style>
 </head>
@@ -75,25 +96,130 @@ footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
 <div class="page">
   <a href="portal.html#manager" class="back-link">← Alle Manager</a>
 
-  <!-- Hero -->
+  <!-- Hero -->  <!-- Hero -->
   <div class="mgr-hero">
     <div class="mgr-avatar-wrap">
-      <img class="mgr-avatar" src="Avatare/Luki.webp" alt="Lukas Hechmann" onerror="this.style.background='#1a3050'">
+      <img class="mgr-avatar" src="Avatare/Luki.webp" alt="Lukas Hechmann" onerror="this.style.background='#1a3050';this.style.display='flex'">
+      <div class="mgr-rank-badge">11</div>
     </div>
     <div class="mgr-info">
       <div class="mgr-season">Saison 2026/27 · Spreeliga</div>
       <div class="mgr-name">Lukas Hechmann</div>
       <div class="mgr-tags">
-        <span class="mgr-tag">Neu in der Liga</span>
+        <span class="mgr-tag">Formation 4-4-2</span>
+        <span class="mgr-tag">Topspieler: da Costa (8 Pkt)</span>
       </div>
     </div>
   </div>
 
-  <!-- Placeholder Kader -->
-  <div class="placeholder-box">
-    <div class="ph-icon">⚽</div>
-    <div class="ph-title">Kader folgt</div>
-    <div class="ph-sub">Die Kaderdaten für Lukas Hechmann werden hier hinterlegt,<br>sobald die Saison beginnt.</div>
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat-box highlight">
+      <div class="n">30</div>
+      <div class="l">Gesamt-Punkte</div>
+    </div>
+    <div class="stat-box">
+      <div class="n">#11</div>
+      <div class="l">Liga-Rang</div>
+    </div>
+  </div>
+
+  <!-- Transfer note -->
+  <div class="transfer-note">
+    ℹ️ Zeigt Startelf &amp; Bank von Spieltag 1. Wird nach jedem Spieltag aktualisiert.
+  </div>
+
+  <!-- Startelf -->
+  <div class="section-label">Startelf · 4-4-2 (11)</div>
+      <div class="pos-group">
+        <div class="pos-label" style="color:#7c3aed">Torwart</div>
+        <div class="pos-cards"><div class="player-card" style="border-top-color:#7c3aed">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00118051.png" alt="Backhaus" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(124,58,237,.12);color:#7c3aed">TOR</div>
+        <div class="player-name">Backhaus</div>
+        <div class="player-pts" style="color:#7c3aed">2</div>
+      </div></div>
+      </div>
+      <div class="pos-group">
+        <div class="pos-label" style="color:#2563eb">Abwehr</div>
+        <div class="pos-cards"><div class="player-card" style="border-top-color:#2563eb">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00112668.png" alt="Bornauw" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
+        <div class="player-name">Bornauw</div>
+        <div class="player-pts" style="color:#2563eb">2</div>
+      </div><div class="player-card" style="border-top-color:#2563eb">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00054640.png" alt="da Costa" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
+        <div class="player-name">da Costa</div>
+        <div class="player-pts" style="color:#2563eb">8</div>
+      </div><div class="player-card" style="border-top-color:#2563eb">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00149673.png" alt="Behrens" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
+        <div class="player-name">Behrens</div>
+        <div class="player-pts" style="color:#2563eb">6</div>
+      </div><div class="player-card" style="border-top-color:#2563eb">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00116302.png" alt="Capaldo" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
+        <div class="player-name">Capaldo</div>
+        <div class="player-pts" style="color:#2563eb">-2</div>
+      </div></div>
+      </div>
+      <div class="pos-group">
+        <div class="pos-label" style="color:#16a34a">Mittelfeld</div>
+        <div class="pos-cards"><div class="player-card" style="border-top-color:#16a34a">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00149146.png" alt="Maza" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
+        <div class="player-name">Maza</div>
+        <div class="player-pts" style="color:#16a34a">8</div>
+      </div><div class="player-card" style="border-top-color:#16a34a">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00080083.png" alt="Amiri" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
+        <div class="player-name">Amiri</div>
+        <div class="player-pts" style="color:#16a34a">4</div>
+      </div><div class="player-card" style="border-top-color:#16a34a">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00110187.png" alt="Remberg" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
+        <div class="player-name">Remberg</div>
+        <div class="player-pts" style="color:#16a34a">-2</div>
+      </div><div class="player-card" style="border-top-color:#16a34a">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00103475.png" alt="Reis" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
+        <div class="player-name">Reis</div>
+        <div class="player-pts" style="color:#64748b">0</div>
+      </div></div>
+      </div>
+      <div class="pos-group">
+        <div class="pos-label" style="color:#dc2626">Sturm</div>
+        <div class="pos-cards"><div class="player-card" style="border-top-color:#dc2626">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00099945.png" alt="Daka" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(220,38,38,.12);color:#dc2626">STU</div>
+        <div class="player-name">Daka</div>
+        <div class="player-pts" style="color:#dc2626">-2</div>
+      </div><div class="player-card" style="border-top-color:#dc2626">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00070605.png" alt="Kane" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(220,38,38,.12);color:#dc2626">STU</div>
+        <div class="player-name">Kane</div>
+        <div class="player-pts" style="color:#dc2626">6</div>
+      </div></div>
+      </div>
+
+  <!-- Bank -->
+  <div class="bank-section">
+    <div class="section-label">Bank (11)</div>
+      <div class="pos-group">
+        <div class="pos-label" style="color:#7c3aed">Torwart</div>
+        <div class="pos-cards"><div class="player-card" style="border-top-color:#7c3aed">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00141205.png" alt="Tangvik" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(124,58,237,.12);color:#7c3aed">TOR</div>
+        <div class="player-name">Tangvik</div>
+        <div class="player-pts" style="color:#64748b">0</div>
+      </div><div class="player-card" style="border-top-color:#7c3aed">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00158528.png" alt="Pruhs" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(124,58,237,.12);color:#7c3aed">TOR</div>
+        <div class="player-name">Pruhs</div>
+        <div class="player-pts" style="color:#64748b">0</div>
+      </div></div>
+      </div>
   </div>
 
   <!-- Navigation -->

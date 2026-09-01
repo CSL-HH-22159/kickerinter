@@ -30,8 +30,8 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 /* Manager hero */
 .mgr-hero{display:flex;align-items:center;gap:24px;margin-bottom:36px;}
 .mgr-avatar-wrap{flex-shrink:0;position:relative;}
-.mgr-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #cd7f32;display:block;}
-.mgr-rank-badge{position:absolute;bottom:-4px;right:-4px;width:28px;height:28px;border-radius:50%;background:#cd7f32;color:#000;font-size:.72rem;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);}
+.mgr-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #ffd700;display:block;}
+.mgr-rank-badge{position:absolute;bottom:-4px;right:-4px;width:28px;height:28px;border-radius:50%;background:#ffd700;color:#000;font-size:.72rem;font-weight:900;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg);}
 .mgr-info{}
 .mgr-season{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2);margin-bottom:4px;}
 .mgr-name{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px;}
@@ -103,18 +103,18 @@ footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
 <div class="page">
   <a href="portal.html#manager" class="back-link">← Alle Manager</a>
 
-  <!-- Hero -->
+  <!-- Hero -->  <!-- Hero -->
   <div class="mgr-hero">
     <div class="mgr-avatar-wrap">
       <img class="mgr-avatar" src="Avatare/Oli.webp" alt="Oliver Nicklisch" onerror="this.style.background='#1a3050';this.style.display='flex'">
-      <div class="mgr-rank-badge">3</div>
+      <div class="mgr-rank-badge">1</div>
     </div>
     <div class="mgr-info">
-      <div class="mgr-season">Saison 2025/26 · Spreeliga</div>
+      <div class="mgr-season">Saison 2026/27 · Spreeliga</div>
       <div class="mgr-name">Oliver Nicklisch</div>
       <div class="mgr-tags">
-        <span class="mgr-tag">Formation 3-4-3</span>
-        <span class="mgr-tag">Topspieler: Luis Diaz (287 Pkt)</span>
+        <span class="mgr-tag">Formation 3-5-2</span>
+        <span class="mgr-tag">Topspieler: Kade (21 Pkt)</span>
       </div>
     </div>
   </div>
@@ -122,167 +122,108 @@ footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
   <!-- Stats -->
   <div class="stats-bar">
     <div class="stat-box highlight">
-      <div class="n">2.047</div>
+      <div class="n">90</div>
       <div class="l">Gesamt-Punkte</div>
     </div>
     <div class="stat-box">
-      <div class="n">#3</div>
+      <div class="n">#1</div>
       <div class="l">Liga-Rang</div>
     </div>
   </div>
 
   <!-- Transfer note -->
   <div class="transfer-note">
-    ℹ️ Die Spielerpunkte zeigen die Saisonleistung des <strong>Abschlusskaders</strong>. Transferpunkte früherer Spieler sind im Gesamt-Ergebnis enthalten.
+    ℹ️ Zeigt Startelf &amp; Bank von Spieltag 1. Wird nach jedem Spieltag aktualisiert.
   </div>
 
   <!-- Startelf -->
-  <div class="section-label">Opt. Startelf · 3-4-3 (11)</div>
-  
+  <div class="section-label">Startelf · 3-5-2 (11)</div>
       <div class="pos-group">
         <div class="pos-label" style="color:#7c3aed">Torwart</div>
         <div class="pos-cards"><div class="player-card" style="border-top-color:#7c3aed">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00079078.png" alt="Vasilj" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00082119.png" alt="Bredlow" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(124,58,237,.12);color:#7c3aed">TOR</div>
-        <div class="player-name">Vasilj</div>
-        <div class="player-pts" style="color:#7c3aed">193</div>
+        <div class="player-name">Bredlow</div>
+        <div class="player-pts" style="color:#7c3aed">8</div>
       </div></div>
       </div>
       <div class="pos-group">
         <div class="pos-label" style="color:#2563eb">Abwehr</div>
         <div class="pos-cards"><div class="player-card" style="border-top-color:#2563eb">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00089892.png" alt="R. Baku" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00100305.png" alt="Caci" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
-        <div class="player-name">R. Baku</div>
-        <div class="player-pts" style="color:#2563eb">134</div>
+        <div class="player-name">Caci</div>
+        <div class="player-pts" style="color:#2563eb">4</div>
       </div><div class="player-card" style="border-top-color:#2563eb">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00081053.png" alt="Coufal" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00107769.png" alt="Miguel" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
-        <div class="player-name">Coufal</div>
-        <div class="player-pts" style="color:#2563eb">125</div>
+        <div class="player-name">Miguel</div>
+        <div class="player-pts" style="color:#2563eb">6</div>
       </div><div class="player-card" style="border-top-color:#2563eb">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00084943.png" alt="Laimer" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00149673.png" alt="Behrens" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
-        <div class="player-name">Laimer</div>
-        <div class="player-pts" style="color:#2563eb">97</div>
+        <div class="player-name">Behrens</div>
+        <div class="player-pts" style="color:#2563eb">6</div>
       </div></div>
       </div>
       <div class="pos-group">
         <div class="pos-label" style="color:#16a34a">Mittelfeld</div>
         <div class="pos-cards"><div class="player-card" style="border-top-color:#16a34a">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00080083.png" alt="Amiri" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00149146.png" alt="Maza" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
+        <div class="player-name">Maza</div>
+        <div class="player-pts" style="color:#16a34a">8</div>
+      </div><div class="player-card" style="border-top-color:#16a34a">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00146292.png" alt="Uzun" onerror="this.style.display='none'">
+        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
+        <div class="player-name">Uzun</div>
+        <div class="player-pts" style="color:#16a34a">4</div>
+      </div><div class="player-card" style="border-top-color:#16a34a">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00080083.png" alt="Amiri" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
         <div class="player-name">Amiri</div>
-        <div class="player-pts" style="color:#16a34a">190</div>
+        <div class="player-pts" style="color:#16a34a">4</div>
       </div><div class="player-card" style="border-top-color:#16a34a">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00102800.png" alt="Baumgartner" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00121834.png" alt="Kade" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
-        <div class="player-name">Baumgartner</div>
-        <div class="player-pts" style="color:#16a34a">120</div>
+        <div class="player-name">Kade</div>
+        <div class="player-pts" style="color:#16a34a">21</div>
       </div><div class="player-card" style="border-top-color:#16a34a">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00159629.png" alt="S. El Mala" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00159629.png" alt="S. El Mala" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
         <div class="player-name">S. El Mala</div>
-        <div class="player-pts" style="color:#16a34a">103</div>
-      </div><div class="player-card" style="border-top-color:#16a34a">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00102817.png" alt="Doan" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
-        <div class="player-name">Doan</div>
-        <div class="player-pts" style="color:#16a34a">103</div>
+        <div class="player-pts" style="color:#16a34a">10</div>
       </div></div>
       </div>
       <div class="pos-group">
         <div class="pos-label" style="color:#dc2626">Sturm</div>
         <div class="pos-cards"><div class="player-card" style="border-top-color:#dc2626">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00115737.png" alt="Luis Diaz" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00115533.png" alt="Matanovic" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(220,38,38,.12);color:#dc2626">STU</div>
-        <div class="player-name">Luis Diaz</div>
-        <div class="player-pts" style="color:#dc2626">287</div>
+        <div class="player-name">Matanovic</div>
+        <div class="player-pts" style="color:#dc2626">17</div>
       </div><div class="player-card" style="border-top-color:#dc2626">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00119669.png" alt="Asllani" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00088192.png" alt="Burkardt" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(220,38,38,.12);color:#dc2626">STU</div>
-        <div class="player-name">Asllani</div>
-        <div class="player-pts" style="color:#dc2626">226</div>
-      </div><div class="player-card" style="border-top-color:#dc2626">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00085778.png" alt="Schick" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(220,38,38,.12);color:#dc2626">STU</div>
-        <div class="player-name">Schick</div>
-        <div class="player-pts" style="color:#dc2626">174</div>
+        <div class="player-name">Burkardt</div>
+        <div class="player-pts" style="color:#dc2626">2</div>
       </div></div>
       </div>
 
   <!-- Bank -->
   <div class="bank-section">
     <div class="section-label">Bank (11)</div>
-    
       <div class="pos-group">
         <div class="pos-label" style="color:#7c3aed">Torwart</div>
         <div class="pos-cards"><div class="player-card" style="border-top-color:#7c3aed">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00110890.png" alt="Voll" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00132180.png" alt="Seimen" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(124,58,237,.12);color:#7c3aed">TOR</div>
-        <div class="player-name">Voll</div>
+        <div class="player-name">Seimen</div>
         <div class="player-pts" style="color:#64748b">0</div>
       </div><div class="player-card" style="border-top-color:#7c3aed">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00129770.png" alt="Spari" onerror="this.style.display='none'">
+        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2026/pl-k00067047.png" alt="M. Funk" onerror="this.style.display='none'">
         <div class="player-pos" style="background:rgba(124,58,237,.12);color:#7c3aed">TOR</div>
-        <div class="player-name">Spari</div>
-        <div class="player-pts" style="color:#64748b">0</div>
-      </div></div>
-      </div>
-      <div class="pos-group">
-        <div class="pos-label" style="color:#2563eb">Abwehr</div>
-        <div class="pos-cards"><div class="player-card" style="border-top-color:#2563eb">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00149407.png" alt="Ogbus" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
-        <div class="player-name">Ogbus</div>
-        <div class="player-pts" style="color:#2563eb">20</div>
-      </div><div class="player-card" style="border-top-color:#2563eb">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00149673.png" alt="Behrens" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
-        <div class="player-name">Behrens</div>
-        <div class="player-pts" style="color:#2563eb">57</div>
-      </div><div class="player-card" style="border-top-color:#2563eb">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00143858.png" alt="Mane" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
-        <div class="player-name">Mane</div>
-        <div class="player-pts" style="color:#2563eb">2</div>
-      </div><div class="player-card" style="border-top-color:#2563eb">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00126766.png" alt="Lührs" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(37,99,235,.12);color:#2563eb">ABW</div>
-        <div class="player-name">Lührs</div>
-        <div class="player-pts" style="color:#64748b">0</div>
-      </div></div>
-      </div>
-      <div class="pos-group">
-        <div class="pos-label" style="color:#16a34a">Mittelfeld</div>
-        <div class="pos-cards"><div class="player-card" style="border-top-color:#16a34a">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00168200.png" alt="Covic" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
-        <div class="player-name">Covic</div>
-        <div class="player-pts" style="color:#16a34a">2</div>
-      </div><div class="player-card" style="border-top-color:#16a34a">
-        <div class="player-img-ph" style="background:rgba(22,163,74,.12);border-color:#16a34a"></div>
-        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
-        <div class="player-name">Herrmann</div>
-        <div class="player-pts" style="color:#64748b">0</div>
-      </div><div class="player-card" style="border-top-color:#16a34a">
-        <div class="player-img-ph" style="background:rgba(22,163,74,.12);border-color:#16a34a"></div>
-        <div class="player-pos" style="background:rgba(22,163,74,.12);color:#16a34a">MFD</div>
-        <div class="player-name">Janes</div>
-        <div class="player-pts" style="color:#64748b">0</div>
-      </div></div>
-      </div>
-      <div class="pos-group">
-        <div class="pos-label" style="color:#dc2626">Sturm</div>
-        <div class="pos-cards"><div class="player-card" style="border-top-color:#dc2626">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload//c_thumb,g_face,h_140,w_140,z_0.55/v1755076344/games/manager/2025/pl-k00131628.png" alt="Ranos" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(220,38,38,.12);color:#dc2626">STU</div>
-        <div class="player-name">Ranos</div>
-        <div class="player-pts" style="color:#dc2626">6</div>
-      </div><div class="player-card" style="border-top-color:#dc2626">
-        <img class="player-img" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_140,w_140,z_0.55/games/manager/2025/pl-k00159630.png" alt="M. El Mala" onerror="this.style.display='none'">
-        <div class="player-pos" style="background:rgba(220,38,38,.12);color:#dc2626">STU</div>
-        <div class="player-name">M. El Mala</div>
+        <div class="player-name">M. Funk</div>
         <div class="player-pts" style="color:#64748b">0</div>
       </div></div>
       </div>
@@ -298,7 +239,7 @@ footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
 
 <footer>
   <img src="Spreeliga Monolog.webp" alt="Logo" onerror="this.style.display='none'">
-  Spreeliga Monolog · KickerInter · Saison 2025/26
+  Spreeliga Monolog · KickerInter · Saison 2026/27
 </footer>
 
 </body>

@@ -180,6 +180,7 @@ body {
 }
 .section-wrap { margin-bottom: 56px; }
 .section-wrap.hidden { display: none; }
+.division-wrap.hidden { display: none; }
 
 /* ── Video Grid ── */
 .video-grid {
@@ -332,83 +333,102 @@ footer img { height: 28px; vertical-align: middle; margin-right: 8px; opacity: .
     Spreeliga Monolog auf YouTube
   </div>
   <h1>Die Videos</h1>
-  <p>Alle Folgen des Spreeliga Monologs – Spieltag für Spieltag, Transfers, Specials und Sonderfolgen. Saison 2025/26.</p>
+  <p>Alle Folgen des Spreeliga Monologs – Spreeliga, Spreeklasse und Spreeoberliga, Spieltag für Spieltag, Transfers, Specials und Sonderfolgen.</p>
 </div>
 
 <div class="filter-row">
   <button class="filter-btn active" onclick="filter('all', this)">Alle</button>
-  <button class="filter-btn" onclick="filter('spieltage', this)">Spieltage</button>
-  <button class="filter-btn" onclick="filter('sonderfolgen', this)">Sonderfolgen</button>
-  <span class="filter-count" id="video-count">37 Videos</span>
+  <button class="filter-btn" onclick="filter('sl2627', this)">Spreeliga 26/27</button>
+  <button class="filter-btn" onclick="filter('sl2526', this)">Spreeliga 25/26</button>
+  <button class="filter-btn" onclick="filter('spreeklasse', this)">Spreeklasse</button>
+  <button class="filter-btn" onclick="filter('spreeoberliga', this)">Spreeoberliga</button>
+  <span class="filter-count" id="video-count">41 Videos</span>
 </div>
 
-<div class="container">
-
-  <!-- ── Spieltage ── -->
-  <div class="section-wrap" id="sec-spieltage">
-    <div class="section-label">Saison 2025/26 — Spieltage</div>
-    <div class="video-grid" id="grid-spieltage">
-    </div>
-  </div>
-
-  <!-- ── Sonderfolgen ── -->
-  <div class="section-wrap" id="sec-sonderfolgen">
-    <div class="section-label">Sonderfolgen</div>
-    <div class="video-grid specials" id="grid-specials">
-    </div>
-  </div>
-
-</div>
+<div class="container" id="video-container"></div>
 
 <footer>
   <img src="Spreeliga Monolog.webp" alt="Logo" onerror="this.style.display='none'">
-  Spreeliga Monolog · KickerInter · 20 Jahre Liga
+  Spreeliga Monolog · KickerInter · 21 Jahre Liga
 </footer>
 
 <script>
-const spieltage = [
-  { nr: 1,  id: 'DJKxBcxpPho' },
-  { nr: 2,  id: 'Jlwchis6ZEo' },
-  { nr: 3,  id: 'bkb9SPYGM_Y' },
-  { nr: 4,  id: 'WewiJEiWynY' },
-  { nr: 5,  id: '3JsqkCbt8ds' },
-  { nr: 6,  id: 'ZuOuDxBKVqQ' },
-  { nr: 7,  id: 'g9ViaKsJieE' },
-  { nr: 8,  id: 'DM6Ppk1ROjc' },
-  { nr: 9,  id: 'xl9WT7sf08o' },
-  { nr: 10, id: 'EgXpEFZ9CIE' },
-  { nr: 11, id: 'rbhwD1NF71g' },
-  { nr: 12, id: 'doPT-k5jnWU' },
-  { nr: 13, id: 'dw-PdQgyAHg' },
-  { nr: 14, id: '73Cuq4uSfT0' },
-  { nr: 15, id: 'GgtwhZaGrAg' },
-  { nr: 16, id: 'lXkK1QPWTEU' },
-  { nr: 17, id: '1Z7yaN5Fcnc' },
-  { nr: 18, id: 'gREEmS8Yhfs' },
-  { nr: 19, id: 'fB-Eu61FsTo' },
-  { nr: 20, id: 'Swb3KsudHRA' },
-  { nr: 21, id: '6luhNZ1wtec' },
-  { nr: 22, id: 'XGUu1lCvWxs' },
-  { nr: 23, id: 'kt9zv1fIvPM' },
-  { nr: 24, id: '-hRoBYj2hms' },
-  { nr: 25, id: 'E-3_oeYd1VM' },
-  { nr: 26, id: '5dcJlI25rvo' },
-  { nr: 27, id: 'AMUQNHjQD1k' },
-  { nr: 28, id: 'WErWf5rUkMA' },
-  { nr: 29, id: 'avYXdHVEDmQ' },
-  { nr: 30, id: 'a71-H9COoB8' },
-  { nr: 31, id: '0nDA3Jgq_ic' },
-  { nr: 32, id: 'CDeGezX6Dzo' },
-  { nr: 33, id: 'Do5eyjhnJFg' },
-  { nr: 34, id: 'JC-LKnzoMss' },
+// ─── Datenquelle: VideoLinks.xlsx (Sheets "Saison 25_26", "Saison 26_27", "Spreeklasse", "Spreeoberliga") ───
+const DIVISIONS = [
+  {
+    key: 'sl2627', label: 'Spreeliga 26/27',
+    sections: [
+      { label: 'Saison 2026/27 — Videos', type: 'Spreeliga 26/27', special: false, videos: [
+        { title: 'Kaderanalyse', id: '0McD48jQJ6g' },
+      ]},
+    ],
+  },
+  {
+    key: 'sl2526', label: 'Spreeliga 25/26',
+    sections: [
+      { label: 'Saison 2025/26 — Spieltage', type: 'Saison 25/26', special: false, videos: [
+        { title: 'Spieltag 1',  id: 'DJKxBcxpPho' },
+        { title: 'Spieltag 2',  id: 'Jlwchis6ZEo' },
+        { title: 'Spieltag 3',  id: 'bkb9SPYGM_Y' },
+        { title: 'Spieltag 4',  id: 'WewiJEiWynY' },
+        { title: 'Spieltag 5',  id: '3JsqkCbt8ds' },
+        { title: 'Spieltag 6',  id: 'ZuOuDxBKVqQ' },
+        { title: 'Spieltag 7',  id: 'g9ViaKsJieE' },
+        { title: 'Spieltag 8',  id: 'DM6Ppk1ROjc' },
+        { title: 'Spieltag 9',  id: 'xl9WT7sf08o' },
+        { title: 'Spieltag 10', id: 'EgXpEFZ9CIE' },
+        { title: 'Spieltag 11', id: 'rbhwD1NF71g' },
+        { title: 'Spieltag 12', id: 'doPT-k5jnWU' },
+        { title: 'Spieltag 13', id: 'dw-PdQgyAHg' },
+        { title: 'Spieltag 14', id: '73Cuq4uSfT0' },
+        { title: 'Spieltag 15', id: 'GgtwhZaGrAg' },
+        { title: 'Spieltag 16', id: 'lXkK1QPWTEU' },
+        { title: 'Spieltag 17', id: '1Z7yaN5Fcnc' },
+        { title: 'Spieltag 18', id: 'gREEmS8Yhfs' },
+        { title: 'Spieltag 19', id: 'fB-Eu61FsTo' },
+        { title: 'Spieltag 20', id: 'Swb3KsudHRA' },
+        { title: 'Spieltag 21', id: '6luhNZ1wtec' },
+        { title: 'Spieltag 22', id: 'XGUu1lCvWxs' },
+        { title: 'Spieltag 23', id: 'kt9zv1fIvPM' },
+        { title: 'Spieltag 24', id: '-hRoBYj2hms' },
+        { title: 'Spieltag 25', id: 'E-3_oeYd1VM' },
+        { title: 'Spieltag 26', id: '5dcJlI25rvo' },
+        { title: 'Spieltag 27', id: 'AMUQNHjQD1k' },
+        { title: 'Spieltag 28', id: 'WErWf5rUkMA' },
+        { title: 'Spieltag 29', id: 'avYXdHVEDmQ' },
+        { title: 'Spieltag 30', id: 'a71-H9COoB8' },
+        { title: 'Spieltag 31', id: '0nDA3Jgq_ic' },
+        { title: 'Spieltag 32', id: 'CDeGezX6Dzo' },
+        { title: 'Spieltag 33', id: 'Do5eyjhnJFg' },
+        { title: 'Spieltag 34', id: 'JC-LKnzoMss' },
+      ]},
+      { label: 'Saison 2025/26 — Sonderfolgen', type: 'Sonderfolge', special: true, videos: [
+        { title: 'Eindhoven',       id: '0jinZV55u7I' },
+        { title: 'Schneidi',        id: 'KZGb-om7j6c' },
+        { title: 'Wintertransfers', id: 'YDfChTKggGQ' },
+        { title: 'Finale Analyse',  id: 'Aysodu7T0zU' },
+      ]},
+    ],
+  },
+  {
+    key: 'spreeklasse', label: 'Spreeklasse',
+    sections: [
+      { label: 'Spreeklasse — Saisonanalyse & Historie', type: 'Spreeklasse', special: false, videos: [
+        { title: 'Saisonanalyse und Historie', id: 'ODa8OPTk01M' },
+      ]},
+    ],
+  },
+  {
+    key: 'spreeoberliga', label: 'Spreeoberliga',
+    sections: [
+      { label: 'Spreeoberliga — Saisonanalyse & Historie', type: 'Spreeoberliga', special: false, videos: [
+        { title: 'Saisonanalyse und Historie', id: 'WvSelp9eEQM' },
+      ]},
+    ],
+  },
 ];
 
-const sonderfolgen = [
-  { label: 'Sonderfolge Eindhoven',   id: '0jinZV55u7I' },
-  { label: 'Sonderfolge Schneidi',    id: 'KZGb-om7j6c' },
-  { label: 'Sonderfolge Wintertransfer', id: 'YDfChTKggGQ' },
-  { label: 'Sonderfolge Saisonanalyse', id: 'Aysodu7T0zU' },
-];
+const TOTAL_COUNT = DIVISIONS.reduce((sum, d) => sum + d.sections.reduce((s, sec) => s + sec.videos.length, 0), 0);
 
 const PLAY_ICON = `<svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>`;
 const VIDEO_ICON = `<svg width="48" height="48" viewBox="0 0 24 24" fill="#3b82f6"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0C.488 3.45.029 5.804 0 12c.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0C23.512 20.55 23.971 18.196 24 12c-.029-6.185-.484-8.549-4.385-8.816zM9 16V8l8 4-8 4z"/></svg>`;
@@ -433,39 +453,40 @@ function makeCard(videoId, typeLabel, titleLabel, isSpecial) {
     </a>`;
 }
 
-// Render Spieltage
-const gridST = document.getElementById('grid-spieltage');
-gridST.innerHTML = spieltage.map(s =>
-  makeCard(s.id, 'Saison 25/26', `Spieltag ${s.nr}`, false)
-).join('');
+// Render alle Divisions
+const container = document.getElementById('video-container');
+container.innerHTML = DIVISIONS.map(div => `
+  <div class="division-wrap" data-division="${div.key}">
+    ${div.sections.map(sec => `
+      <div class="section-wrap">
+        <div class="section-label">${sec.label}</div>
+        <div class="video-grid${sec.special ? ' specials' : ''}">
+          ${sec.videos.map(v => makeCard(v.id, sec.type, v.title, sec.special)).join('')}
+        </div>
+      </div>
+    `).join('')}
+  </div>
+`).join('');
 
-// Render Sonderfolgen
-const gridSF = document.getElementById('grid-specials');
-gridSF.innerHTML = sonderfolgen.map(s =>
-  makeCard(s.id, 'Sonderfolge', s.label.replace('Sonderfolge ', ''), true)
-).join('');
+function vidLabel(n) { return `${n} ${n === 1 ? 'Video' : 'Videos'}`; }
+document.getElementById('video-count').textContent = vidLabel(TOTAL_COUNT);
 
 // Filter
-function filter(type, btn) {
+function filter(key, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 
-  const secST = document.getElementById('sec-spieltage');
-  const secSF = document.getElementById('sec-sonderfolgen');
   const count = document.getElementById('video-count');
+  document.querySelectorAll('.division-wrap').forEach(el => {
+    el.classList.toggle('hidden', key !== 'all' && el.dataset.division !== key);
+  });
 
-  if (type === 'all') {
-    secST.classList.remove('hidden');
-    secSF.classList.remove('hidden');
-    count.textContent = '37 Videos';
-  } else if (type === 'spieltage') {
-    secST.classList.remove('hidden');
-    secSF.classList.add('hidden');
-    count.textContent = '34 Videos';
+  if (key === 'all') {
+    count.textContent = vidLabel(TOTAL_COUNT);
   } else {
-    secST.classList.add('hidden');
-    secSF.classList.remove('hidden');
-    count.textContent = '3 Videos';
+    const div = DIVISIONS.find(d => d.key === key);
+    const n = div.sections.reduce((s, sec) => s + sec.videos.length, 0);
+    count.textContent = vidLabel(n);
   }
 }
 </script>
