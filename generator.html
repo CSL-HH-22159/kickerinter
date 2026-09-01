@@ -69,6 +69,7 @@ h1 { font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-.03em; lin
 .sc-badge { font-size:.65rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:4px 12px; border-radius:20px; }
 .sc-badge.live { color:#22c55e; background:rgba(34,197,94,.12); border:1px solid rgba(34,197,94,.3); }
 .sc-badge.soon { color:var(--muted); background:rgba(100,116,139,.1); border:1px solid rgba(100,116,139,.2); }
+.sc-badge.archiv { color:var(--gold); background:rgba(245,197,24,.1); border:1px solid rgba(245,197,24,.25); }
 
 .sc-title { font-size:1rem; font-weight:700; color:var(--text); margin-bottom:8px; }
 .sc-desc { font-size:.84rem; color:var(--muted2); line-height:1.65; margin-bottom:18px; }
@@ -147,39 +148,39 @@ footer img { height:28px; vertical-align:middle; margin-right:8px; opacity:.6; }
 
   <div class="season-grid">
 
-    <!-- 2025/26 – Live -->
+    <!-- 2026/27 – Live -->
     <a class="season-card" href="vergleich.html">
       <div class="sc-top">
-        <div class="sc-year">25/26</div>
+        <div class="sc-year">26/27</div>
         <span class="sc-badge live">● Live</span>
       </div>
-      <div class="sc-title">Saison 2025/2026</div>
-      <div class="sc-desc">Aktuelle Saison – alle Spieltagsdaten bis zum letzten Spieltag geladen. Manager-Verläufe, Kaderanalyse und Spielervergleiche in Echtzeit.</div>
+      <div class="sc-title">Saison 2026/2027</div>
+      <div class="sc-desc">Aktuelle Saison – Spieltagsdaten laufend live von der Kicker-API geladen. Manager-Verläufe, Kaderanalyse, Spielerprofile mit Powerindex und Direktvergleiche.</div>
       <div class="sc-features">
         <span class="sc-feat">Manager-Vergleich</span>
         <span class="sc-feat">Kader-Vergleich</span>
-        <span class="sc-feat">BuLi-Spieler</span>
-        <span class="sc-feat">Direktvergleich</span>
+        <span class="sc-feat">Spielerprofile</span>
+        <span class="sc-feat">Historie 2020–26</span>
       </div>
       <span class="sc-link">Generator öffnen →</span>
     </a>
 
-    <!-- 2026/27 – Coming soon -->
-    <div class="season-card disabled">
+    <!-- 2025/26 – Archiv -->
+    <a class="season-card" href="vergleich-2025-26.html">
       <div class="sc-top">
-        <div class="sc-year" style="color:var(--muted)">26/27</div>
-        <span class="sc-badge soon">Bald</span>
+        <div class="sc-year">25/26</div>
+        <span class="sc-badge archiv">Archiv</span>
       </div>
-      <div class="sc-title" style="color:var(--muted2)">Saison 2026/2027</div>
-      <div class="sc-desc">Startet mit der neuen Bundesliga-Saison. Der Generator wird rechtzeitig aktualisiert und mit den neuen Spieltagsdaten bestückt.</div>
+      <div class="sc-title">Saison 2025/2026</div>
+      <div class="sc-desc">Abgeschlossene Saison – alle 34 Spieltage, weiterhin vollständig einsehbar. Manager-Vergleich, Kaderanalyse und Bundesliga-Spieler im direkten Duell.</div>
       <div class="sc-features">
         <span class="sc-feat">Manager-Vergleich</span>
         <span class="sc-feat">Kader-Vergleich</span>
         <span class="sc-feat">BuLi-Spieler</span>
         <span class="sc-feat">Direktvergleich</span>
       </div>
-      <span class="sc-link-soon">→ Noch nicht verfügbar</span>
-    </div>
+      <span class="sc-link">Archiv öffnen →</span>
+    </a>
 
   </div>
 

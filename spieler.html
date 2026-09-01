@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spreeliga – Spielerprofile</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+  :root {
+    --primary:#1a3a6b; --accent:#e8b800; --bg:#f0f4f9; --card:#fff;
+    --text:#1a1a2e; --muted:#6b7280; --border:#d1d9e6; --green:#16a34a; --red:#dc2626;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+  header{background:var(--primary);color:#fff;padding:14px 32px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+  header h1{font-size:1.4rem;font-weight:700;letter-spacing:.5px}
+  header .sub{font-size:.85rem;color:#adc6ff}
+  .logo{font-size:1.9rem}
+  .hdr-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+  .imp-btn{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.35);border-radius:8px;padding:7px 13px;font-size:.82rem;font-weight:600;cursor:pointer}
+  .imp-btn:hover{background:rgba(255,255,255,.25)}
+  .status-bar{background:#10264a;color:#adc6ff;font-size:.8rem;padding:6px 32px;display:flex;gap:18px;flex-wrap:wrap}
+  .status-bar b{color:var(--accent);font-weight:600}
+  .navlinks{display:flex;background:var(--primary);padding:0 32px;gap:4px}
+  .navlinks a{padding:10px 18px;color:#adc6ff;font-size:.9rem;font-weight:600;text-decoration:none;border-bottom:3px solid transparent}
+  .navlinks a.active{color:var(--accent);border-bottom-color:var(--accent)}
+  .navlinks a:hover:not(.active){color:#fff}
+
+  .wrap{max-width:1280px;margin:0 auto;padding:24px;display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr}}
+
+  .card{background:var(--card);border-radius:12px;border:1px solid var(--border);padding:20px;margin-bottom:18px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+  .card h2{font-size:1.05rem;font-weight:700;color:var(--primary);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .card h2::before{content:'';display:inline-block;width:4px;height:17px;background:var(--accent);border-radius:2px}
+  .hint{font-size:.78rem;color:var(--muted)}
+
+  /* Liste */
+  .side{position:sticky;top:16px}
+  .side input,.side select{width:100%;padding:8px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:.88rem;background:var(--bg);color:var(--text);margin-bottom:8px}
+  .side input:focus,.side select:focus{outline:none;border-color:var(--primary)}
+  .plist{max-height:62vh;overflow-y:auto;border-top:1px solid var(--border);margin-top:6px}
+  .prow{display:flex;align-items:center;gap:9px;padding:7px 6px;border-bottom:1px solid #eef2f7;cursor:pointer;font-size:.85rem}
+  .prow:hover{background:#f6f9fd}
+  .prow.sel{background:#eaf1fb;box-shadow:inset 3px 0 0 var(--primary)}
+  .prow img.ph{width:30px;height:30px;border-radius:50%;object-fit:cover;background:#e5e9f0;flex:0 0 30px}
+  .prow .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .prow .pt{font-variant-numeric:tabular-nums;font-weight:600;color:var(--muted);font-size:.8rem}
+  .owned{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 7px}
+
+  .pos-chip{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:10px;color:#fff}
+  .pos-TOR{background:#b45309}.pos-ABW{background:#1d4ed8}.pos-MFD{background:#047857}.pos-STU{background:#b91c1c}
+
+  /* Profil */
+  .phead{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+  .phead .big{width:96px;height:96px;border-radius:50%;object-fit:cover;border:3px solid var(--border);background:#e5e9f0;flex:0 0 96px}
+  .phead .who h3{font-size:1.5rem;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .phead .who .meta{color:var(--muted);font-size:.9rem;margin-top:5px;display:flex;align-items:center;gap:8px}
+  .phead .who .meta img{width:22px;height:22px;object-fit:contain}
+
+  .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-top:16px}
+  .tile{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:11px 13px}
+  .tile .lbl{font-size:.68rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:600}
+  .tile .val{font-size:1.3rem;font-weight:700;color:var(--primary);font-variant-numeric:tabular-nums;margin-top:3px}
+  .tile .val small{font-size:.75rem;font-weight:600;color:var(--muted)}
+
+  table.dt{width:100%;border-collapse:collapse;font-size:.85rem}
+  table.dt th{text-align:left;padding:7px 9px;border-bottom:2px solid var(--border);color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap}
+  table.dt td{padding:6px 9px;border-bottom:1px solid var(--border);white-space:nowrap}
+  table.dt tr:hover td{background:#f6f9fd}
+  table.dt td.num,table.dt th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .badge{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:10px;background:#e5e7eb;color:#374151}
+  .badge.s{background:#dcfce7;color:#15803d}
+  .badge.b{background:#fef3c7;color:#92400e}
+  .good{color:var(--green);font-weight:600}.bad{color:var(--red);font-weight:600}
+  /* Powerbalken */
+  .power{margin-top:16px;border:1px solid var(--border);border-radius:10px;padding:14px 16px;background:var(--bg)}
+  .power-head{display:flex;align-items:baseline;gap:10px;margin-bottom:9px}
+  .power-head .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+  .power-head .val{font-size:1.5rem;font-weight:800;font-variant-numeric:tabular-nums;line-height:1}
+  .power-head .rang{margin-left:auto;font-size:.75rem;color:var(--muted)}
+  .power-bar{height:14px;border-radius:7px;background:linear-gradient(90deg,#fee2e2,#fef3c7,#dcfce7);position:relative;overflow:hidden}
+  .power-bar .fill{position:absolute;left:0;top:0;bottom:0;border-radius:7px}
+  .power-bar .marke{position:absolute;top:-3px;bottom:-3px;width:2px;background:rgba(0,0,0,.35)}
+  .power-parts{display:flex;gap:18px;flex-wrap:wrap;margin-top:9px;font-size:.78rem;color:var(--muted)}
+  .power-parts b{color:var(--text);font-variant-numeric:tabular-nums}
+  .power-warn{margin-top:9px;font-size:.75rem;color:#92400e;background:#fef3c7;border-radius:6px;padding:7px 9px;line-height:1.5}
+  .plist .pbar{width:34px;height:5px;border-radius:3px;background:#e5e9f0;overflow:hidden;flex:0 0 34px}
+  .plist .pbar i{display:block;height:100%;border-radius:3px}
+  .empty-note{text-align:center;color:var(--muted);padding:34px 12px;font-size:.92rem;line-height:1.6}
+  .pending{border:1px dashed var(--border);border-radius:10px;padding:18px;color:var(--muted);font-size:.85rem;line-height:1.65;background:#fafcff}
+  .pending b{color:var(--text)}
+  footer{text-align:center;color:var(--muted);font-size:.75rem;padding:20px}
+  input[type=file]{display:none}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="logo">👤</span>
+  <div>
+    <h1>Spreeliga Monolog – Spielerprofile</h1>
+    <div class="sub">Saison 2026/27 · Steckbrief, Managerhistorie und Leistungsdaten</div>
+  </div>
+  <div class="hdr-actions" id="hdrActions" style="display:none">
+    <button class="imp-btn" onclick="document.getElementById('fSai').click()">📥 Saison-Excel</button>
+    <button class="imp-btn" onclick="document.getElementById('fPl').click()">📥 BuLi-CSV</button>
+    <button class="imp-btn" onclick="document.getElementById('fSt').click()">📥 Stats-JSON</button>
+  </div>
+  <input type="file" id="fSai" accept=".xlsx" onchange="impSaison(this)">
+  <input type="file" id="fPl" accept=".csv" onchange="impPlayers(this)">
+  <input type="file" id="fSt" accept=".json" onchange="impStats(this)">
+</header>
+<div class="status-bar" id="statusBar">Daten werden geladen …</div>
+<div class="navlinks">
+  <a href="vergleich.html">Vergleichszentrale</a>
+  <a href="spieler.html" class="active">Spielerprofile</a>
+</div>
+
+<div class="wrap">
+  <div>
+    <div class="card side">
+      <h2>Spieler</h2>
+      <input id="q" placeholder="Suchen …" oninput="STATE.q=this.value;renderList()">
+      <select id="fKader" onchange="STATE.kader=this.value;renderList()">
+        <option value="alle">Alle Bundesliga-Spieler</option>
+        <option value="kader">Nur Spreeliga-Kader</option>
+      </select>
+      <select id="fVerein" onchange="STATE.verein=this.value;renderList()"></select>
+      <select id="fPos" onchange="STATE.pos=this.value;renderList()">
+        <option value="">Alle Positionen</option>
+        <option value="TOR">Tor</option><option value="ABW">Abwehr</option>
+        <option value="MFD">Mittelfeld</option><option value="STU">Sturm</option>
+      </select>
+      <div class="hint" id="listInfo"></div>
+      <div class="plist" id="plist"></div>
+    </div>
+  </div>
+  <div id="profile"></div>
+</div>
+
+<footer id="pageFooter">Spreeliga Monolog · Saison 2026/27</footer>
+
+<script>
+/* ================= Zustand ================= */
+const POSN=['TOR','ABW','MFD','STU'];
+const POSLABEL={TOR:'Torwart',ABW:'Abwehr',MFD:'Mittelfeld',STU:'Sturm'};
+const CSV_POSMAP={GOALKEEPER:'TOR',DEFENDER:'ABW',MIDFIELDER:'MFD',FORWARD:'STU',STRIKER:'STU'};
+const VEREIN2KEY={
+ "Bayern München":"Bayern","Bor. Mönchengladbach":"Gladbach","RB Leipzig":"Leipzig",
+ "Bayer 04 Leverkusen":"Leverkusen","Eintracht Frankfurt":"Frankfurt","1. FC Köln":"Koeln",
+ "1. FSV Mainz 05":"Mainz","TSG Hoffenheim":"Hoffenheim","SC Freiburg":"Freiburg",
+ "Borussia Dortmund":"BVB","Werder Bremen":"Werder","Hamburger SV":"HSV",
+ "VfB Stuttgart":"Stuttgart","FC Schalke 04":"Schalke","SC Paderborn 07":"Paderborn",
+ "1. FC Union Berlin":"Union","SV Elversberg":"Elversberg","FC Augsburg":"Augsburg"
+};
+const IMPORT_MODE=new URLSearchParams(location.search).has('import');
+const LS={saison:'ki26_saison',players:'ki26_players'};
+
+let PLAYERS=[];      // Kicker-CSV
+let SAISON=null;     // {rows:[…]} aus saison.xlsx
+let STATS=null;      // stats/saison.json
+let STATSD={};       // Spieltag -> stats/st<N>.json
+let IDX=null;
+const STATE={q:'',kader:'alle',verein:'',pos:'',sel:null};
+
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=(n,d=0)=>(n==null||isNaN(n))?'–':Number(n).toLocaleString('de-DE',{minimumFractionDigits:d,maximumFractionDigits:d});
+const norm=s=>String(s||'').normalize('NFKD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'');
+
+/* ================= Parser ================= */
+const MONATE={jan:1,feb:2,mrz:3,'mär':3,maer:3,apr:4,mai:5,jun:6,jul:7,aug:8,sep:9,okt:10,nov:11,dez:12};
+function parseNote(v){
+  if(v==null) return null;
+  let s=String(v).trim(); if(!s||s==='0'||s==='0.0'||s==='0,0') return null;
+  const m=s.toLowerCase().match(/^([a-zä]+)\.?\s+(\d{1,2})$/)||s.toLowerCase().match(/^(\d{1,2})\.?\s+([a-zä]+)\.?$/);
+  if(m){ const mon=MONATE[m[1]]!=null?MONATE[m[1]]:MONATE[m[2]];
+    const day=+(MONATE[m[1]]!=null?m[2]:m[1]);
+    if(mon!=null&&day) return mon+day/100; }
+  const n=Number(s.replace(',','.')); return isNaN(n)?null:n;
+}
+function parsePlayersCsv(text){
+  const lines=text.replace(/^﻿/,'').split(/\r?\n/).filter(l=>l.trim());
+  const head=lines[0].split(';').map(h=>h.trim());
+  const ci=n=>head.findIndex(h=>h.toLowerCase()===n.toLowerCase());
+  const c={id:ci('ID'),vn:ci('Vorname'),nn:ci('Nachname'),
+    kurz:head.findIndex(h=>/kurz/i.test(h)),
+    voll:head.findIndex(h=>/^angezeigter name$/i.test(h)),
+    verein:ci('Verein'),pos:ci('Position'),mw:ci('Marktwert'),
+    pts:ci('Punkte'),note:head.findIndex(h=>/note/i.test(h))};
+  const out=[];
+  for(let i=1;i<lines.length;i++){
+    const a=lines[i].split(';'); if(a.length<6) continue;
+    out.push({id:a[c.id],vorname:a[c.vn],nachname:a[c.nn],kurz:a[c.kurz],name:a[c.voll],
+      verein:a[c.verein],pos:CSV_POSMAP[String(a[c.pos]||'').toUpperCase()]||a[c.pos],
+      mw:Number(a[c.mw])||0,pts:Number(a[c.pts])||0,note:parseNote(a[c.note])});
+  }
+  if(!out.length) throw new Error('Keine Spieler in der CSV.');
+  return out;
+}
+function parseSaisonRows(aoa){
+  const head=(aoa[0]||[]).map(h=>String(h==null?'':h).trim());
+  const col={},stCols={};
+  head.forEach((h,i)=>{
+    const hl=h.toLowerCase();
+    if(hl==='manager')col.manager=i;
+    else if(hl==='spieler'||hl==='name')col.spieler=i;
+    else if(hl==='verein')col.verein=i;
+    else if(hl==='position')col.pos=i;
+    else{const m=hl.match(/^(?:st|spieltag)\s*(\d+)\s*(punkte|rolle|status)$/);
+      if(m){const n=+m[1];stCols[n]=stCols[n]||{};stCols[n][m[2]==='punkte'?'p':'r']=i;}}
+  });
+  if(col.manager==null||col.spieler==null||col.pos==null) throw new Error('Header nicht erkannt.');
+  const rows=[];
+  for(let r=1;r<aoa.length;r++){
+    const a=aoa[r]; if(!a||!String(a[col.manager]||'').trim()) continue;
+    const row={manager:String(a[col.manager]).trim(),spieler:String(a[col.spieler]||'').trim(),
+      verein:String(a[col.verein!=null?col.verein:'']||'').trim(),
+      pos:String(a[col.pos]||'').trim().toUpperCase(),st:{}};
+    if(!POSN.includes(row.pos)) row.pos=CSV_POSMAP[row.pos]||row.pos;
+    for(const n in stCols){
+      const cc=stCols[n];
+      const rv=cc.r!=null?String(a[cc.r]==null?'':a[cc.r]).trim():'';
+      let pv=cc.p!=null?a[cc.p]:null;
+      if(pv===''||pv==null)pv=null; else pv=Number(String(pv).replace(',','.'));
+      if(rv===''&&pv==null) continue;
+      row.st[n]={p:(pv!=null&&!isNaN(pv))?pv:null,r:rv.toUpperCase().charAt(0)==='S'?'S':'B'};
+    }
+    rows.push(row);
+  }
+  return {rows};
+}
+function parseSaisonXlsx(buf){
+  const wb=XLSX.read(buf,{type:'array'});
+  const sh=wb.SheetNames.find(n=>n.toLowerCase()==='kader')||wb.SheetNames[0];
+  return parseSaisonRows(XLSX.utils.sheet_to_json(wb.Sheets[sh],{header:1,defval:''}));
+}
+
+/* ================= Index ================= */
+function buildIndex(){
+  if(!PLAYERS.length&&!SAISON){IDX=null;return;}
+  // Kicker-Spieler nach normalisiertem Namen
+  const byName=new Map();
+  for(const p of PLAYERS){
+    for(const k of [norm(p.kurz),norm(p.nachname),norm(p.name)]){
+      if(!k) continue;
+      if(!byName.has(k)) byName.set(k,[]);
+      if(!byName.get(k).some(x=>x.id===p.id)) byName.get(k).push(p);
+    }
+  }
+  const lookup=(name,verein)=>{
+    for(const k of [norm(name)]){
+      const l=byName.get(k); if(!l||!l.length) continue;
+      if(l.length===1) return l[0];
+      const sc=l.filter(x=>x.verein===verein); if(sc.length===1) return sc[0];
+      return null;
+    }
+    return null;
+  };
+  // Kaderzugehörigkeit je Spieler
+  let maxST=0; const owners=new Map(); const managers=new Set();
+  if(SAISON){
+    for(const r of SAISON.rows){ managers.add(r.manager);
+      for(const n in r.st) maxST=Math.max(maxST,+n); }
+    for(const r of SAISON.rows){
+      const p=lookup(r.spieler,r.verein);
+      const key=p?p.id:('n:'+norm(r.spieler));
+      if(!owners.has(key)) owners.set(key,[]);
+      owners.get(key).push(r);
+    }
+  }
+  // Stats-Index nach Kicker-ID
+  const statsById=new Map();
+  if(STATS) for(const s of STATS.spieler||[]) if(s.kid) statsById.set(s.kid,s);
+
+  // Gesamtliste: alle Kicker-Spieler + Kaderspieler ohne CSV-Eintrag
+  const list=PLAYERS.map(p=>({p,key:p.id,name:p.name,kurz:p.kurz,verein:p.verein,pos:p.pos}));
+  if(SAISON){
+    const have=new Set(list.map(x=>x.key));
+    for(const [key,rows] of owners){
+      if(key.startsWith('n:')&&!have.has(key)){
+        const r=rows[0];
+        list.push({p:null,key,name:r.spieler,kurz:r.spieler,verein:r.verein,pos:r.pos});
+        have.add(key);
+      }
+    }
+  }
+  const sts=[]; for(let i=1;i<=maxST;i++) sts.push(i);
+  IDX={list,owners,statsById,maxST,sts,managers:[...managers].sort()};
+}
+
+/* ================= Powerindex =================
+   Zwei Hälften zu je 50 %:
+   1) Note  — feste Kicker-Skala 1,0 (=100) bis 6,0 (=0). Bewusst nicht relativ zur Liga,
+      damit der Balken eines Spielers sich nicht ändert, nur weil ein anderer besser wird.
+   2) Punkte — Punkte pro Spiel, gemessen am Besten der Liga (= 100).
+      Als Spielezahl dienen die Einsätze aus stats/saison.json. Passt die Periode der
+      Punkte nicht zu den Einsätzen (z. B. players-se.csv trägt noch Vorsaisonwerte),
+      wird automatisch auf die Gesamtpunkte umgestellt und das oben angezeigt. */
+/* Erfahrungsgewicht: So viele "Vertrauensspiele" muss ein Spieler sammeln, bis seine
+   eigenen Zahlen voll zählen. Davor wird er zum Ligaschnitt hin gezogen. Ohne das würde
+   nach dem 1. Spieltag jeder Doppeltorschütze mit Note 1,0 auf 100 stehen. */
+/* Getrennte Gewichte: Die Kickernote ist ein Gesamturteil und pendelt sich schnell ein,
+   Punkte hängen an Toren und schwanken viel stärker. Deshalb bleibt der Punkteteil
+   länger geglättet als der Notenteil. */
+const POWER_K_NOTE=3, POWER_K_PKT=5;
+const POWER_VORLAEUFIG=5;        // bis dahin wird der Index als vorläufig ausgewiesen
+const POWER={ref:null, proSpiel:false, minSpiele:1, warn:null, mNote:3.5, mPkt:0};
+function powerVorbereiten(){
+  POWER.ref=null; POWER.proSpiel=false; POWER.warn=null;
+  if(!PLAYERS.length) return;
+  const stTage=STATS?STATS.spieltage.length:0;
+  POWER.minSpiele=Math.max(1,Math.round(stTage*0.3));
+
+  /* Ligaschnitte als Bezugspunkt für das Erfahrungsgewicht.
+     Gemeint ist der Schnitt EINES BUNDESLIGASPIELERS je Einsatz — nicht die
+     Spieltagspunkte eines Spreeliga-Managers (das sind Mannschaftssummen).
+     Beide Schnitte über dieselbe Gruppe: Spieler, die tatsächlich gespielt haben,
+     gewichtet nach ihren Einsätzen. */
+  let nSum=0,nGew=0,pSum=0,eSum=0;
+  for(const p of PLAYERS){
+    const s=IDX&&IDX.statsById?IDX.statsById.get(p.id):null;
+    const e=s&&s.einsaetze?s.einsaetze:0;
+    if(!e) continue;
+    if(p.note>0){ nSum+=p.note*e; nGew+=e; }
+    pSum+=p.pts||0; eSum+=e;
+  }
+  POWER.mNote=nGew?nSum/nGew:3.5;
+  POWER.mPkt=eSum?pSum/eSum:0;
+
+  // Kann pro Spiel gerechnet werden? Nur wenn Einsätze vorliegen und plausibel sind.
+  const roh=[];
+  if(STATS) for(const p of PLAYERS){
+    const s=IDX.statsById.get(p.id);
+    if(!s||!s.einsaetze||s.einsaetze<POWER.minSpiele) continue;
+    roh.push(p.pts/s.einsaetze);
+  }
+  const maxRoh=roh.length?Math.max(...roh):0;
+  if(roh.length>=5 && maxRoh<=40){
+    POWER.proSpiel=true;
+    // Referenz aus den geglätteten Werten, nicht aus dem Rohausreisser
+    const gegl=PLAYERS.map(p=>{
+      const s=IDX.statsById.get(p.id);
+      if(!s||!s.einsaetze||s.einsaetze<POWER.minSpiele) return null;
+      return ((p.pts||0)+POWER.mPkt*POWER_K_PKT)/(s.einsaetze+POWER_K_PKT);
+    }).filter(v=>v!=null);
+    POWER.ref=Math.max(...gegl,0.01);
+  }else{
+    POWER.ref=Math.max(...PLAYERS.map(p=>p.pts||0),1);
+    if(roh.length>=5 && maxRoh>40)
+      POWER.warn='Punkte und Einsätze stammen aus verschiedenen Zeiträumen — '+
+        'die players-se.csv trägt noch Werte einer anderen Saison. Der Punkteteil rechnet '+
+        'deshalb mit den Gesamtpunkten statt pro Spiel. Nach einer frischen CSV stellt er sich '+
+        'automatisch um.';
+    else if(STATS) POWER.warn='Noch zu wenige Einsätze erfasst — der Punkteteil rechnet mit '+
+        'den Gesamtpunkten statt pro Spiel.';
+  }
+}
+/* Liefert {power,noteTeil,punkteTeil,proSpiel,einsaetze,vorlaeufig} oder null */
+function powerVon(p){
+  if(!p||POWER.ref==null) return null;
+  if(p.note==null||!(p.note>0)) return null;
+  const s=(IDX&&IDX.statsById)?IDX.statsById.get(p.id):null;
+  const e=s&&s.einsaetze?s.einsaetze:0;
+
+  // Note zum Ligaschnitt hin glätten, solange wenige Spiele vorliegen
+  const note=POWER.proSpiel&&e
+    ? (p.note*e+POWER.mNote*POWER_K_NOTE)/(e+POWER_K_NOTE)
+    : p.note;
+  const noteTeil=Math.max(0,Math.min(1,(6-note)/5));
+
+  let basis=p.pts||0, proSpiel=null;
+  if(POWER.proSpiel){
+    if(!e) return null;
+    proSpiel=p.pts/e;
+    basis=((p.pts||0)+POWER.mPkt*POWER_K_PKT)/(e+POWER_K_PKT);   // geglättet
+  }
+  const punkteTeil=Math.max(0,Math.min(1,basis/POWER.ref));
+  return {power:Math.round((noteTeil*0.5+punkteTeil*0.5)*100),
+    noteTeil:Math.round(noteTeil*100), punkteTeil:Math.round(punkteTeil*100),
+    proSpiel, einsaetze:e,
+    eigenanteil:e?Math.round(e/(e+POWER_K_PKT)*100):0,
+    geglaettet:POWER.proSpiel&&e>0&&e<POWER_VORLAEUFIG};
+}
+/* Rot (schwach) -> Dunkelgrün (stark) */
+function powerFarbe(w){
+  const t=Math.max(0,Math.min(100,w))/100;
+  const h=Math.round(0+t*145);                 // 0° rot -> 145° dunkelgrün
+  const s=Math.round(72-t*12);
+  const l=Math.round(48-t*13);                 // dunkler zum grünen Ende
+  return `hsl(${h} ${s}% ${l}%)`;
+}
+
+function ownersOf(item){
+  if(!IDX) return [];
+  const direct=IDX.owners.get(item.key);
+  if(direct) return direct;
+  const alt=IDX.owners.get('n:'+norm(item.kurz||item.name));
+  return alt||[];
+}
+
+/* ================= Laden ================= */
+function saveLS(k,v){ if(!IMPORT_MODE) return; try{localStorage.setItem(k,JSON.stringify(v));}catch(e){} }
+function loadLS(k){ try{const v=localStorage.getItem(k); return v?JSON.parse(v):null;}catch(e){return null;} }
+function afterLoad(){ buildIndex(); fillVereine(); renderAll(); }
+
+function impSaison(i){const f=i.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=e=>{try{SAISON=parseSaisonXlsx(new Uint8Array(e.target.result));saveLS(LS.saison,SAISON);afterLoad();}catch(x){alert('Import: '+x.message);}};
+  rd.readAsArrayBuffer(f);i.value='';}
+function impPlayers(i){const f=i.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=e=>{try{PLAYERS=parsePlayersCsv(e.target.result);saveLS(LS.players,PLAYERS);afterLoad();}catch(x){alert('Import: '+x.message);}};
+  rd.readAsText(f,'utf-8');i.value='';}
+function impStats(i){const f=i.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=e=>{try{const j=JSON.parse(e.target.result);
+    if(j.spieltag!=null) STATSD[j.spieltag]=j; else STATS=j; afterLoad();}catch(x){alert('Import: '+x.message);}};
+  rd.readAsText(f,'utf-8');i.value='';}
+
+async function autoload(){
+  if(location.protocol==='file:') return;
+  const ok=r=>r.ok&&!/text\/html/.test(r.headers.get('content-type')||'');
+  try{const r=await fetch('saison.xlsx',{cache:'no-cache'});
+    if(ok(r)){SAISON=parseSaisonXlsx(new Uint8Array(await r.arrayBuffer()));saveLS(LS.saison,SAISON);}}catch(e){}
+  try{const r=await fetch('players-se.csv',{cache:'no-cache'});
+    if(ok(r)){PLAYERS=parsePlayersCsv(await r.text());saveLS(LS.players,PLAYERS);}}catch(e){}
+  try{const r=await fetch('stats/saison.json',{cache:'no-cache'});
+    if(ok(r)) STATS=await r.json();}catch(e){}
+}
+async function loadSpieltagStats(n){
+  if(STATSD[n]!==undefined) return STATSD[n];
+  if(location.protocol==='file:'){STATSD[n]=null;return null;}
+  try{const r=await fetch('stats/st'+n+'.json',{cache:'no-cache'});
+    STATSD[n]=(r.ok&&!/text\/html/.test(r.headers.get('content-type')||''))?await r.json():null;
+  }catch(e){STATSD[n]=null;}
+  return STATSD[n];
+}
+
+/* ================= Bilder ================= */
+function photo(p,cls){
+  const initials=(p&&p.name?p.name:'?').split(/\s+/).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const col={TOR:'#b45309',ABW:'#1d4ed8',MFD:'#047857',STU:'#b91c1c'}[p&&p.pos]||'#6b7280';
+  if(!p||!p.id){
+    const sz=cls==='big'?96:30, fs=cls==='big'?'1.7rem':'.72rem';
+    return `<div class="${cls==='big'?'big':'ph'}" style="width:${sz}px;height:${sz}px;border-radius:50%;background:${col};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:${fs};flex:0 0 ${sz}px">${esc(initials)}</div>`;
+  }
+  const cdn=`https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/${p.id}.png`;
+  return `<img class="${cls==='big'?'big':'ph'}" src="${cdn}" loading="lazy" alt=""
+    onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'${cls==='big'?'big':'ph'}',style:'width:${cls==='big'?96:30}px;height:${cls==='big'?96:30}px;border-radius:50%;background:${col};color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:${cls==='big'?'1.7rem':'.72rem'};flex:0 0 ${cls==='big'?96:30}px',textContent:'${esc(initials)}'}))">`;
+}
+function crest(verein){
+  const k=VEREIN2KEY[verein];
+  return k?`<img src="wappen/${k}.png" alt="" onerror="this.remove()">`:'';
+}
+
+/* ================= UI ================= */
+function fillVereine(){
+  const sel=document.getElementById('fVerein');
+  const vs=[...new Set((IDX?IDX.list:[]).map(x=>x.verein).filter(Boolean))].sort();
+  sel.innerHTML='<option value="">Alle Vereine</option>'+vs.map(v=>`<option ${v===STATE.verein?'selected':''}>${esc(v)}</option>`).join('');
+}
+function statusBar(){
+  const el=document.getElementById('statusBar');
+  if(!IDX){el.textContent='Keine Daten gefunden. Bitte saison.xlsx und players-se.csv bereitstellen.';return;}
+  const stats=STATS?`<b>${STATS.spieltage.length} Spieltage</b>`:'<b>noch keine</b>';
+  el.innerHTML=`<span><b>${IDX.list.length}</b> Spieler</span>`+
+    `<span>Kader-Stand: <b>${IDX.maxST?'nach ST '+IDX.maxST:'–'}</b></span>`+
+    `<span>Leistungsdaten: ${stats}</span>`;
+}
+function filtered(){
+  if(!IDX) return [];
+  const q=norm(STATE.q);
+  return IDX.list.filter(x=>{
+    if(STATE.verein&&x.verein!==STATE.verein) return false;
+    if(STATE.pos&&x.pos!==STATE.pos) return false;
+    if(STATE.kader==='kader'&&!ownersOf(x).length) return false;
+    if(q&&!norm(x.name).includes(q)&&!norm(x.kurz).includes(q)) return false;
+    return true;
+  }).sort((a,b)=>{
+    const pa=a.p?a.p.pts:0, pb=b.p?b.p.pts:0;
+    if(pb!==pa) return pb-pa;
+    return a.name.localeCompare(b.name,'de');
+  });
+}
+function renderList(){
+  const list=filtered();
+  document.getElementById('listInfo').textContent=
+    `${list.length} Treffer${list.length>250?' – erste 250 angezeigt':''}`;
+  const el=document.getElementById('plist');
+  el.innerHTML=list.slice(0,250).map(x=>{
+    const own=ownersOf(x).length;
+    const pw=x.p?powerVon(x.p):null;
+    return `<div class="prow ${STATE.sel===x.key?'sel':''}" onclick="select('${esc(x.key)}')">
+      ${photo(x.p||{name:x.name,pos:x.pos},'')}
+      <span class="nm">${esc(x.kurz||x.name)}</span>
+      ${own?'<span class="owned" title="in einem Spreeliga-Kader"></span>':''}
+      ${pw?`<span class="pbar" title="Powerindex ${pw.power}"><i style="width:${pw.power}%;background:${powerFarbe(pw.power)}"></i></span>`:'<span class="pbar"></span>'}
+      <span class="pt">${x.p?fmt(x.p.pts):'–'}</span></div>`;
+  }).join('')||'<div class="empty-note">Keine Treffer.</div>';
+}
+function select(key){ STATE.sel=key; renderList(); renderProfile(); }
+
+function powerBlock(p){
+  const pw=powerVon(p);
+  if(!pw) return `<div class="power"><div class="power-head"><span class="lbl">Powerindex</span>
+    <span class="val" style="color:var(--muted)">–</span></div>
+    <div class="power-parts">Ohne Kickernote lässt sich der Index nicht bilden.</div></div>`;
+  // Platzierung unter allen Spielern mit Index
+  const alle=PLAYERS.map(x=>powerVon(x)).filter(Boolean).map(x=>x.power).sort((a,b)=>b-a);
+  const rang=alle.indexOf(pw.power)+1;
+  const punkteText=pw.proSpiel!=null
+    ? `${fmt(pw.proSpiel,1)} Pkt/Spiel`
+    : `${fmt(p.pts)} Pkt gesamt`;
+  return `<div class="power">
+    <div class="power-head"><span class="lbl">Powerindex</span>
+      <span class="val" style="color:${powerFarbe(pw.power)}">${pw.power}</span>
+      <span class="rang">Rang ${rang} von ${alle.length}</span></div>
+    <div class="power-bar"><div class="fill" style="width:${pw.power}%;background:${powerFarbe(pw.power)}"></div>
+      <div class="marke" style="left:50%"></div></div>
+    <div class="power-parts">
+      <span>Note <b>${fmt(p.note,2)}</b> → <b>${pw.noteTeil}</b></span>
+      <span>Punkte <b>${punkteText}</b> → <b>${pw.punkteTeil}</b></span>
+      <span>je zur Hälfte gewichtet</span></div>
+    ${pw.geglaettet?`<div class="power-warn"><b>Vorläufig.</b> Der Index rechnet mit
+      <b>${pw.einsaetze} eigenen ${pw.einsaetze===1?'Spiel':'Spielen'}</b> plus
+      <b>${POWER_K_PKT} gedachten Vergleichsspielen</b> zum Ligaschnitt — er beruht also erst zu
+      <b>${pw.eigenanteil} %</b> auf diesem Spieler. So schlägt ein einzelnes Ausreisserspiel
+      nicht voll durch. Mit jedem weiteren Einsatz verschiebt sich das Verhältnis von allein
+      zu ihm; ab etwa fünf Spielen überwiegen seine eigenen Werte.</div>`
+    :(POWER.proSpiel&&pw.einsaetze?`<div class="power-parts" style="margin-top:6px">
+      <span>Datenbasis: <b>${pw.einsaetze} eigene Spiele</b> + ${POWER_K_PKT} Vergleichsspiele
+      → beruht zu <b>${pw.eigenanteil} %</b> auf ihm selbst</span></div>`:'')}
+    ${POWER.warn?`<div class="power-warn">${esc(POWER.warn)}</div>`:''}</div>`;
+}
+
+/* ================= Profil ================= */
+function renderProfile(){
+  const el=document.getElementById('profile');
+  if(!IDX){el.innerHTML='<div class="card"><div class="empty-note">Die Daten sind noch nicht verfügbar.</div></div>';return;}
+  const item=IDX.list.find(x=>x.key===STATE.sel);
+  if(!item){el.innerHTML='<div class="card"><div class="empty-note">Links einen Spieler wählen.<br><span class="hint">Der gelbe Punkt markiert Spieler, die in einem Spreeliga-Kader stehen.</span></div></div>';return;}
+
+  const p=item.p, rows=ownersOf(item);
+  const st=p?IDX.statsById.get(p.id):null;
+
+  // Kopf
+  const head=`<div class="card"><div class="phead">
+    ${photo(p||{name:item.name,pos:item.pos},'big')}
+    <div class="who"><h3>${esc(p?p.name:item.name)}
+      <span class="pos-chip pos-${item.pos}">${esc(item.pos)}</span></h3>
+      <div class="meta">${crest(item.verein)}<span>${esc(item.verein||'–')}</span>
+      ${p&&p.mw?`<span>· Marktwert ${fmt(p.mw/1e6,1)} Mio €</span>`:''}</div></div></div>
+    <div class="tiles">
+      <div class="tile"><div class="lbl">Kicker-Punkte</div><div class="val">${p?fmt(p.pts):'–'}</div></div>
+      <div class="tile"><div class="lbl">Kickernote</div><div class="val">${p&&p.note!=null?fmt(p.note,2):'–'}</div></div>
+      <div class="tile"><div class="lbl">Punkte / Mio €</div><div class="val">${p&&p.mw?fmt(p.pts/(p.mw/1e6),1):'–'}</div></div>
+      <div class="tile"><div class="lbl">Im Kader von</div><div class="val">${new Set(rows.map(r=>r.manager)).size}<small> Manager</small></div></div>
+    </div>${powerBlock(p)}</div>`;
+
+  // Managerhistorie
+  let mgrBlock;
+  if(!rows.length){
+    mgrBlock=`<div class="card"><h2>Spreeliga</h2><div class="hint">Dieser Spieler steht in keinem Kader der Liga.</div></div>`;
+  }else{
+    const perMgr=rows.map(r=>{
+      let sum=0,starts=0,bank=0,first=null,last=null;
+      for(const n of IDX.sts){const e=r.st[n]; if(!e)continue;
+        if(first==null)first=n; last=n;
+        if(e.p!=null)sum+=e.p;
+        if(e.r==='S')starts++; else bank++;}
+      return {m:r.manager,sum,starts,bank,first,last};
+    }).sort((a,b)=>b.sum-a.sum);
+    mgrBlock=`<div class="card"><h2>Im Kader von</h2>
+      <table class="dt"><thead><tr><th>Manager</th><th class="num">Spieltage</th>
+      <th class="num">Startelf</th><th class="num">Bank</th><th class="num">Punkte</th><th>Zeitraum</th></tr></thead><tbody>`+
+      perMgr.map(x=>`<tr><td><b>${esc(x.m)}</b></td><td class="num">${x.starts+x.bank}</td>
+        <td class="num">${x.starts}</td><td class="num">${x.bank}</td>
+        <td class="num"><b>${fmt(x.sum)}</b></td>
+        <td>${x.first==null?'–':(x.first===x.last?'ST '+x.first:'ST '+x.first+'–'+x.last)}</td></tr>`).join('')+
+      `</tbody></table></div>`;
+  }
+
+  // Spieltagstabelle (Kicker-Punkte + Rolle je Manager)
+  let stBlock='';
+  if(rows.length&&IDX.sts.length){
+    stBlock=`<div class="card"><h2>Spieltage</h2>
+      <table class="dt"><thead><tr><th class="num">ST</th>`+
+      [...new Set(rows.map(r=>r.manager))].map(m=>`<th>${esc(m)}</th>`).join('')+
+      `<th class="num">Punkte</th></tr></thead><tbody>`+
+      IDX.sts.map(n=>{
+        const cells=[...new Set(rows.map(r=>r.manager))].map(m=>{
+          const r=rows.find(x=>x.manager===m); const e=r&&r.st[n];
+          if(!e) return '<td class="hint">–</td>';
+          return `<td><span class="badge ${e.r==='S'?'s':'b'}">${e.r==='S'?'Startelf':'Bank'}</span></td>`;
+        }).join('');
+        const any=rows.map(r=>r.st[n]).find(e=>e&&e.p!=null);
+        return `<tr><td class="num"><b>${n}</b></td>${cells}<td class="num">${any?fmt(any.p):'–'}</td></tr>`;
+      }).join('')+`</tbody></table></div>`;
+  }
+
+  // Leistungsdaten
+  let perfBlock;
+  if(st){
+    const t=(l,v,d=0,e='')=>`<div class="tile"><div class="lbl">${l}</div><div class="val">${fmt(v,d)}${e?'<small> '+e+'</small>':''}</div></div>`;
+    const gruppe=(titel,kacheln)=>`<h4 style="font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700;margin:16px 0 8px">${titel}</h4><div class="tiles">${kacheln}</div>`;
+    perfBlock=`<div class="card"><h2>Leistungsdaten der Saison</h2>
+      <div class="tiles">${t('Einsätze',st.einsaetze)}${t('Minuten',st.minuten)}
+        ${st.paraden!=null?t('Paraden',st.paraden)+t('Gegentore',st.gegentore)
+                          :t('Tore',st.tore)+t('Torvorlagen',st.torvorlagen)}</div>
+      ${gruppe('Toraktionen',
+        t('Tore',st.tore)+(st.xgoals!=null?t('xGoals',st.xgoals,2)+t('Tore / xGoals',st.toreProXgoals,2):'')+
+        t('Torschüsse',st.torschuesse)+t('Torvorlagen',st.torvorlagen)+
+        t('xAssists',st.xassists,2)+t('Torschussvorlagen',st.torschussvorlagen))}
+      ${st.laufleistung!=null?gruppe('Laufwerte',
+        t('Laufleistung',st.laufleistung,2,'km')+t('Sprints',st.sprints)+t('Topspeed',st.topspeed,1,'km/h')):''}
+      ${gruppe('Ballaktionen',
+        t('Ballkontakte',st.ballkontakte)+t('Pässe',st.paesse)+t('Passquote',st.passquote,0,'%')+
+        (st.langePaesse!=null?t('lange Pässe',st.langePaesse)+t('davon angek.',st.langePaesseQuote,0,'%'):'')+
+        (st.flanken!=null?t('Flanken',st.flanken)+t('Flankenquote',st.flankenquote,0,'%'):'')+
+        (st.dribblings!=null?t('Dribblings',st.dribblings)+t('Dribbelquote',st.dribbelquote,0,'%'):''))}
+      ${st.zweikaempfe!=null?gruppe('Zweikämpfe',
+        t('Zweikämpfe',st.zweikaempfe)+t('gewonnen',st.zweikampfquote,0,'%')+
+        t('Luftzweikämpfe',st.luftzweikaempfe)+t('gewonnen',st.luftzweikampfquote,0,'%')):''}
+      ${gruppe('Fouls &amp; Abseits',
+        t('Fouls',st.fouls)+t('gefoult worden',st.gefoult)+
+        (st.abseits!=null?t('Abseits',st.abseits):''))}
+      ${st.paraden!=null?gruppe('Torhüterwerte',
+        t('Paraden',st.paraden)+t('Gegentore',st.gegentore)+
+        t('xGoals conceded',st.xgoalsGegen,2)+t('Gegentore / xGC',st.gegentoreProXgoalsGegen,2)+
+        t('abgewehrte Bälle',st.abgewehrteBaelleQuote,0,'%')+
+        t('abgef. Flanken',st.abgefangeneFlanken)+t('davon',st.abgefangeneFlankenQuote,0,'%')+
+        t('Abwürfe',st.abwuerfe)+t('davon angek.',st.abwuerfeQuote,0,'%')):''}
+      <div class="hint" style="margin-top:14px">Quelle: kicker.de – Spieler-Spieldaten · Saison ${esc(STATS.saison)},
+        Spieltag${STATS.spieltage.length>1?'e':''} ${STATS.spieltage[0]}${STATS.spieltage.length>1?'–'+STATS.spieltage[STATS.spieltage.length-1]:''}.
+        Quoten sind Schnitte über die Einsätze.</div></div>`;
+  }else{
+    perfBlock=`<div class="card"><h2>Leistungsdaten</h2>
+      <div class="pending">Für diesen Spieler liegen noch keine Leistungsdaten vor.<br><br>
+        Sobald <b>stats/saison.json</b> vorliegt (Sammler im Browser ausführen, dann
+        <code>node import-stats.js kicker-stats-st&lt;N&gt;.json</code>), erscheinen hier alle
+        Kicker-Werte: <b>Minuten, Tore, xGoals, Torschüsse, Torvorlagen, xAssists,
+        Laufleistung, Sprints, Topspeed, Ballkontakte, Pässe und Passquote, Flanken,
+        Dribblings, Zweikämpfe und Luftzweikämpfe</b> — bei Torhütern zusätzlich
+        Paraden und Gegentore.</div></div>`;
+  }
+
+  el.innerHTML=head+mgrBlock+stBlock+perfBlock;
+}
+
+function renderAll(){ powerVorbereiten(); statusBar(); renderList(); renderProfile(); }
+
+/* ================= Start ================= */
+(async function init(){
+  if(IMPORT_MODE){
+    document.getElementById('hdrActions').style.display='flex';
+    SAISON=loadLS(LS.saison); PLAYERS=loadLS(LS.players)||[];
+  }
+  buildIndex(); fillVereine(); renderAll();
+  await autoload();
+  buildIndex(); fillVereine(); renderAll();
+})();
+</script>
+</body>
+</html>
