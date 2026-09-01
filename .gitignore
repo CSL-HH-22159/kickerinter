@@ -2,6 +2,8 @@
 *.xlsx
 *.docx
 *.pptx
+# Ausnahme: saison.xlsx wird von vergleich.html/spieler.html live per fetch() geladen
+!saison.xlsx
 
 # Kader-Fotos (große JPGs, nicht im Web verwendet)
 Kader *.jpg
