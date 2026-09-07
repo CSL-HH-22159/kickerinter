@@ -1016,7 +1016,10 @@ function analyseZScore(){
 function analyseTorhueter(){
   if(!STATS) return '<div class="empty-note">Keine Leistungsdaten geladen.</div>';
   const tw=STATS.spieler.filter(s=>s.paraden!=null&&s.minuten>0)
-    .map(s=>({...s, verhindert:(s.xgoalsGegen||0)-(s.gegentore||0)}))
+    .map(s=>({...s, verhindert:(s.xgoalsGegen||0)-(s.gegentore||0),
+      /* Schüsse aufs eigene Tor. Ohne einen einzigen ist die Quote nicht 0 %,
+         sondern schlicht nicht definiert. */
+      aufsTor:(s.paraden||0)+(s.gegentore||0)}))
     .sort((a,b)=>b.verhindert-a.verhindert);
   if(!tw.length) return '<div class="empty-note">Keine Torhüterdaten.</div>';
   const zeilen=tw.map((s,i)=>`<tr><td class="num">${i+1}.</td><td><b>${esc(s.kurz)}</b></td>
@@ -1024,7 +1027,8 @@ function analyseTorhueter(){
     <td class="num">${fmt(s.gegentore)}</td><td class="num">${fmt(s.xgoalsGegen,2)}</td>
     <td class="num"><b class="${s.verhindert>0.3?'good':(s.verhindert<-0.3?'bad':'')}">
       ${s.verhindert>0?'+':''}${fmt(s.verhindert,2)}</b></td>
-    <td class="num">${fmt(s.paraden)}</td><td class="num">${fmt(s.abgewehrteBaelleQuote)} %</td></tr>`).join('');
+    <td class="num">${fmt(s.paraden)}</td>
+    <td class="num">${s.aufsTor?fmt(s.abgewehrteBaelleQuote)+' %':'–'}</td></tr>`).join('');
   return `<div class="hint">Kicker-Punkte bestrafen einen Torhüter für die Abwehr vor ihm.
       <b>Verhinderte Tore</b> = erwartete Gegentore (xGoals conceded) minus tatsächliche.
       Ein positiver Wert heisst: Er hielt mehr, als die Chancenqualität hergab — unabhängig

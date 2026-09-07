@@ -47,7 +47,6 @@
   .prow.sel{background:#eaf1fb;box-shadow:inset 3px 0 0 var(--primary)}
   .prow img.ph{width:30px;height:30px;border-radius:50%;object-fit:cover;background:#e5e9f0;flex:0 0 30px}
   .prow .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-  .prow .pt{font-variant-numeric:tabular-nums;font-weight:600;color:var(--muted);font-size:.8rem}
   .owned{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:0 0 7px}
 
   .pos-chip{display:inline-block;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:10px;color:#fff}
@@ -89,6 +88,33 @@
   .power-warn{margin-top:9px;font-size:.75rem;color:#92400e;background:#fef3c7;border-radius:6px;padding:7px 9px;line-height:1.5}
   .plist .pbar{width:34px;height:5px;border-radius:3px;background:#e5e9f0;overflow:hidden;flex:0 0 34px}
   .plist .pbar i{display:block;height:100%;border-radius:3px}
+  /* Trendpfeil neben dem kleinen Balken — feste Breite, damit die Punktespalte
+     nicht wackelt, wenn ein Spieler noch keinen Vergleichswert hat. */
+  /* Pfeil samt Veränderung des Powerindex — die einzige Zahl in der Liste. */
+  .plist .ptrend{flex:0 0 40px;width:40px;text-align:right;font-size:.7rem;line-height:1;
+    font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .plist .ptrend.leer{color:#c3ccd8;font-size:.9rem;font-weight:400}
+  /* Verlaufsdiagramm im Profil.
+     Keine font-size hier: CSS schlägt das font-size-Attribut im SVG, und die Grössen
+     dort sind in Nutzereinheiten des viewBox gesetzt, damit sie mitskalieren. */
+  .pverlauf{margin-top:12px}
+  .pverlauf svg{display:block;width:100%;height:auto;overflow:visible}
+  .pverlauf .gitter{stroke:var(--border);stroke-width:1;stroke-dasharray:2 3;opacity:.8}
+  .pverlauf .linie{fill:none;stroke:#334155;stroke-width:2;stroke-linejoin:round}
+  .pverlauf text{fill:var(--muted)}
+  .pverlauf .wert{font-weight:700}
+  .ptab{width:100%;border-collapse:collapse;margin-top:12px;font-size:.78rem}
+  .ptab th,.ptab td{padding:5px 8px;border-bottom:1px solid var(--border);text-align:right;
+    font-variant-numeric:tabular-nums;white-space:nowrap}
+  .ptab th{font-size:.66rem;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);font-weight:700}
+  .ptab th:first-child,.ptab td:first-child{text-align:left}
+  .ptab tr:last-child td{border-bottom:none}
+  .ptab .dlt{font-weight:700}
+  .ptab .grp th{font-size:.6rem;letter-spacing:.3px;padding-bottom:2px;border-bottom:none;
+    text-align:center;color:var(--muted);font-weight:600;text-transform:none}
+  .ptab .trenn{border-left:1px solid var(--border)}
+  .ptab tr.pause td{background:#f4f6fa;color:var(--muted)}
+  @media (max-width:520px){ .ptab{font-size:.7rem} .ptab th,.ptab td{padding:4px 5px} }
   .empty-note{text-align:center;color:var(--muted);padding:34px 12px;font-size:.92rem;line-height:1.6}
   .pending{border:1px dashed var(--border);border-radius:10px;padding:18px;color:var(--muted);font-size:.85rem;line-height:1.65;background:#fafcff}
   .pending b{color:var(--text)}
@@ -136,6 +162,7 @@
         <option value="MFD">Mittelfeld</option><option value="STU">Sturm</option>
       </select>
       <div class="hint" id="listInfo"></div>
+      <div class="hint" id="listLegende" style="margin-top:4px"></div>
       <div class="plist" id="plist"></div>
     </div>
   </div>
@@ -164,6 +191,7 @@ let PLAYERS=[];      // Kicker-CSV
 let SAISON=null;     // {rows:[…]} aus saison.xlsx
 let STATS=null;      // stats/saison.json
 let STATSD={};       // Spieltag -> stats/st<N>.json
+let VERLAUF=null;    // stats/powerverlauf.json — Powerindex je Spieltag
 let IDX=null;
 const STATE={q:'',kader:'alle',verein:'',pos:'',sel:null};
 
@@ -359,31 +387,76 @@ function powerVorbereiten(){
         'den Gesamtpunkten statt pro Spiel.';
   }
 }
-/* Liefert {power,noteTeil,punkteTeil,proSpiel,einsaetze,vorlaeufig} oder null */
-function powerVon(p){
-  if(!p||POWER.ref==null) return null;
-  if(p.note==null||!(p.note>0)) return null;
-  const s=(IDX&&IDX.statsById)?IDX.statsById.get(p.id):null;
-  const e=s&&s.einsaetze?s.einsaetze:0;
+/* Der Kern der Formel — bewusst nur EINMAL vorhanden. Sowohl der aktuelle Index als
+   auch jeder Punkt des Verlaufs laufen hier durch; nur die Bezugsgrössen L wechseln.
+   L = {proSpiel, mNote, mPkt, ref}: Ligaschnitte und Referenzwert des jeweiligen Standes.
+   Liefert {power,noteTeil,punkteTeil,proSpiel,einsaetze,eigenanteil,geglaettet} oder null. */
+function powerKern(rohNote,pts,e,L){
+  if(!L||L.ref==null) return null;
+  if(rohNote==null||!(rohNote>0)) return null;
 
   // Note zum Ligaschnitt hin glätten, solange wenige Spiele vorliegen
-  const note=POWER.proSpiel&&e
-    ? (p.note*e+POWER.mNote*POWER_K_NOTE)/(e+POWER_K_NOTE)
-    : p.note;
+  const note=L.proSpiel&&e ? (rohNote*e+L.mNote*POWER_K_NOTE)/(e+POWER_K_NOTE) : rohNote;
   const noteTeil=Math.max(0,Math.min(1,(6-note)/5));
 
-  let basis=p.pts||0, proSpiel=null;
-  if(POWER.proSpiel){
+  let basis=pts||0, proSpiel=null;
+  if(L.proSpiel){
     if(!e) return null;
-    proSpiel=p.pts/e;
-    basis=((p.pts||0)+POWER.mPkt*POWER_K_PKT)/(e+POWER_K_PKT);   // geglättet
+    proSpiel=pts/e;
+    basis=((pts||0)+L.mPkt*POWER_K_PKT)/(e+POWER_K_PKT);   // geglättet
   }
-  const punkteTeil=Math.max(0,Math.min(1,basis/POWER.ref));
+  const punkteTeil=Math.max(0,Math.min(1,basis/L.ref));
   return {power:Math.round((noteTeil*0.5+punkteTeil*0.5)*100),
     noteTeil:Math.round(noteTeil*100), punkteTeil:Math.round(punkteTeil*100),
     proSpiel, einsaetze:e,
     eigenanteil:e?Math.round(e/(e+POWER_K_PKT)*100):0,
-    geglaettet:POWER.proSpiel&&e>0&&e<POWER_VORLAEUFIG};
+    geglaettet:L.proSpiel&&e>0&&e<POWER_VORLAEUFIG};
+}
+function powerVon(p){
+  if(!p) return null;
+  const s=(IDX&&IDX.statsById)?IDX.statsById.get(p.id):null;
+  return powerKern(p.note,p.pts,s&&s.einsaetze?s.einsaetze:0,POWER);
+}
+
+/* ---- Verlauf ----------------------------------------------------------------
+   stats/powerverlauf.json trägt je Spieltag den Stand von Note, Punkten und
+   Einsätzen sowie die Ligabezugsgrössen jenes Spieltags. Der Index wird daraus
+   hier gerechnet — mit derselben Formel wie der aktuelle Wert. */
+function powerVerlaufVon(p){
+  if(!p||!VERLAUF||!VERLAUF.spieler[p.id]) return [];
+  return VERLAUF.spieler[p.id].map((row,i)=>{
+    if(!row) return null;
+    /* note/pts sind SAISONWERTE (Notenschnitt, Punktesumme) zu diesem Stand,
+       stNote/stPkt die Werte allein dieses Spieltags. */
+    const [note,pts,eins,stNote,stPkt]=row;
+    const pw=powerKern(note,pts,eins,VERLAUF.liga[i]);
+    return pw?{st:VERLAUF.spieltage[i], power:pw.power, note, pts, eins,
+      stNote:stNote==null?null:stNote, stPkt:stPkt==null?null:stPkt,
+      proSpiel:eins?pts/eins:null}:null;
+  }).filter(Boolean);
+}
+/* Wie stark ging es zum letzten Spieltag hoch oder runter?
+   Fünf Stufen. Die Schwellen sind fest (2 und 6 Indexpunkte), nicht relativ zum
+   Feld: der Index ist kumuliert, deshalb werden grosse Sprünge im Saisonverlauf
+   von allein seltener — genau das soll der Pfeil auch zeigen. */
+const POWER_STUFEN=[
+  {ab:  6, pfeil:'▲', farbe:'#15803d', text:'stark gestiegen',  kurz:'stark'},
+  {ab:  2, pfeil:'▲', farbe:'#7cb342', text:'leicht gestiegen', kurz:'leicht'},
+  {ab: -2, pfeil:'▬', farbe:'#d9a406', text:'kaum verändert',   kurz:'kaum'},
+  {ab: -6, pfeil:'▼', farbe:'#e8624a', text:'leicht gefallen',  kurz:'leicht'},
+  {ab:-1e9,pfeil:'▼', farbe:'#b91c1c', text:'stark gefallen',   kurz:'stark'},
+];
+function powerTrend(p){
+  const v=powerVerlaufVon(p);
+  if(v.length<2) return null;
+  const von=v[v.length-2], bis=v[v.length-1];
+  const d=bis.power-von.power;
+  const stufe=POWER_STUFEN.find(s=>d>=s.ab);
+  /* Ohne Einsatz aendern sich die eigenen Zahlen nicht — der Index kann sich trotzdem
+     leicht bewegen, weil der Ligabestwert als Bezugsgroesse wandert. Ein Pfeil waere
+     dann eine Aussage ueber andere Spieler, nicht ueber diesen. Deshalb kein Pfeil. */
+  const gespielt=bis.eins>von.eins;
+  return {delta:d, von, bis, gespielt, ...stufe};
 }
 /* Rot (schwach) -> Dunkelgrün (stark) */
 function powerFarbe(w){
@@ -427,6 +500,8 @@ async function autoload(){
     if(ok(r)){PLAYERS=parsePlayersCsv(await r.text());saveLS(LS.players,PLAYERS);}}catch(e){}
   try{const r=await fetch('stats/saison.json',{cache:'no-cache'});
     if(ok(r)) STATS=await r.json();}catch(e){}
+  try{const r=await fetch('stats/powerverlauf.json',{cache:'no-cache'});
+    if(ok(r)) VERLAUF=await r.json();}catch(e){}
 }
 async function loadSpieltagStats(n){
   if(STATSD[n]!==undefined) return STATSD[n];
@@ -487,16 +562,28 @@ function renderList(){
   const list=filtered();
   document.getElementById('listInfo').textContent=
     `${list.length} Treffer${list.length>250?' – erste 250 angezeigt':''}`;
+  /* Legende nur zeigen, wenn es überhaupt Pfeile gibt (ab dem 2. Messpunkt) */
+  const leg=document.getElementById('listLegende');
+  leg.innerHTML=(VERLAUF&&VERLAUF.spieltage.length>1)
+    ? `Rechts: Powerindex ggü. Spieltag&nbsp;${VERLAUF.spieltage[VERLAUF.spieltage.length-2]}<br>`
+      +POWER_STUFEN.slice().reverse()
+        .map(s=>`<span style="color:${s.farbe};white-space:nowrap">${s.pfeil}&nbsp;${s.kurz}</span>`)
+        .join(' · ')
+    : '';
   const el=document.getElementById('plist');
   el.innerHTML=list.slice(0,250).map(x=>{
     const own=ownersOf(x).length;
     const pw=x.p?powerVon(x.p):null;
+    const tr=x.p?powerTrend(x.p):null;
     return `<div class="prow ${STATE.sel===x.key?'sel':''}" onclick="select('${esc(x.key)}')">
       ${photo(x.p||{name:x.name,pos:x.pos},'')}
       <span class="nm">${esc(x.kurz||x.name)}</span>
       ${own?'<span class="owned" title="in einem Spreeliga-Kader"></span>':''}
       ${pw?`<span class="pbar" title="Powerindex ${pw.power}"><i style="width:${pw.power}%;background:${powerFarbe(pw.power)}"></i></span>`:'<span class="pbar"></span>'}
-      <span class="pt">${x.p?fmt(x.p.pts):'–'}</span></div>`;
+      ${!tr?'<span class="ptrend"></span>'
+        :(tr.gespielt
+          ?`<span class="ptrend" style="color:${tr.farbe}" title="Powerindex ${tr.text}: ${tr.von.power} → ${tr.bis.power} von Spieltag ${tr.von.st} auf ${tr.bis.st}">${tr.pfeil}&nbsp;${tr.delta>0?'+':''}${tr.delta}</span>`
+          :`<span class="ptrend leer" title="Kein Einsatz an Spieltag ${tr.bis.st} — kein Trend">·</span>`)}</div>`;
   }).join('')||'<div class="empty-note">Keine Treffer.</div>';
 }
 function select(key){ STATE.sel=key; renderList(); renderProfile(); }
@@ -531,7 +618,81 @@ function powerBlock(p){
     :(POWER.proSpiel&&pw.einsaetze?`<div class="power-parts" style="margin-top:6px">
       <span>Datenbasis: <b>${pw.einsaetze} eigene Spiele</b> + ${POWER_K_PKT} Vergleichsspiele
       → beruht zu <b>${pw.eigenanteil} %</b> auf ihm selbst</span></div>`:'')}
-    ${POWER.warn?`<div class="power-warn">${esc(POWER.warn)}</div>`:''}</div>`;
+    ${POWER.warn?`<div class="power-warn">${esc(POWER.warn)}</div>`:''}
+    ${powerVerlaufBlock(p)}</div>`;
+}
+
+/* Verlauf des Powerindex: Liniendiagramm plus Tabelle mit den genauen Werten. */
+function powerVerlaufBlock(p){
+  const v=powerVerlaufVon(p);
+  if(!v.length) return '';
+  const tr=powerTrend(p);
+
+  /* --- Liniendiagramm (nur ab zwei Messpunkten sinnvoll) --- */
+  let chart='';
+  if(v.length>=2){
+    const W=480,H=152,L=34,R=16,T=22,B=24;
+    const werte=v.map(x=>x.power);
+    /* Fenster um die tatsächlichen Werte legen, aber mindestens 20 Indexpunkte
+       breit — sonst macht eine Schwankung von 2 Punkten eine dramatische Kurve. */
+    let lo=Math.min(...werte), hi=Math.max(...werte);
+    const mitte=(lo+hi)/2, spanne=Math.max(20,(hi-lo)*1.6);
+    lo=Math.max(0,Math.round(mitte-spanne/2)); hi=Math.min(100,Math.round(mitte+spanne/2));
+    if(hi-lo<10){lo=Math.max(0,lo-5);hi=Math.min(100,hi+5);}
+    const x=i=>L+(v.length===1?0:i*(W-L-R)/(v.length-1));
+    /* Beschriftung am Rand nach innen ziehen, damit sie nicht in die Achse läuft */
+    const anker=i=>i===0?'start':(i===v.length-1?'end':'middle');
+    const y=w=>T+(hi-w)/(hi-lo)*(H-T-B);
+    const gitter=[lo,Math.round((lo+hi)/2),hi].filter((n,i,a)=>a.indexOf(n)===i);
+    chart=`<div class="pverlauf"><svg viewBox="0 0 ${W} ${H}" role="img"
+      aria-label="Verlauf des Powerindex über ${v.length} Spieltage">
+      ${gitter.map(g=>`<line class="gitter" x1="${L}" x2="${W-R}" y1="${y(g).toFixed(1)}" y2="${y(g).toFixed(1)}"/>
+        <text x="${L-6}" y="${(y(g)+4).toFixed(1)}" text-anchor="end" font-size="11">${g}</text>`).join('')}
+      <polyline class="linie" points="${v.map((d,i)=>`${x(i).toFixed(1)},${y(d.power).toFixed(1)}`).join(' ')}"/>
+      ${v.map((d,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(d.power).toFixed(1)}" r="4"
+          fill="${powerFarbe(d.power)}" stroke="#fff" stroke-width="1.5"><title>Spieltag ${d.st}: ${d.power}</title></circle>
+        <text class="wert" x="${x(i).toFixed(1)}" y="${(y(d.power)-10).toFixed(1)}" text-anchor="${anker(i)}"
+          font-size="13" fill="${powerFarbe(d.power)}">${d.power}</text>
+        <text x="${x(i).toFixed(1)}" y="${H-7}" text-anchor="${anker(i)}" font-size="11">ST ${d.st}</text>`).join('')}
+    </svg></div>`;
+  }
+
+  /* --- genaue Werte ---
+     Linke Hälfte: was der Spieler AN DIESEM Spieltag geholt hat.
+     Rechte Hälfte: der Saisonstand danach — und nur der geht in den Index ein. */
+  const zeilen=v.map((d,i)=>{
+    const vor=i>0?v[i-1].power:null;
+    const dl=vor==null?null:d.power-vor;
+    const st=dl==null?null:POWER_STUFEN.find(s=>dl>=s.ab);
+    const gespielt=i===0?d.eins>0:d.eins>v[i-1].eins;
+    return `<tr${gespielt?'':' class="pause"'}><td>ST ${d.st}</td>
+      <td>${d.stNote==null?'–':fmt(d.stNote,2)}</td>
+      <td>${d.stPkt==null?'–':fmt(d.stPkt)}</td>
+      <td class="trenn">${fmt(d.note,2)}</td><td>${fmt(d.pts)}</td><td>${d.eins}</td>
+      <td class="trenn"><b style="color:${powerFarbe(d.power)}">${d.power}</b></td>
+      <td class="dlt" style="color:${st?st.farbe:'inherit'}">${dl==null?'–'
+        :`${st.pfeil} ${dl>0?'+':''}${dl}`}</td></tr>`;
+  }).join('');
+  const pausen=v.filter((d,i)=>i===0?!(d.eins>0):!(d.eins>v[i-1].eins)).length;
+
+  return `${chart}
+    <table class="ptab"><thead>
+      <tr class="grp"><th></th><th colspan="2">nur dieser Spieltag</th>
+        <th colspan="3" class="trenn">Saison danach</th>
+        <th colspan="2" class="trenn">Powerindex</th></tr>
+      <tr><th>Spieltag</th><th>Note</th><th>Punkte</th>
+        <th class="trenn">⌀ Note</th><th>Σ Punkte</th><th>Sp.</th>
+        <th class="trenn">Index</th><th>Δ</th></tr></thead>
+      <tbody>${zeilen}</tbody></table>
+    <div class="power-parts" style="margin-top:8px">
+      ${!tr?'<span>Ab dem zweiten Spieltag mit eigenem Einsatz entsteht ein Vergleichswert.</span>'
+       :(tr.gespielt
+        ?`<span>Zuletzt <b style="color:${tr.farbe}">${tr.pfeil} ${tr.delta>0?'+':''}${tr.delta}</b>
+          — ${tr.text}</span>`
+        :`<span>An Spieltag ${tr.bis.st} <b>kein Einsatz</b>${tr.delta?` — die ${tr.delta>0?'+':''}${tr.delta}
+          kommen allein daher, dass sich der Ligavergleich verschoben hat`:''}.</span>`)}
+      <span>Der Index rechnet mit den <b>Saisonwerten</b>, nicht mit dem einzelnen Spieltag.</span>
+      ${pausen?'<span>Grau hinterlegt: kein Einsatz an diesem Spieltag.</span>':''}</div>`;
 }
 
 /* ================= Profil ================= */
@@ -603,6 +764,10 @@ function renderProfile(){
   let perfBlock;
   if(st){
     const t=(l,v,d=0,e='')=>`<div class="tile"><div class="lbl">${l}</div><div class="val">${fmt(v,d)}${e?'<small> '+e+'</small>':''}</div></div>`;
+    /* Quote nur zeigen, wenn es überhaupt Aktionen gab: wer keinen Luftzweikampf
+       geführt hat, gewann davon nicht 0 % — die Quote ist gar nicht definiert. */
+    const tq=(l,v,basis)=>basis?t(l,v,0,'%')
+      :`<div class="tile"><div class="lbl">${l}</div><div class="val">–</div></div>`;
     const gruppe=(titel,kacheln)=>`<h4 style="font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700;margin:16px 0 8px">${titel}</h4><div class="tiles">${kacheln}</div>`;
     perfBlock=`<div class="card"><h2>Leistungsdaten der Saison</h2>
       <div class="tiles">${t('Einsätze',st.einsaetze)}${t('Minuten',st.minuten)}
@@ -615,25 +780,26 @@ function renderProfile(){
       ${st.laufleistung!=null?gruppe('Laufwerte',
         t('Laufleistung',st.laufleistung,2,'km')+t('Sprints',st.sprints)+t('Topspeed',st.topspeed,1,'km/h')):''}
       ${gruppe('Ballaktionen',
-        t('Ballkontakte',st.ballkontakte)+t('Pässe',st.paesse)+t('Passquote',st.passquote,0,'%')+
-        (st.langePaesse!=null?t('lange Pässe',st.langePaesse)+t('davon angek.',st.langePaesseQuote,0,'%'):'')+
-        (st.flanken!=null?t('Flanken',st.flanken)+t('Flankenquote',st.flankenquote,0,'%'):'')+
-        (st.dribblings!=null?t('Dribblings',st.dribblings)+t('Dribbelquote',st.dribbelquote,0,'%'):''))}
+        t('Ballkontakte',st.ballkontakte)+t('Pässe',st.paesse)+tq('Passquote',st.passquote,st.paesse)+
+        (st.langePaesse!=null?t('lange Pässe',st.langePaesse)+tq('davon angek.',st.langePaesseQuote,st.langePaesse):'')+
+        (st.flanken!=null?t('Flanken',st.flanken)+tq('Flankenquote',st.flankenquote,st.flanken):'')+
+        (st.dribblings!=null?t('Dribblings',st.dribblings)+tq('Dribbelquote',st.dribbelquote,st.dribblings):''))}
       ${st.zweikaempfe!=null?gruppe('Zweikämpfe',
-        t('Zweikämpfe',st.zweikaempfe)+t('gewonnen',st.zweikampfquote,0,'%')+
-        t('Luftzweikämpfe',st.luftzweikaempfe)+t('gewonnen',st.luftzweikampfquote,0,'%')):''}
+        t('Zweikämpfe',st.zweikaempfe)+tq('gewonnen',st.zweikampfquote,st.zweikaempfe)+
+        t('Luftzweikämpfe',st.luftzweikaempfe)+tq('gewonnen',st.luftzweikampfquote,st.luftzweikaempfe)):''}
       ${gruppe('Fouls &amp; Abseits',
         t('Fouls',st.fouls)+t('gefoult worden',st.gefoult)+
         (st.abseits!=null?t('Abseits',st.abseits):''))}
       ${st.paraden!=null?gruppe('Torhüterwerte',
         t('Paraden',st.paraden)+t('Gegentore',st.gegentore)+
         t('xGoals conceded',st.xgoalsGegen,2)+t('Gegentore / xGC',st.gegentoreProXgoalsGegen,2)+
-        t('abgewehrte Bälle',st.abgewehrteBaelleQuote,0,'%')+
-        t('abgef. Flanken',st.abgefangeneFlanken)+t('davon',st.abgefangeneFlankenQuote,0,'%')+
-        t('Abwürfe',st.abwuerfe)+t('davon angek.',st.abwuerfeQuote,0,'%')):''}
+        tq('abgewehrte Bälle',st.abgewehrteBaelleQuote,(st.paraden||0)+(st.gegentore||0))+
+        t('abgef. Flanken',st.abgefangeneFlanken)+tq('davon',st.abgefangeneFlankenQuote,st.abgefangeneFlanken)+
+        t('Abwürfe',st.abwuerfe)+tq('davon angek.',st.abwuerfeQuote,st.abwuerfe)):''}
       <div class="hint" style="margin-top:14px">Quelle: kicker.de – Spieler-Spieldaten · Saison ${esc(STATS.saison)},
         Spieltag${STATS.spieltage.length>1?'e':''} ${STATS.spieltage[0]}${STATS.spieltage.length>1?'–'+STATS.spieltage[STATS.spieltage.length-1]:''}.
-        Quoten sind Schnitte über die Einsätze.</div></div>`;
+        Quoten sind über die Saisonsumme gerechnet, nicht über die Spieltage gemittelt —
+        so wie kicker.de es auch tut.</div></div>`;
   }else{
     perfBlock=`<div class="card"><h2>Leistungsdaten</h2>
       <div class="pending">Für diesen Spieler liegen noch keine Leistungsdaten vor.<br><br>
