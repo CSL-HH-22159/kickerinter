@@ -1094,26 +1094,76 @@ function analyseKonstanz(){
 
 /* --- 5. Spielplan --------------------------------------------------------- */
 let planFenster=5;
+
+/* Wie schnell die Vorsaison ausläuft: Nach PLAN_K Spieltagen zählen beide Saisons
+   gleich viel, danach überwiegt die laufende. Kein reines Verhältnis der Stichproben-
+   grössen (34 zu n) — die Vorsaison ist zwar umfangreicher, aber veraltet: Kader
+   ändern sich, Aufsteiger sind neu. Nach 6 Spieltagen weiss die laufende Saison
+   mehr über die aktuelle Mannschaft als die alte über eine andere. */
+const PLAN_K=6;
+
+/* Vereinsstärke als z-Wert über die 18 Vereine: Punkte je eingesetztem Spieler.
+   Beide Saisons werden GETRENNT zu z-Werten gemacht und erst dann gemischt — so ist
+   es gleichgültig, dass die eine 34 Spieltage umfasst und die andere erst zwei. */
+function planStaerke(){
+  const teams=CLIENTDB.teams;
+  const zAus=proVerein=>{
+    const roh={};
+    for(const t of teams){
+      const a=proVerein[t.name];
+      roh[t.id]=a&&a.length>=8?mittel(a):null;      // zu dünne Datenlage: kein eigener Wert
+    }
+    const vorh=Object.values(roh).filter(v=>v!=null);
+    if(vorh.length<10) return null;
+    const m=mittel(vorh), sd=stdabw(vorh)||1;
+    const z={}, fehlt=new Set();
+    for(const t of teams){
+      if(roh[t.id]==null){ z[t.id]=0; fehlt.add(t.id); }   // ohne Wert: Ligaschnitt
+      else z[t.id]=(roh[t.id]-m)/sd;
+    }
+    return {z,fehlt};
+  };
+
+  let vor=null;
+  if(VORSAISON){
+    const pv={};
+    for(const p of VORSAISON.spieler) if(p.pts>0) (pv[p.verein]=pv[p.verein]||[]).push(p.pts);
+    vor=zAus(pv);
+  }
+
+  /* Laufende Saison: nur Spieler mit Einsatz. Ohne diese Einschränkung würden
+     Reservisten mit 0 Punkten den Schnitt der Vereine mit breitem Kader drücken. */
+  let lauf=null; const n=anzahlST();
+  if(STATS&&PLAYERS.length&&n>=1){
+    const eins=new Map();
+    STATS.spieler.forEach(s=>{ if(s.kid) eins.set(s.kid,s.einsaetze||0); });
+    const pv={};
+    for(const p of PLAYERS) if((eins.get(p.id)||0)>0) (pv[p.verein]=pv[p.verein]||[]).push(p.pts||0);
+    lauf=zAus(pv);
+  }
+
+  const w=lauf?n/(n+PLAN_K):0;
+  const z={};
+  for(const t of teams){
+    const zv=vor?vor.z[t.id]:0, zl=lauf?lauf.z[t.id]:0;
+    /* Aufsteiger haben keine Vorsaison in dieser Liga. Ihr Ausgangswert ist deshalb
+       der Ligaschnitt (z = 0), von dem die laufende Saison sie mit demselben Gewicht
+       wegzieht wie bei allen anderen. Ihnen sofort den vollen laufenden Wert zu geben
+       wäre falsch: Elversberg stünde nach zwei Spielen auf Rang 5 der Liga. */
+    const ausgang=(!vor||vor.fehlt.has(t.id))?0:zv;
+    z[t.id]=lauf?(1-w)*ausgang+w*zl:ausgang;
+  }
+  return {z,w,vor:!!vor,lauf:!!lauf,n,
+    aufsteiger:vor?teams.filter(t=>vor.fehlt.has(t.id)).map(t=>t.name):[]};
+}
+
 function analyseSpielplan(){
   if(!CLIENTDB) return '<div class="empty-note">clientdb.json nicht geladen.</div>';
   const teamName={}; CLIENTDB.teams.forEach(t=>teamName[t.id]=t.name);
   const kurz={}; CLIENTDB.teams.forEach(t=>kurz[t.id]=t.shortName||t.name);
 
-  // Vereinsstärke aus der abgeschlossenen Vorsaison: Punkte je Spieler
-  const staerke={};
-  if(VORSAISON){
-    const proVerein={};
-    for(const p of VORSAISON.spieler) if(p.pts>0) (proVerein[p.verein]=proVerein[p.verein]||[]).push(p.pts);
-    const alleWerte=Object.values(proVerein).flat();
-    const ligaM=mittel(alleWerte)||0;
-    for(const t of CLIENTDB.teams){
-      const a=proVerein[t.name];
-      staerke[t.id]=a&&a.length>=8?mittel(a):ligaM;    // Aufsteiger ohne Historie: Ligaschnitt
-    }
-  }
-  const werte=Object.values(staerke);
-  const sM=mittel(werte)||1, sSd=stdabw(werte)||1;
-  const zScore=id=>staerke[id]==null?0:(staerke[id]-sM)/sSd;
+  const st=planStaerke();
+  const zScore=id=>st.z[id]==null?0:st.z[id];
 
   // aktueller Spieltag = erster ohne Ergebnis
   const startST=(anzahlST()||0)+1;
@@ -1142,13 +1192,26 @@ function analyseSpielplan(){
       ${esc(kurz[g.gid])}<br><span class="hint">${g.heim?'H':'A'}</span></td>`;
   }).join('');
 
+  const vorLabel=VORSAISON?`${VORSAISON.jahr}/${String(VORSAISON.jahr+1).slice(2)}`:'Vorsaison';
+  const anteil=Math.round(st.w*100);
+  const quelle=st.vor&&st.lauf
+    ? `Gegnerstärke aus <b>${vorLabel} und der laufenden Saison</b> gemischt — nach
+       ${st.n} Spieltag${st.n===1?'':'en'} zu <b>${anteil} %</b> aus 26/27. Der Anteil wächst
+       mit jedem Spieltag (halbe/halbe ab Spieltag ${PLAN_K}), die Vorsaison läuft dadurch aus.`
+    : st.lauf ? 'Gegnerstärke allein aus der <b>laufenden Saison</b> — noch wenige Spiele, entsprechend grob.'
+    : st.vor ? `Gegnerstärke aus <b>${vorLabel}</b> — sobald Leistungsdaten der laufenden Saison
+       vorliegen, werden sie dazugemischt.`
+    : '<b>Ohne Vergleichsdaten ist die Gegnerstärke neutral</b> — mit <code>node fetch-historie.js</code> erzeugen.';
   return `<div class="hint">Wie schwer sind die nächsten <b>${planFenster} Spieltage</b> für jeden Verein?
-      Gegnerstärke aus der Vorsaison${VORSAISON?` (${VORSAISON.jahr}/${String(VORSAISON.jahr+1).slice(2)})`:''},
-      Heimvorteil eingerechnet. <span style="background:#dcfce7;padding:1px 5px;border-radius:4px">leicht</span>
+      ${quelle} Heimvorteil eingerechnet.
+      <span style="background:#dcfce7;padding:1px 5px;border-radius:4px">leicht</span>
       <span style="background:#fef9c3;padding:1px 5px;border-radius:4px">mittel</span>
       <span style="background:#fee2e2;padding:1px 5px;border-radius:4px">schwer</span> —
       oben stehen die Vereine, deren Spieler es am leichtesten haben.
-      ${!VORSAISON?'<b>Ohne historie/players-*.csv ist die Gegnerstärke neutral</b> — mit <code>node fetch-historie.js</code> erzeugen.':''}</div>
+      ${st.aufsteiger.length?`<br>${st.aufsteiger.map(esc).join(', ').replace(/, ([^,]*)$/,' und $1')}
+        ${st.aufsteiger.length===1?'startet':'starten'} ohne Bundesliga-Vorsaison beim Ligaschnitt und
+        ${st.aufsteiger.length===1?'wird':'werden'} allein durch die laufende Saison eingeordnet —
+        im selben Tempo wie alle anderen.`:''}</div>
     <div class="selectors" style="margin:12px 0"><div class="selector-group"><label>Zeitraum</label>
       <select onchange="planFenster=+this.value;renderAnalyse()">
         ${[3,5,8].map(n=>`<option value="${n}" ${n===planFenster?'selected':''}>nächste ${n} Spieltage</option>`).join('')}
