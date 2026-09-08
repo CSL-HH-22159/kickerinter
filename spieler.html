@@ -674,6 +674,9 @@ function powerVerlaufBlock(p){
         :`${st.pfeil} ${dl>0?'+':''}${dl}`}</td></tr>`;
   }).join('');
   const pausen=v.filter((d,i)=>i===0?!(d.eins>0):!(d.eins>v[i-1].eins)).length;
+  /* Gespielt, aber ohne Note: Bei Kurzeinsätzen vergibt kicker.de keine Bewertung.
+     Die Zeile ist dann nicht grau, das „–" braucht trotzdem eine Erklärung. */
+  const ohneNote=v.some((d,i)=>d.stNote==null&&(i===0?d.eins>0:d.eins>v[i-1].eins));
 
   return `${chart}
     <table class="ptab"><thead>
@@ -692,7 +695,8 @@ function powerVerlaufBlock(p){
         :`<span>An Spieltag ${tr.bis.st} <b>kein Einsatz</b>${tr.delta?` — die ${tr.delta>0?'+':''}${tr.delta}
           kommen allein daher, dass sich der Ligavergleich verschoben hat`:''}.</span>`)}
       <span>Der Index rechnet mit den <b>Saisonwerten</b>, nicht mit dem einzelnen Spieltag.</span>
-      ${pausen?'<span>Grau hinterlegt: kein Einsatz an diesem Spieltag.</span>':''}</div>`;
+      ${pausen?'<span>Grau hinterlegt: kein Einsatz an diesem Spieltag.</span>':''}
+      ${ohneNote?'<span>„–" trotz Einsatz: kicker.de vergibt bei Kurzeinsätzen keine Note.</span>':''}</div>`;
 }
 
 /* ================= Profil ================= */
