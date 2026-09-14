@@ -337,10 +337,34 @@ function buildIndex(){
 const POWER_K_NOTE=3, POWER_K_PKT=5;
 const POWER_VORLAEUFIG=5;        // bis dahin wird der Index als vorläufig ausgewiesen
 const POWER={ref:null, proSpiel:false, minSpiele:1, warn:null, mNote:3.5, mPkt:0};
+
+/* ---- Einsätze, die zum Punktestand passen -----------------------------------
+   Die Leistungsdaten (stats/saison.json) laufen den Managerpunkten
+   (players-se.csv) regelmässig einen Spieltag voraus: Die Spieldaten stehen am
+   Sonntagabend bereit, die Kickerwertung erst ein bis zwei Tage später.
+
+   Würde man in diesem Fenster die Punkte aus zwei Spieltagen durch die Einsätze
+   aus dreien teilen, stünde jeder schlechter da, der am dritten Spieltag gespielt
+   hat — und nur der. Wer aussetzte, bliebe unberührt. Das verzerrt den Vergleich.
+
+   stats/powerverlauf.json ist mit den Punkten synchron, weil es aus denselben
+   Schnappschüssen entsteht. Solange es zurückliegt, zählen seine Einsätze. */
+let PERIODE_VERSETZT=false;
+function einsaetzeVon(p){
+  const s=(IDX&&IDX.statsById)?IDX.statsById.get(p.id):null;
+  const ausStats=s&&s.einsaetze?s.einsaetze:0;
+  if(!PERIODE_VERSETZT||!VERLAUF||!VERLAUF.spieler[p.id]) return ausStats;
+  const reihe=VERLAUF.spieler[p.id];
+  const row=reihe[reihe.length-1];
+  return row?row[2]:ausStats;
+}
+
 function powerVorbereiten(){
   POWER.ref=null; POWER.proSpiel=false; POWER.warn=null;
   if(!PLAYERS.length) return;
-  const stTage=STATS?STATS.spieltage.length:0;
+  PERIODE_VERSETZT=!!(VERLAUF&&STATS&&VERLAUF.spieltage.length
+    &&STATS.spieltage.length>VERLAUF.spieltage.length);
+  const stTage=PERIODE_VERSETZT?VERLAUF.spieltage.length:(STATS?STATS.spieltage.length:0);
   POWER.minSpiele=Math.max(1,Math.round(stTage*0.3));
 
   /* Ligaschnitte als Bezugspunkt für das Erfahrungsgewicht.
@@ -350,8 +374,7 @@ function powerVorbereiten(){
      gewichtet nach ihren Einsätzen. */
   let nSum=0,nGew=0,pSum=0,eSum=0;
   for(const p of PLAYERS){
-    const s=IDX&&IDX.statsById?IDX.statsById.get(p.id):null;
-    const e=s&&s.einsaetze?s.einsaetze:0;
+    const e=einsaetzeVon(p);
     if(!e) continue;
     if(p.note>0){ nSum+=p.note*e; nGew+=e; }
     pSum+=p.pts||0; eSum+=e;
@@ -362,20 +385,26 @@ function powerVorbereiten(){
   // Kann pro Spiel gerechnet werden? Nur wenn Einsätze vorliegen und plausibel sind.
   const roh=[];
   if(STATS) for(const p of PLAYERS){
-    const s=IDX.statsById.get(p.id);
-    if(!s||!s.einsaetze||s.einsaetze<POWER.minSpiele) continue;
-    roh.push(p.pts/s.einsaetze);
+    const e=einsaetzeVon(p);
+    if(!e||e<POWER.minSpiele) continue;
+    roh.push(p.pts/e);
   }
   const maxRoh=roh.length?Math.max(...roh):0;
   if(roh.length>=5 && maxRoh<=40){
     POWER.proSpiel=true;
     // Referenz aus den geglätteten Werten, nicht aus dem Rohausreisser
     const gegl=PLAYERS.map(p=>{
-      const s=IDX.statsById.get(p.id);
-      if(!s||!s.einsaetze||s.einsaetze<POWER.minSpiele) return null;
-      return ((p.pts||0)+POWER.mPkt*POWER_K_PKT)/(s.einsaetze+POWER_K_PKT);
+      const e=einsaetzeVon(p);
+      if(!e||e<POWER.minSpiele) return null;
+      return ((p.pts||0)+POWER.mPkt*POWER_K_PKT)/(e+POWER_K_PKT);
     }).filter(v=>v!=null);
     POWER.ref=Math.max(...gegl,0.01);
+    if(PERIODE_VERSETZT)
+      POWER.warn='Die Leistungsdaten reichen bis Spieltag '+STATS.spieltage[STATS.spieltage.length-1]
+        +', die Kickerwertung erst bis Spieltag '+VERLAUF.spieltage[VERLAUF.spieltage.length-1]
+        +'. Der Index rechnet deshalb mit dem Stand nach Spieltag '
+        +VERLAUF.spieltage[VERLAUF.spieltage.length-1]+' — sonst würde bestraft, wer zuletzt '
+        +'gespielt hat. Sobald die Wertung da ist, zieht er automatisch nach.';
   }else{
     POWER.ref=Math.max(...PLAYERS.map(p=>p.pts||0),1);
     if(roh.length>=5 && maxRoh>40)
@@ -414,8 +443,7 @@ function powerKern(rohNote,pts,e,L){
 }
 function powerVon(p){
   if(!p) return null;
-  const s=(IDX&&IDX.statsById)?IDX.statsById.get(p.id):null;
-  return powerKern(p.note,p.pts,s&&s.einsaetze?s.einsaetze:0,POWER);
+  return powerKern(p.note,p.pts,einsaetzeVon(p),POWER);
 }
 
 /* ---- Verlauf ----------------------------------------------------------------

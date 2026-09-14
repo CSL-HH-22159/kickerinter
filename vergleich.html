@@ -520,9 +520,17 @@ function renderTabelle(){
     let best=null,worst=null;
     IDX.sts.forEach(st=>{ const v=mgrPts(m,st); if(v==null) return;
       if(!best||v>best.v) best={st,v}; if(!worst||v<worst.v) worst={st,v}; });
-    const wins=IDX.sts.filter(st=>{ const v=mgrPts(m,st); if(v==null) return false;
-      return IDX.managers.every(o=>o===m || (mgrPts(o,st)==null || mgrPts(o,st)<=v)) &&
-             IDX.managers.some(o=>o!==m && mgrPts(o,st)!=null && mgrPts(o,st)<v); }).length;
+    /* Spieltagssiege: Wer allein vorn liegt, bekommt 1. Teilen sich mehrere die
+       Höchstpunktzahl, bekommt jeder den entsprechenden Bruchteil — zwei Sieger je 0,5,
+       drei je ⅓. So bleibt die Summe je Spieltag immer genau 1.
+       (Erster Fall: Spieltag 3/2026, Oli und Gordon je 93.) */
+    const wins=IDX.sts.reduce((summe,st)=>{
+      const v=mgrPts(m,st); if(v==null) return summe;
+      const werte=IDX.managers.map(o=>mgrPts(o,st)).filter(x=>x!=null);
+      if(werte.length<2) return summe;                   // ohne Gegner kein Sieg
+      const max=Math.max(...werte);
+      return v===max ? summe+1/werte.filter(x=>x===max).length : summe;
+    },0);
     return {m,total,avg:pts.length?total/pts.length:null, sd:stdev(pts),
             form:last5.length?last5.reduce((a,b)=>a+b,0)/last5.length:null, best,worst,wins,n:pts.length};
   }).sort((a,b)=>b.total-a.total);
@@ -532,7 +540,7 @@ function renderTabelle(){
     <td class="num">${fmt(s.form,1)}</td><td class="num">${fmt(s.sd,1)}</td>
     <td class="num">${s.best?fmt(s.best.v)+' <span class="badge">ST '+s.best.st+'</span>':'–'}</td>
     <td class="num">${s.worst?fmt(s.worst.v)+' <span class="badge">ST '+s.worst.st+'</span>':'–'}</td>
-    <td class="num">${s.wins}</td></tr>`).join('');
+    <td class="num">${(Math.round(s.wins*100)/100).toLocaleString('de-DE',{maximumFractionDigits:2})}</td></tr>`).join('');
   // Verläufe
   const cumSeries=IDX.managers.map(m=>{ let c=0; return {name:m,color:IDX.color[m],
     values:IDX.sts.map(st=>{ const v=mgrPts(m,st); if(v!=null) c+=v; return {x:st,y:v!=null?c:null}; })}; });
@@ -587,7 +595,7 @@ function renderTabelle(){
   el.innerHTML =
    `<div class="card"><h2>Gesamtrangliste</h2>
       <table class="dt"><thead><tr><th class="num">#</th><th>Manager</th><th class="num">Punkte</th><th class="num">Schnitt</th><th class="num">Form (5)</th><th class="num">StdAbw</th><th class="num">Bester ST</th><th class="num">Schlechtester</th><th class="num">ST-Siege</th></tr></thead><tbody>${rank}</tbody></table>
-      <div class="hint" style="margin-top:10px">Form = Schnitt der letzten 5 gespielten Spieltage · StdAbw = Konstanz (klein = verlässlich) · ST-Siege = alleinige Spieltagssiege.</div></div>
+      <div class="hint" style="margin-top:10px">Form = Schnitt der letzten 5 gespielten Spieltage · StdAbw = Konstanz (klein = verlässlich) · ST-Siege = Spieltagssiege; bei Gleichstand geteilt (zwei Sieger je 0,5).</div></div>
     <div class="card"><h2>Direktvergleich (2–3 Manager)</h2>
       <div class="selectors">${cmpSelHtml}
         <div class="selector-group"><label>Ansicht</label><select onchange="cmpView=this.value;renderTabelle()">${viewOpts}</select></div></div>
@@ -833,15 +841,20 @@ function renderDuelle(){
   let hi=null, lo=null;
   const stWinners=[];
   for(const st of IDX.sts){
-    let best=null;
+    let best=null, geteilt=false;
     for(const m of ms){ const v=mgrPts(m,st); if(v==null) continue;
       if(!hi||v>hi.v) hi={m,st,v}; if(!lo||v<lo.v) lo={m,st,v};
-      if(!best||v>best.v) best={m,st,v}; }
-    if(best) stWinners.push(best);
+      if(!best||v>best.v){ best={m,st,v}; geteilt=false; }
+      else if(v===best.v) geteilt=true; }
+    /* Geteilter Spieltagssieg: kein alleiniger Sieger. Ein Platzhalter mit m=null
+       unterbricht die Serie — sonst verlängerte der Gleichstand die Serie dessen,
+       der zufällig zuerst in der Managerliste steht. */
+    if(best) stWinners.push(geteilt?{m:null,st,v:best.v}:best);
   }
   // längste Serie an ST-Siegen
   let streak={m:null,len:0}, cur={m:null,len:0};
   for(const w of stWinners){
+    if(w.m==null){ cur={m:null,len:0}; continue; }   // geteilter Sieg: Serie reisst
     if(w.m===cur.m) cur.len++; else cur={m:w.m,len:1};
     if(cur.len>streak.len) streak={...cur};
   }
@@ -862,7 +875,7 @@ function renderDuelle(){
       <table class="dt"><tbody>
         <tr><td>🏆 Höchste Spieltagswertung</td><td>${hi?esc(hi.m)+' – <b>'+fmt(hi.v)+'</b> Punkte (ST '+hi.st+')':'–'}</td></tr>
         <tr><td>🥶 Niedrigste Spieltagswertung</td><td>${lo?esc(lo.m)+' – <b>'+fmt(lo.v)+'</b> Punkte (ST '+lo.st+')':'–'}</td></tr>
-        <tr><td>🔥 Längste Spieltagssieg-Serie</td><td>${streak.m?esc(streak.m)+' – <b>'+streak.len+'</b> Spieltage in Folge':'–'}</td></tr>
+        <tr><td>🔥 Längste Spieltagssieg-Serie</td><td>${streak.m?esc(streak.m)+' – <b>'+streak.len+'</b> '+(streak.len===1?'Spieltag':'Spieltage in Folge'):'–'}</td></tr>
       </tbody></table></div>
     <div class="card"><h2>Spieler des Spieltags</h2>
       <table class="dt"><thead><tr><th class="num">ST</th><th>Spieler</th><th>Pos</th><th>Manager</th><th class="num">Punkte</th></tr></thead><tbody>${potdRows}</tbody></table></div>`;
