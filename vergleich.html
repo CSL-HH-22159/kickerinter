@@ -1236,16 +1236,102 @@ function analyseSpielplan(){
 }
 
 /* --- 6. Frühwarnsystem ----------------------------------------------------- */
+/* Die Frühwarnung braucht die Werte JE SPIELTAG (stats/st<N>.json), nicht nur die
+   Saisonsummen. Sie werden erst geladen, wenn die Ansicht geöffnet wird. */
+let FW_ST=null, FW_LAEDT=false;
+async function fwLaden(){
+  const d={};
+  for(const n of STATS.spieltage){
+    try{ const r=await fetch('stats/st'+n+'.json',{cache:'no-cache'});
+      if(r.ok && !/text\/html/.test(r.headers.get('content-type')||'')){
+        const j=await r.json(); if(j&&j.spieler) d[n]=j; } }catch(e){}
+  }
+  FW_ST=d;
+  if(analyseTeil==='fruehwarnung') renderAnalyse();
+}
+
+/* Schwellen aus den ersten vier Spieltagen abgeleitet (Stammspieler, >=60 Min):
+   Laufleistung je 90 Min. schwankt von Spiel zu Spiel um etwa ±4,5 %, Sprints je 90 Min.
+   um etwa ±34 %. Deshalb zählt die Laufleistung, die Sprints nur als Verstärkung. */
+const FW={ kmWarn:-6, kmLeicht:-3, sprintWarn:-25, minStamm:45, minRest:0.6, minEinsatz:45 };
+
 function analyseFruehwarnung(){
   if(!STATS) return '<div class="empty-note">Keine Leistungsdaten geladen.</div>';
-  if(anzahlST()<4) return `<div class="hint">Vergleicht die <b>Laufleistung und Sprints</b> der
-      letzten drei Spieltage mit dem Saisonschnitt. Ein deutlicher Rückgang geht Formeinbrüchen
-      und Verletzungen oft voraus — bevor es in den Punkten sichtbar wird.</div>
-    ${hinweisAb(4,'Vorher gibt es keinen Trend, nur einen Messpunkt.')}
-    <div class="hint" style="margin-top:10px">Die Daten dafür (<code>laufleistung</code>,
-      <code>sprints</code>, <code>topspeed</code>) werden ab Spieltag 1 mitgeschrieben — es fehlt
-      also nur die Zeit, nicht die Grundlage.</div>`;
-  return '<div class="empty-note">Trendberechnung folgt, sobald genug Spieltage vorliegen.</div>';
+  const erklaerung=`<div class="hint">Vergleicht <b>Laufleistung, Sprints und Einsatzzeit</b> der letzten
+      Spieltage mit den Spieltagen davor. Ein deutlicher Rückgang geht Formeinbrüchen, Verletzungen
+      und dem Verlust des Stammplatzes oft voraus — bevor es in den Punkten sichtbar wird.</div>`;
+  if(anzahlST()<4) return erklaerung+hinweisAb(4,'Vorher gibt es keinen Trend, nur einen Messpunkt.');
+  if(location.protocol==='file:') return erklaerung+
+    '<div class="empty-note">Die Spieltagsdaten lassen sich nur über einen Webserver laden.</div>';
+  if(!IDX||!SAISON) return '<div class="empty-note">Keine Kaderdaten.</div>';
+  if(!FW_ST){ if(!FW_LAEDT){ FW_LAEDT=true; fwLaden(); }
+    return erklaerung+'<div class="empty-note">Lade die Leistungsdaten der einzelnen Spieltage …</div>'; }
+
+  /* Fenster: bis Spieltag 5 die jüngere Hälfte, danach die letzten drei Spieltage. */
+  const N=STATS.spieltage.filter(n=>FW_ST[n]).sort((a,b)=>a-b);
+  if(N.length<4) return erklaerung+'<div class="empty-note">Zu wenige Spieltagsdateien geladen.</div>';
+  const W=N.length<6?Math.floor(N.length/2):3, fen=N.slice(-W), bas=N.slice(0,-W);
+
+  // Kaderspieler (aktueller Stand) mit ihren Besitzern
+  const besitz=new Map();
+  for(const r of SAISON.rows){
+    if(!r.st[IDX.maxST]) continue;
+    const p=spielerFinden(r.spieler,r.verein); if(!p) continue;
+    if(!besitz.has(p.id)) besitz.set(p.id,{name:r.spieler,verein:r.verein,mgr:new Set()});
+    besitz.get(p.id).mgr.add(r.manager);
+  }
+  const eintrag=(n,kid)=>FW_ST[n].spieler.find(s=>s.kid===kid&&s.minuten>0)||null;
+  const avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
+  const je90=(a,f)=>avg(a.map(s=>(s[f]||0)/s.minuten*90));
+
+  const zeilen=[];
+  for(const [kid,o] of besitz){
+    const b=bas.map(n=>eintrag(n,kid)).filter(Boolean), f=fen.map(n=>eintrag(n,kid)).filter(Boolean);
+    if(!b.length) continue;                                   // vorher nie gespielt: kein Vergleich
+    if([...b,...f].some(s=>s.pos==='GOALKEEPER')) continue;   // Laufwerte sagen beim Torwart nichts
+    // Minuten je Spieltag — ein Spieltag ohne Einsatz zählt als 0
+    const minB=b.reduce((x,s)=>x+s.minuten,0)/bas.length, minF=f.reduce((x,s)=>x+s.minuten,0)/fen.length;
+    const bq=b.filter(s=>s.minuten>=FW.minEinsatz&&s.laufleistung), fq=f.filter(s=>s.minuten>=FW.minEinsatz&&s.laufleistung);
+    let km=null, sp=null, kmB=null, kmF=null;
+    if(bq.length&&fq.length){
+      kmB=je90(bq,'laufleistung'); kmF=je90(fq,'laufleistung'); km=(kmF-kmB)/kmB*100;
+      const sB=je90(bq,'sprints'), sF=je90(fq,'sprints'); sp=sB>0?(sF-sB)/sB*100:null;
+    }
+    const sig=[]; const stamm=minB>=FW.minStamm;
+    if(stamm&&!f.length) sig.push({t:'zuletzt ohne Einsatz',s:3});
+    else if(stamm&&minF<=minB*FW.minRest) sig.push({t:'Einsatzzeit gesunken',s:2});
+    if(km!=null&&(km<=FW.kmWarn||(km<=FW.kmLeicht&&sp!=null&&sp<=FW.sprintWarn)))
+      sig.push({t:'Laufleistung gesunken',s:2});
+    zeilen.push({...o,km,sp,kmB,kmF,minB,minF,b:b.length,f:f.length,sig,
+      gewicht:sig.reduce((x,g)=>x+g.s,0)});
+  }
+  const warn=zeilen.filter(z=>z.sig.length).sort((a,b)=>b.gewicht-a.gewicht||(a.km??0)-(b.km??0));
+
+  const pz=v=>v==null?'–':(v>0?'+':'')+fmt(v,1)+' %';
+  const mgrs=z=>[...z.mgr].map(m=>`<span class="color-dot" title="${esc(m)}" style="background:${IDX.color[m]||'#999'}"></span>`).join('');
+  const tabelle=warn.map(z=>`<tr>
+      <td><b>${esc(z.name)}</b></td><td>${esc(z.verein)}</td><td>${mgrs(z)}</td>
+      <td class="num">${fmt(z.minB,0)} → <b class="${z.minF<=z.minB*FW.minRest?'bad':''}">${fmt(z.minF,0)}</b></td>
+      <td class="num">${z.kmB==null?'–':fmt(z.kmB,1)+' → '+fmt(z.kmF,1)}</td>
+      <td class="num"><b class="${z.km!=null&&z.km<=FW.kmWarn?'bad':''}">${pz(z.km)}</b></td>
+      <td class="num">${pz(z.sp)}</td>
+      <td>${z.sig.map(g=>g.t).join(' · ')}</td></tr>`).join('');
+
+  return erklaerung+`
+    <div class="hint" style="margin-top:10px"><b>Vergleich:</b> Spieltag ${fen.join(' + ')} gegen
+      Spieltag ${bas.join(' + ')}. Laufleistung und Sprints je 90 Minuten, nur aus Einsätzen ab
+      ${FW.minEinsatz} Minuten. <b>Einsatzzeit</b> = Minuten je Spieltag, ein Spieltag ohne Einsatz
+      zählt als 0 — gewarnt wird nur bei Spielern, die vorher im Schnitt mindestens
+      ${FW.minStamm} Minuten spielten.<br>
+      <b>Signale:</b> Laufleistung ${FW.kmWarn} % oder schlechter · oder ${FW.kmLeicht} % zusammen mit
+      Sprints ${FW.sprintWarn} % · Einsatzzeit auf ${FW.minRest*100} % oder weniger gefallen ·
+      zuletzt gar kein Einsatz. Torhüter sind ausgenommen.</div>
+    ${N.length<8?hinweisAb(8,'Bis dahin beruht der Vergleich auf wenigen Spielen je Seite — ein einzelnes schwaches Spiel oder eine Auswechslung reicht für ein Signal. Hinweis, kein Befund.'):''}
+    <p style="margin:14px 0 6px"><b>${warn.length}</b> von ${zeilen.length} Kaderspielern mit Vergleichsdaten zeigen ein Signal.</p>
+    ${warn.length?`<div style="overflow-x:auto"><table class="dt"><thead><tr><th>Spieler</th><th>Verein</th><th>Besitzer</th>
+      <th class="num">Min./Spieltag</th><th class="num">km/90</th><th class="num">Δ Lauf</th>
+      <th class="num">Δ Sprints</th><th>Signal</th></tr></thead><tbody>${tabelle}</tbody></table></div>`
+      :'<div class="empty-note">Kein Kaderspieler mit auffälligem Rückgang.</div>'}`;
 }
 
 /* --- Reiter zusammensetzen ------------------------------------------------ */
