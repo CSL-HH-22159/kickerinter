@@ -464,7 +464,7 @@ function emptyNote(){
 /* ================= SVG-Liniendiagramm ================= */
 function lineChart(series, opts){
   const o=Object.assign({w:1000,h:300,invert:false,intTicks:false,noHide:false,xMax:null,
-    versteckt:null,yFmt:v=>fmt(v)},opts||{});
+    versteckt:null,yFmt:v=>fmt(v),refLine:null,refText:''},opts||{});
   const weg = o.versteckt || hiddenSeries;
   const vis = o.noHide ? series : series.filter(s=>!weg.has(s.name));
   const pts = vis.flatMap(s=>s.values.filter(v=>v.y!=null));
@@ -484,6 +484,13 @@ function lineChart(series, opts){
   const stSchritt=xMax>20?Math.ceil(xMax/17):1;   // bei 34 Spieltagen nicht jede Zahl schreiben
   for(let st=1;st<=xMax;st++) if(st===1||st===xMax||st%stSchritt===0)
     g+=`<text x="${X(st)}" y="${o.h-8}" font-size="10" fill="#6b7280" text-anchor="middle">${st}</text>`;
+  /* Bezugslinie, z. B. der Ligaschnitt bei 1,00 — ohne sie sieht man nicht,
+     wer über und wer unter dem Feld liegt. Nur zeichnen, wenn sie im Bild liegt. */
+  if(o.refLine!=null && o.refLine>=yMin && o.refLine<=yMax){
+    const y=Y(o.refLine);
+    g+=`<line x1="${padL}" y1="${y}" x2="${o.w-padR}" y2="${y}" stroke="#9aa4b2" stroke-width="1.4" stroke-dasharray="6 4"/>`;
+    if(o.refText) g+=`<text x="${o.w-padR-4}" y="${y-5}" font-size="10" fill="#6b7280" text-anchor="end">${esc(o.refText)}</text>`;
+  }
   for(const s of vis){
     const vp=s.values.filter(v=>v.y!=null);
     const d=vp.map((v,i)=>(i?'L':'M')+X(v.x).toFixed(1)+' '+Y(v.y).toFixed(1)).join(' ');
@@ -509,14 +516,34 @@ function saisonEffizienz(m){
     const b=bestXI(m,st); if(!b) continue; real+=D.sSum; opt+=b.sum; }
   return opt?real/opt*100:null;
 }
+/* Ligaschnitt je Spieltag — Bezugsgrösse für alles, was „Form" heisst.
+   Das Punkteniveau eines Spieltags schwankt stark (ST 1–6 der Saison 2026/27:
+   56 · 68 · 47 · 66 · 51 · 66). Wer Form in rohen Punkten misst, hält einen
+   Spielplan-Effekt für einen Formeinbruch: Nach sechs Spieltagen sahen neun von
+   elf Managern wie Absacker aus, obwohl die ganze Liga mitgefallen war.
+   1,00 = genau der Ligaschnitt dieses Spieltags. */
+function ligaSchnittJeST(){
+  const o={};
+  for(const st of IDX.sts){
+    const w=IDX.managers.map(m=>mgrPts(m,st)).filter(v=>v!=null);
+    if(w.length) o[st]=w.reduce((a,b)=>a+b,0)/w.length;
+  }
+  return o;
+}
+
 function renderTabelle(){
   const el=document.getElementById('tab-tabelle');
   if(!IDX){ el.innerHTML=emptyNote(); return; }
   // Rangliste
+  const ligaST=ligaSchnittJeST();
   const stats=IDX.managers.map(m=>{
     const pts=IDX.sts.map(st=>mgrPts(m,st)).filter(v=>v!=null);
     const total=pts.reduce((a,b)=>a+b,0);
     const last5=pts.slice(-5);
+    /* Dieselben letzten fünf Spieltage, aber jeder an seinem eigenen Ligaschnitt
+       gemessen — sonst liest man Spielplan-Schwankungen als Form (siehe oben). */
+    const rel5=IDX.sts.filter(st=>mgrPts(m,st)!=null).slice(-5)
+      .map(st=>ligaST[st]?mgrPts(m,st)/ligaST[st]:null).filter(v=>v!=null);
     let best=null,worst=null;
     IDX.sts.forEach(st=>{ const v=mgrPts(m,st); if(v==null) return;
       if(!best||v>best.v) best={st,v}; if(!worst||v<worst.v) worst={st,v}; });
@@ -532,12 +559,15 @@ function renderTabelle(){
       return v===max ? summe+1/werte.filter(x=>x===max).length : summe;
     },0);
     return {m,total,avg:pts.length?total/pts.length:null, sd:stdev(pts),
-            form:last5.length?last5.reduce((a,b)=>a+b,0)/last5.length:null, best,worst,wins,n:pts.length};
+            form:last5.length?last5.reduce((a,b)=>a+b,0)/last5.length:null,
+            formRel:mittel(rel5), best,worst,wins,n:pts.length};
   }).sort((a,b)=>b.total-a.total);
   let rank=''+stats.map((s,i)=>`<tr><td class="num">${i+1}.</td>
     <td><span class="color-dot" style="background:${IDX.color[s.m]}"></span>${esc(s.m)}</td>
     <td class="num"><b>${fmt(s.total)}</b></td><td class="num">${fmt(s.avg,1)}</td>
-    <td class="num">${fmt(s.form,1)}</td><td class="num">${fmt(s.sd,1)}</td>
+    <td class="num">${fmt(s.form,1)}${s.formRel==null?'':
+      ` <span class="badge" title="im Verhältnis zum Ligaschnitt derselben Spieltage – 1,00 = Ligaschnitt">${fmt(s.formRel,2)}</span>`}</td>
+    <td class="num">${fmt(s.sd,1)}</td>
     <td class="num">${s.best?fmt(s.best.v)+' <span class="badge">ST '+s.best.st+'</span>':'–'}</td>
     <td class="num">${s.worst?fmt(s.worst.v)+' <span class="badge">ST '+s.worst.st+'</span>':'–'}</td>
     <td class="num">${(Math.round(s.wins*100)/100).toLocaleString('de-DE',{maximumFractionDigits:2})}</td></tr>`).join('');
@@ -595,7 +625,11 @@ function renderTabelle(){
   el.innerHTML =
    `<div class="card"><h2>Gesamtrangliste</h2>
       <table class="dt"><thead><tr><th class="num">#</th><th>Manager</th><th class="num">Punkte</th><th class="num">Schnitt</th><th class="num">Form (5)</th><th class="num">StdAbw</th><th class="num">Bester ST</th><th class="num">Schlechtester</th><th class="num">ST-Siege</th></tr></thead><tbody>${rank}</tbody></table>
-      <div class="hint" style="margin-top:10px">Form = Schnitt der letzten 5 gespielten Spieltage · StdAbw = Konstanz (klein = verlässlich) · ST-Siege = Spieltagssiege; bei Gleichstand geteilt (zwei Sieger je 0,5).</div></div>
+      <div class="hint" style="margin-top:10px">Form = Schnitt der letzten 5 gespielten Spieltage, die
+        <span class="badge">Zahl</span> daneben im Verhältnis zum Ligaschnitt derselben Spieltage
+        (1,00 = Ligaschnitt) · StdAbw = Konstanz (klein = verlässlich) · ST-Siege = Spieltagssiege;
+        bei Gleichstand geteilt (zwei Sieger je 0,5). Den Verlauf zeigt
+        <b>Analyse → Form</b>.</div></div>
     <div class="card"><h2>Direktvergleich (2–3 Manager)</h2>
       <div class="selectors">${cmpSelHtml}
         <div class="selector-group"><label>Ansicht</label><select onchange="cmpView=this.value;renderTabelle()">${viewOpts}</select></div></div>
@@ -1334,19 +1368,147 @@ function analyseFruehwarnung(){
       :'<div class="empty-note">Kein Kaderspieler mit auffälligem Rückgang.</div>'}`;
 }
 
+/* --- 7. Form --------------------------------------------------------------
+   Form ist nicht der Saisonschnitt. Der mittelt alles ein und wird mit jedem
+   Spieltag träger — nach zwanzig Spieltagen bewegt ein guter Sonntag ihn kaum
+   noch. Form schaut nur auf das letzte Fenster und vergisst den Rest.
+
+   Gemessen wird standardmässig RELATIV zum Ligaschnitt desselben Spieltags
+   (siehe ligaSchnittJeST). Punkte sind umschaltbar, aber die schlechtere Brille:
+   Nach sechs Spieltagen 2026/27 verlor Oli roh 25 Punkte gegenüber dem Start —
+   relativ steht er mit 1,07 weiter über dem Schnitt. Nicht er ist eingebrochen,
+   die Liga ist mitgefallen. Luksn dagegen ging wirklich von 0,51 auf 1,26.        */
+let formBasis='relativ', formFenster=3;
+const formVersteckt=new Set();
+function formToggle(n){ formVersteckt.has(n)?formVersteckt.delete(n):formVersteckt.add(n); renderAnalyse(); }
+
+function analyseForm(){
+  if(!IDX) return '<div class="empty-note">Keine Daten.</div>';
+  const ligaST=ligaSchnittJeST();
+  const sts=IDX.sts.filter(st=>ligaST[st]!=null);
+  if(!sts.length) return '<div class="empty-note">Noch keine gewerteten Spieltage.</div>';
+
+  const relativ=formBasis==='relativ';
+  const wert=(m,st)=>{ const v=mgrPts(m,st); if(v==null) return null;
+    return relativ?(ligaST[st]?v/ligaST[st]:null):v; };
+  const F=formFenster;
+  const nk=relativ?2:1;
+  const mitte=relativ?1:mittel(sts.map(st=>ligaST[st]));   // Bezugslinie im Diagramm
+
+  /* Gleitendes Fenster: je Spieltag der Schnitt der letzten F gewerteten Spieltage.
+     Am Saisonanfang ist das Fenster kürzer — dort steht, worauf es beruht. */
+  const fensterWert=(m,bis)=>{
+    const i=sts.indexOf(bis);
+    const w=sts.slice(Math.max(0,i-F+1),i+1).map(st=>wert(m,st)).filter(v=>v!=null);
+    return w.length?{v:mittel(w),n:w.length}:null;
+  };
+  const reihen=IDX.managers.map(m=>({name:m,color:IDX.color[m],
+    values:sts.map(st=>{ const f=fensterWert(m,st); return {x:st,y:f?f.v:null}; })}));
+
+  /* Tabelle: letztes Fenster gegen das davorliegende. */
+  const letzte=sts.slice(-F), davorSts=sts.slice(-2*F,-F);
+  const zeilen=IDX.managers.map(m=>{
+    const akt=mittel(letzte.map(st=>wert(m,st)).filter(v=>v!=null));
+    const vorW=davorSts.map(st=>wert(m,st)).filter(v=>v!=null);
+    const vor=vorW.length?mittel(vorW):null;
+    const saison=mittel(sts.map(st=>wert(m,st)).filter(v=>v!=null));
+    return {m,akt,vor,saison,vorN:vorW.length,
+      trend:(akt!=null&&vor!=null)?akt-vor:null,gesamt:mgrTotal(m)};
+  }).filter(z=>z.akt!=null);
+
+  const formRang=[...zeilen].sort((a,b)=>b.akt-a.akt).map(z=>z.m);
+  const tabRang=[...zeilen].sort((a,b)=>b.gesamt-a.gesamt).map(z=>z.m);
+  zeilen.sort((a,b)=>b.akt-a.akt);
+
+  /* Schwelle, ab der ein Trend überhaupt benannt wird — darunter „gleich".
+     Bewusst grob: Bei drei Werten je Fenster ist alles Kleinere Rauschen. */
+  const schwelle=relativ?0.10:5;
+  const pfeil=t=>{
+    if(t==null) return {z:'–',f:'var(--muted)',t:'kein Vergleichsfenster'};
+    if(t>=schwelle)  return {z:'▲',f:'#15803d',t:'aufwärts'};
+    if(t<=-schwelle) return {z:'▼',f:'#b91c1c',t:'abwärts'};
+    return {z:'▬',f:'#d9a406',t:'unverändert'};
+  };
+
+  const tab=zeilen.map((z,i)=>{
+    const p=pfeil(z.trend);
+    const dRang=tabRang.indexOf(z.m)-formRang.indexOf(z.m);   // + = in Form besser als in der Tabelle
+    return `<tr>
+      <td class="num">${i+1}.</td>
+      <td><span class="color-dot" style="background:${IDX.color[z.m]}"></span>${esc(z.m)}</td>
+      <td class="num"><b>${fmt(z.akt,nk)}</b></td>
+      <td class="num">${z.vor==null?'–':fmt(z.vor,nk)}${z.vorN&&z.vorN<F
+        ? ` <span class="badge" title="beruht erst auf ${z.vorN} statt ${F} Spieltagen">${z.vorN}</span>`:''}</td>
+      ${/* Ist das Vergleichsfenster noch nicht voll, steht hier 5 Spieltage gegen
+            vielleicht einen. Der Wert bleibt sichtbar, wird aber blass und ohne
+            Pfeil gezeigt — sonst liest man Zufall als Trend. */''}
+      <td class="num" style="font-weight:700;color:${z.vorN<F?'var(--muted)':p.f}"
+        title="${z.vorN<F?`Vergleichsfenster unvollständig (${z.vorN} statt ${F} Spieltage) — nicht belastbar`:p.t}">
+        ${z.trend==null?'–':(z.vorN<F?'':p.z+' ')+(z.trend>0?'+':'')+fmt(z.trend,nk)}</td>
+      <td class="num">${fmt(z.saison,nk)}</td>
+      <td class="num">${tabRang.indexOf(z.m)+1}.${dRang===0?'':
+        ` <span class="badge" style="background:${dRang>0?'#dcfce7':'#fee2e2'}" title="${dRang>0
+          ? 'in Form '+dRang+' Plätze besser als in der Tabelle'
+          : 'in Form '+(-dRang)+' Plätze schlechter als in der Tabelle'}">${dRang>0?'+':''}${dRang}</span>`}</td>
+    </tr>`;
+  }).join('');
+
+  const legende='<div class="legend">'+IDX.managers.map(m=>
+    `<span class="${formVersteckt.has(m)?'off':''}" onclick="formToggle('${esc(m).replace(/'/g,"\\'")}')">`+
+    `<span class="color-dot" style="background:${IDX.color[m]}"></span>${esc(m)}</span>`).join('')+'</div>';
+
+  const bezug=relativ
+    ? '<b>1,00 = Ligaschnitt</b> dieses Spieltags. Über 1 heisst: besser als das Feld, unabhängig davon, ob der Spieltag viele oder wenige Punkte hergab.'
+    : 'Rohe Punkte. <b>Vorsicht:</b> Das Punkteniveau schwankt je Spieltag stark — ein Rückgang kann allein am Spielplan liegen. Für den Formvergleich ist die relative Ansicht die ehrlichere.';
+
+  return `<div class="hint">Nicht der Saisonschnitt, sondern der letzte Abschnitt: gleitender
+      Schnitt über <b>${F} Spieltage</b>. ${bezug}<br>
+      <b>Datenbasis:</b> Managerpunkte der Spieltage ${sts[0]}–${sts[sts.length-1]} aus
+      <code>spieltagspunkte.csv</code>.</div>
+    ${sts.length<2*F?hinweisAb(2*F,`Erst ab ${2*F} Spieltagen stehen zwei volle Fenster nebeneinander — vorher ist der Trend ein Hinweis, kein Befund.`):''}
+    <div class="selectors" style="margin:12px 0">
+      <div class="selector-group"><label>Bezug</label>
+        <select onchange="formBasis=this.value;renderAnalyse()">
+          <option value="relativ" ${relativ?'selected':''}>relativ zum Ligaschnitt</option>
+          <option value="punkte" ${relativ?'':'selected'}>Punkte</option>
+        </select></div>
+      <div class="selector-group"><label>Fenster</label>
+        <select onchange="formFenster=+this.value;renderAnalyse()">
+          ${[2,3,5].map(n=>`<option value="${n}" ${n===F?'selected':''}>${n} Spieltage</option>`).join('')}
+        </select></div>
+    </div>
+    <div class="chart-wrap">${lineChart(reihen,{h:300,versteckt:formVersteckt,
+      yFmt:v=>fmt(v,nk), refLine:mitte, refText:'Ligaschnitt'})}</div>
+    ${legende}
+    <h4 style="font-size:.8rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:20px 0 8px">
+      Letzte ${F} Spieltage (ST ${letzte[0]}–${letzte[letzte.length-1]})</h4>
+    <table class="dt"><thead><tr><th class="num">#</th><th>Manager</th>
+      <th class="num">Form</th><th class="num">davor</th><th class="num">Trend</th>
+      <th class="num">Saison</th><th class="num">Tabellenplatz</th></tr></thead>
+      <tbody>${tab}</tbody></table>
+    <div class="hint" style="margin-top:10px">„davor" = die ${F} Spieltage vor dem aktuellen Fenster
+      ${davorSts.length?`(ST ${davorSts[0]}–${davorSts[davorSts.length-1]}${davorSts.length<F
+        ? `, also erst ${davorSts.length} statt ${F} — der Trend ist dann blass gesetzt und nicht belastbar`:''})`
+        :'— liegen noch nicht vor'}.
+      Trend unter ${fmt(schwelle,nk)} gilt als unverändert. Die Markierung beim Tabellenplatz zeigt,
+      wie viele Plätze ein Manager in der Form besser oder schlechter steht als in der
+      Gesamtwertung — grün heisst: kommt gerade von hinten.</div>`;
+}
+
 /* --- Reiter zusammensetzen ------------------------------------------------ */
 let analyseTeil='differenz';
 function renderAnalyse(){
   const el=document.getElementById('tab-analyse');
   const teile=[['differenz','Differenzspieler'],['zscore','Z-Wert je Position'],
-    ['torhueter','Torhüter'],['konstanz','Konstanz &amp; Strategie'],
+    ['torhueter','Torhüter'],['form','Form'],['konstanz','Konstanz &amp; Strategie'],
     ['spielplan','Spielplan'],['fruehwarnung','Frühwarnung']];
   const nav='<div class="selectors" style="gap:8px;margin-bottom:4px">'+teile.map(([k,l])=>
     `<button class="imp-btn" style="background:${analyseTeil===k?'var(--primary)':'#e8edf5'};
       color:${analyseTeil===k?'#fff':'var(--text)'};border-color:var(--border)"
       onclick="analyseTeil='${k}';renderAnalyse()">${l}</button>`).join('')+'</div>';
   const inhalt={differenz:analyseDifferenz, zscore:analyseZScore, torhueter:analyseTorhueter,
-    konstanz:analyseKonstanz, spielplan:analyseSpielplan, fruehwarnung:analyseFruehwarnung};
+    form:analyseForm, konstanz:analyseKonstanz, spielplan:analyseSpielplan,
+    fruehwarnung:analyseFruehwarnung};
   const titel=Object.fromEntries(teile);
   el.innerHTML=`<div class="card">${nav}</div>
     <div class="card"><h2>${titel[analyseTeil]}</h2>${(inhalt[analyseTeil]||(()=>''))()}</div>`;
