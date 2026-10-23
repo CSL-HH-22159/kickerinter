@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,8 +24,6 @@
   header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: .5px; }
   header .sub { font-size: .85rem; color: #adc6ff; }
   .logo { font-size: 1.9rem; }
-  .portal-link { color: #adc6ff; text-decoration: none; font-size: .82rem; font-weight: 600; padding: 6px 12px; border: 1px solid rgba(255,255,255,.3); border-radius: 8px; transition: background .2s, color .2s; }
-  .portal-link:hover { background: rgba(255,255,255,.15); color: #fff; }
   .hdr-actions { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
   .imp-btn { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.35); border-radius: 8px; padding: 7px 13px; font-size: .82rem; font-weight: 600; cursor: pointer; transition: background .2s; }
   .imp-btn:hover { background: rgba(255,255,255,.25); }
@@ -119,11 +117,44 @@
   footer { text-align: center; color: var(--muted); font-size: .75rem; padding: 20px; }
   input[type=file] { display: none; }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="magazin.css">
 </head>
-<body>
+<body class="seite seite-werkzeug">
+<!-- ══ Magazin-Kopf (magazin-umbau.js) ══ -->
+<div class="topline">
+  <div class="mz-wrap">
+    <span><b>Spreeliga Monolog</b></span>
+    <span class="sep hide-s">|</span>
+    <span class="hide-s">Das Magazin zur Spreeliga</span>
+    <span class="push"></span>
+  </div>
+</div>
+<div class="masthead klein" id="kopfband">
+  <div class="mz-wrap">
+    <a class="brand" href="portal.html">
+      <img class="signet" src="monolog-signet.webp" alt="" onerror="this.style.display='none'">
+      <div class="brand-name"><small>Spreeliga</small><strong>Monolog</strong></div>
+    </a>
+  </div>
+</div>
+<nav class="ressorts" aria-label="Rubriken">
+  <div class="mz-wrap">
+    <a class="mini" href="portal.html" aria-label="Spreeliga Monolog – Start"><img src="monolog-signet.webp" alt=""></a>
+    <a href="portal.html">Start</a>
+    <a href="portal.html#spieltag">Spieltag</a>
+    <a class="aktiv" href="portal.html#liga">Liga &amp; Tabellen</a>
+    <a href="portal.html#manager">Manager</a>
+    <a href="portal.html#geschichte">Geschichte</a>
+    <a href="chronik.html">Chronik</a>
+    <a href="videos.html">Videos</a>
+  </div>
+</nav>
+<!-- ══ /Magazin-Kopf ══ -->
 
 <header>
-  <a href="portal.html" class="portal-link">← Portal</a>
   <span class="logo">⚽</span>
   <div>
     <h1>Spreeliga Monolog – Vergleichszentrale</h1>
@@ -1669,5 +1700,23 @@ function renderHistorie(){
   if(changed || !IMPORT_MODE){ buildIndex(); renderAll(); }
 })();
 </script>
+<!-- ══ Magazin-Fuß (magazin-umbau.js) ══ -->
+<div class="fuss" role="contentinfo">
+  <div class="mz-wrap">
+    <img src="monolog-signet.webp" alt="Spreeliga Monolog" onerror="this.style.display='none'">
+    <div>
+      <nav>
+        <a href="portal.html#spieltag">Spieltag</a>
+        <a href="portal.html#liga">Liga &amp; Tabellen</a>
+        <a href="portal.html#manager">Manager</a>
+        <a href="portal.html#geschichte">Geschichte</a>
+        <a href="chronik.html">Chronik</a>
+        <a href="videos.html">Videos</a>
+      </nav>
+      Spreeliga Monolog – das Magazin zur Spreeliga · private Liga im Kicker Managerspiel Interactive
+    </div>
+  </div>
+</div>
+<script src="magazin.js"></script>
 </body>
 </html>

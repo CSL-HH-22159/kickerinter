@@ -1,0 +1,381 @@
+{
+ "stand": "2026-10-23",
+ "videos": [
+  {
+   "id": "0McD48jQJ6g",
+   "titel": "Kaderanalyse",
+   "bereich": "sl2627",
+   "saison": 2026,
+   "spieltag": null,
+   "sonder": false
+  },
+  {
+   "id": "lw_yW_1RFzQ",
+   "titel": "Spieltag 1",
+   "bereich": "sl2627",
+   "saison": 2026,
+   "spieltag": 1,
+   "sonder": false
+  },
+  {
+   "id": "L6aSxMUSK6A",
+   "titel": "Spieltag 2",
+   "bereich": "sl2627",
+   "saison": 2026,
+   "spieltag": 2,
+   "sonder": false
+  },
+  {
+   "id": "BJerCcwaH3s",
+   "titel": "Spieltag 3",
+   "bereich": "sl2627",
+   "saison": 2026,
+   "spieltag": 3,
+   "sonder": false
+  },
+  {
+   "id": "Kx4u4hJeNiw",
+   "titel": "Spieltag 4",
+   "bereich": "sl2627",
+   "saison": 2026,
+   "spieltag": 4,
+   "sonder": false
+  },
+  {
+   "id": "4S7Rdhpr92M",
+   "titel": "Spieltag 5",
+   "bereich": "sl2627",
+   "saison": 2026,
+   "spieltag": 5,
+   "sonder": false
+  },
+  {
+   "id": "mos9BZrr14o",
+   "titel": "Spieltag 6",
+   "bereich": "sl2627",
+   "saison": 2026,
+   "spieltag": 6,
+   "sonder": false
+  },
+  {
+   "id": "DJKxBcxpPho",
+   "titel": "Spieltag 1",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 1,
+   "sonder": false
+  },
+  {
+   "id": "Jlwchis6ZEo",
+   "titel": "Spieltag 2",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 2,
+   "sonder": false
+  },
+  {
+   "id": "bkb9SPYGM_Y",
+   "titel": "Spieltag 3",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 3,
+   "sonder": false
+  },
+  {
+   "id": "WewiJEiWynY",
+   "titel": "Spieltag 4",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 4,
+   "sonder": false
+  },
+  {
+   "id": "3JsqkCbt8ds",
+   "titel": "Spieltag 5",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 5,
+   "sonder": false
+  },
+  {
+   "id": "ZuOuDxBKVqQ",
+   "titel": "Spieltag 6",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 6,
+   "sonder": false
+  },
+  {
+   "id": "g9ViaKsJieE",
+   "titel": "Spieltag 7",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 7,
+   "sonder": false
+  },
+  {
+   "id": "DM6Ppk1ROjc",
+   "titel": "Spieltag 8",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 8,
+   "sonder": false
+  },
+  {
+   "id": "xl9WT7sf08o",
+   "titel": "Spieltag 9",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 9,
+   "sonder": false
+  },
+  {
+   "id": "EgXpEFZ9CIE",
+   "titel": "Spieltag 10",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 10,
+   "sonder": false
+  },
+  {
+   "id": "rbhwD1NF71g",
+   "titel": "Spieltag 11",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 11,
+   "sonder": false
+  },
+  {
+   "id": "doPT-k5jnWU",
+   "titel": "Spieltag 12",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 12,
+   "sonder": false
+  },
+  {
+   "id": "dw-PdQgyAHg",
+   "titel": "Spieltag 13",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 13,
+   "sonder": false
+  },
+  {
+   "id": "73Cuq4uSfT0",
+   "titel": "Spieltag 14",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 14,
+   "sonder": false
+  },
+  {
+   "id": "GgtwhZaGrAg",
+   "titel": "Spieltag 15",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 15,
+   "sonder": false
+  },
+  {
+   "id": "lXkK1QPWTEU",
+   "titel": "Spieltag 16",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 16,
+   "sonder": false
+  },
+  {
+   "id": "1Z7yaN5Fcnc",
+   "titel": "Spieltag 17",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 17,
+   "sonder": false
+  },
+  {
+   "id": "gREEmS8Yhfs",
+   "titel": "Spieltag 18",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 18,
+   "sonder": false
+  },
+  {
+   "id": "fB-Eu61FsTo",
+   "titel": "Spieltag 19",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 19,
+   "sonder": false
+  },
+  {
+   "id": "Swb3KsudHRA",
+   "titel": "Spieltag 20",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 20,
+   "sonder": false
+  },
+  {
+   "id": "6luhNZ1wtec",
+   "titel": "Spieltag 21",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 21,
+   "sonder": false
+  },
+  {
+   "id": "XGUu1lCvWxs",
+   "titel": "Spieltag 22",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 22,
+   "sonder": false
+  },
+  {
+   "id": "kt9zv1fIvPM",
+   "titel": "Spieltag 23",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 23,
+   "sonder": false
+  },
+  {
+   "id": "-hRoBYj2hms",
+   "titel": "Spieltag 24",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 24,
+   "sonder": false
+  },
+  {
+   "id": "E-3_oeYd1VM",
+   "titel": "Spieltag 25",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 25,
+   "sonder": false
+  },
+  {
+   "id": "5dcJlI25rvo",
+   "titel": "Spieltag 26",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 26,
+   "sonder": false
+  },
+  {
+   "id": "AMUQNHjQD1k",
+   "titel": "Spieltag 27",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 27,
+   "sonder": false
+  },
+  {
+   "id": "WErWf5rUkMA",
+   "titel": "Spieltag 28",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 28,
+   "sonder": false
+  },
+  {
+   "id": "avYXdHVEDmQ",
+   "titel": "Spieltag 29",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 29,
+   "sonder": false
+  },
+  {
+   "id": "a71-H9COoB8",
+   "titel": "Spieltag 30",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 30,
+   "sonder": false
+  },
+  {
+   "id": "0nDA3Jgq_ic",
+   "titel": "Spieltag 31",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 31,
+   "sonder": false
+  },
+  {
+   "id": "CDeGezX6Dzo",
+   "titel": "Spieltag 32",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 32,
+   "sonder": false
+  },
+  {
+   "id": "Do5eyjhnJFg",
+   "titel": "Spieltag 33",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 33,
+   "sonder": false
+  },
+  {
+   "id": "JC-LKnzoMss",
+   "titel": "Spieltag 34",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": 34,
+   "sonder": false
+  },
+  {
+   "id": "0jinZV55u7I",
+   "titel": "Eindhoven",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": null,
+   "sonder": true
+  },
+  {
+   "id": "KZGb-om7j6c",
+   "titel": "Schneidi",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": null,
+   "sonder": true
+  },
+  {
+   "id": "YDfChTKggGQ",
+   "titel": "Wintertransfers",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": null,
+   "sonder": true
+  },
+  {
+   "id": "Aysodu7T0zU",
+   "titel": "Finale Analyse",
+   "bereich": "sl2526",
+   "saison": 2025,
+   "spieltag": null,
+   "sonder": true
+  },
+  {
+   "id": "ODa8OPTk01M",
+   "titel": "Saisonanalyse und Historie",
+   "bereich": "spreeklasse",
+   "saison": null,
+   "spieltag": null,
+   "sonder": false
+  },
+  {
+   "id": "WvSelp9eEQM",
+   "titel": "Saisonanalyse und Historie",
+   "bereich": "spreeoberliga",
+   "saison": null,
+   "spieltag": null,
+   "sonder": false
+  }
+ ]
+}

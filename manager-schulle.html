@@ -4,30 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Chris Schulze – Kader · KickerInter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="magazin.css">
+<script>try { var t = localStorage.getItem('monolog-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
 <style>
+/* Seiteneigene Regeln (Kopf, Fuß und Grundfarben kommen aus magazin.css) */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{
-  --bg:#07101e;--bg2:#0d1b2d;--card:#0f2035;--border:#1a3050;
-  --blue:#2563eb;--blue-light:#3b82f6;--blue-muted:#1e3a5f;
-  --gold:#f5c518;--text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;
-}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;}
-
-/* Header */
-.site-header{display:flex;align-items:center;gap:14px;padding:18px 40px;border-bottom:1px solid var(--border);background:var(--bg2);position:sticky;top:0;z-index:100;}
-.header-center-logo{position:absolute;left:50%;transform:translateX(-50%);height:100px;width:auto;filter:drop-shadow(0 0 14px rgba(56,152,255,.3));pointer-events:none;}
-.site-logo{height:100px;width:auto;}
-.header-nav{margin-left:auto;display:flex;gap:8px;}
-.nav-link{color:var(--muted2);text-decoration:none;font-size:.82rem;font-weight:500;padding:6px 14px;border-radius:20px;border:1px solid var(--border);transition:all .2s;background:rgba(13,27,45,.6);}
-.nav-link:hover{color:var(--text);border-color:var(--blue-light);background:var(--blue-muted);}
-
-/* Page */
 .page{max-width:900px;margin:0 auto;padding:48px 24px 80px;}
 .back-link{display:inline-flex;align-items:center;gap:6px;font-size:.75rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted2);text-decoration:none;margin-bottom:28px;transition:color .2s;}
 .back-link:hover{color:var(--blue-light);}
-
-/* Manager hero */
 .mgr-hero{display:flex;align-items:center;gap:24px;margin-bottom:36px;}
 .mgr-avatar-wrap{flex-shrink:0;position:relative;}
 .mgr-avatar{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #cd7f32;display:block;}
@@ -56,39 +43,24 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .mgr-name{font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px;}
 .mgr-tags{display:flex;gap:8px;flex-wrap:wrap;}
 .mgr-tag{font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:3px 10px;color:var(--muted2);}
-
-/* Placeholder */
 .placeholder-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:40px 32px;text-align:center;color:var(--muted2);}
 .placeholder-box .ph-icon{font-size:2.5rem;margin-bottom:14px;}
 .placeholder-box .ph-title{font-size:1rem;font-weight:700;margin-bottom:8px;color:var(--text);}
 .placeholder-box .ph-sub{font-size:.84rem;line-height:1.7;}
-
-/* Nav */
 .pn-nav{display:flex;justify-content:space-between;align-items:center;margin-top:44px;padding-top:24px;border-top:1px solid var(--border);}
 .pn-link{display:inline-flex;align-items:center;font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2);text-decoration:none;padding:8px 18px;border:1px solid var(--border);border-radius:20px;background:rgba(13,27,45,.6);transition:all .2s;}
 .pn-link:hover{color:var(--text);border-color:var(--blue-light);background:var(--blue-muted);}
 .pn-dis{opacity:.3;cursor:default;}
 .pn-center{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);}
-
-/* Footer */
-footer{background:var(--bg);border-top:1px solid var(--border);padding:28px 24px;text-align:center;color:var(--muted);font-size:.8rem;}
-footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
-
-@media(max-width:640px){
-  .site-header{padding:14px 16px;}.site-logo{height:60px;}.header-center-logo{height:60px;}.header-nav{display:none;}
+@media(max-width:640px) {
   .page{padding:28px 14px 60px;}
-  .mgr-hero{gap:16px;}.mgr-avatar{width:68px;height:68px;}
+  .mgr-hero{gap:16px;}
+  .mgr-avatar{width:68px;height:68px;}
   .player-card{min-width:88px;}
 }
-
 .pitch-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:28px}
 .pitch-card .mc-body{display:flex;flex-wrap:wrap}
-.pitch{flex:1 1 320px;min-width:280px;padding:18px 8px;display:flex;flex-direction:column;justify-content:space-around;gap:10px;
-  background-color:#2e9e4f;
-  background-image:
-    repeating-linear-gradient(180deg,rgba(255,255,255,.07) 0 34px,rgba(0,0,0,.07) 34px 68px),
-    linear-gradient(180deg,#35ad58 0%,#1f7038 100%);
-}
+.pitch{flex:1 1 320px;min-width:280px;padding:18px 8px;display:flex;flex-direction:column;justify-content:space-around;gap:10px; background-color:#2e9e4f; background-image: repeating-linear-gradient(180deg,rgba(255,255,255,.07) 0 34px,rgba(0,0,0,.07) 34px 68px), linear-gradient(180deg,#35ad58 0%,#1f7038 100%);}
 .p-row{display:flex;justify-content:space-evenly}
 .p-chip{display:flex;flex-direction:column;align-items:center;width:64px}
 .p-chip img,.p-chip .initials{width:44px;height:44px;border-radius:50%;border:2px solid #fff;background:#fff;object-fit:cover}
@@ -100,19 +72,45 @@ footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
 .bench-side h4:first-child{margin-top:0}
 .bench-side .b-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed var(--border);font-size:.82rem;color:var(--text)}
 .bench-side .b-row .b-pts{font-weight:700}
-@media(max-width:640px){ .pitch{min-width:100%} .bench-side{min-width:100%} }
+@media(max-width:640px) {
+  .pitch{min-width:100%}
+  .bench-side{min-width:100%}
+}
 </style>
 </head>
-<body>
+<body class="seite seite-manager">
 
-<header class="site-header">
-  <img class="site-logo" src="Spreeliga Monolog.webp" alt="Spreeliga Monolog" onerror="this.style.display='none'">
-  <img src="Spreeliga Logo frei fixed.webp" alt="Spreeliga" class="header-center-logo" onerror="this.style.display='none'">
-  <nav class="header-nav">
-    <a class="nav-link" href="portal.html">← Portal</a>
-    <a class="nav-link" href="portal.html#manager">Alle Manager</a>
-  </nav>
-</header>
+<!-- ══ Magazin-Kopf (magazin-umbau.js) ══ -->
+<div class="topline">
+  <div class="mz-wrap">
+    <span><b>Spreeliga Monolog</b></span>
+    <span class="sep hide-s">|</span>
+    <span class="hide-s">Das Magazin zur Spreeliga</span>
+    <span class="push"></span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Hell/Dunkel umschalten">◐<span class="txt"> Hell/Dunkel</span></button>
+  </div>
+</div>
+<div class="masthead klein" id="kopfband">
+  <div class="mz-wrap">
+    <a class="brand" href="portal.html">
+      <img class="signet" src="monolog-signet.webp" alt="" onerror="this.style.display='none'">
+      <div class="brand-name"><small>Spreeliga</small><strong>Monolog</strong></div>
+    </a>
+  </div>
+</div>
+<nav class="ressorts" aria-label="Rubriken">
+  <div class="mz-wrap">
+    <a class="mini" href="portal.html" aria-label="Spreeliga Monolog – Start"><img src="monolog-signet.webp" alt=""></a>
+    <a href="portal.html">Start</a>
+    <a href="portal.html#spieltag">Spieltag</a>
+    <a href="portal.html#liga">Liga &amp; Tabellen</a>
+    <a class="aktiv" href="portal.html#manager">Manager</a>
+    <a href="portal.html#geschichte">Geschichte</a>
+    <a href="chronik.html">Chronik</a>
+    <a href="videos.html">Videos</a>
+  </div>
+</nav>
+<!-- ══ /Magazin-Kopf ══ -->
 
 <div class="page">
   <a href="portal.html#manager" class="back-link">← Alle Manager</a>
@@ -159,7 +157,7 @@ footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
       </div>
       <div class="bench-side">
         <h4 style="margin-top:0;color:var(--muted)">Bank</h4>
-<h4 style="color:#7c3aed">Tor</h4><div class="b-row"><span>Batz</span><span class="b-pts">0</span></div><div class="b-row"><span>Olschowsky</span><span class="b-pts">0</span></div><h4 style="color:#2563eb">Abwehr</h4><div class="b-row"><span>Leonard</span><span class="b-pts">0</span></div><div class="b-row"><span>Schmetgens</span><span class="b-pts">0</span></div><div class="b-row"><span>Ogbemudia</span><span class="b-pts">0</span></div><div class="b-row"><span>Nandja</span><span class="b-pts">0</span></div><h4 style="color:#16a34a">Mittelfeld</h4><div class="b-row"><span>Güther</span><span class="b-pts">2</span></div><div class="b-row"><span>Wimmer</span><span class="b-pts">0</span></div><div class="b-row"><span>F. Gerezgiher</span><span class="b-pts">0</span></div><h4 style="color:#dc2626">Sturm</h4><div class="b-row"><span>Scherhant</span><span class="b-pts">9</span></div><div class="b-row"><span>Erevbenagie</span><span class="b-pts">2</span></div>
+<h4 style="color:#7c3aed">Tor</h4><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00054360.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'B'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00054360.png'">Batz</span><span class="b-pts">0</span></div><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00097892.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'O'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00097892.png'">Olschowsky</span><span class="b-pts">0</span></div><h4 style="color:#2563eb">Abwehr</h4><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00173186.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'L'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00173186.png'">Leonard</span><span class="b-pts">0</span></div><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00161192.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'S'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00161192.png'">Schmetgens</span><span class="b-pts">0</span></div><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00158733.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'O'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00158733.png'">Ogbemudia</span><span class="b-pts">0</span></div><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00170963.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'N'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00170963.png'">Nandja</span><span class="b-pts">0</span></div><h4 style="color:#16a34a">Mittelfeld</h4><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00177491.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'G'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00177491.png'">Güther</span><span class="b-pts">2</span></div><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00125269.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'W'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00125269.png'">Wimmer</span><span class="b-pts">0</span></div><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00148669.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'FG'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00148669.png'">F. Gerezgiher</span><span class="b-pts">0</span></div><h4 style="color:#dc2626">Sturm</h4><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00131913.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'S'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00131913.png'">Scherhant</span><span class="b-pts">9</span></div><div class="b-row"><span class="b-name"><img class="b-foto" src="https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2026/pl-k00169925.png" alt="" loading="lazy" onerror="this.onerror=function(){this.replaceWith(Object.assign(document.createElement('div'),{className:'b-foto',textContent:'E'}))};this.src='https://derivates.kicker.de/image/upload/c_thumb,g_face,h_100,w_100,z_0.55/games/manager/2025/pl-k00169925.png'">Erevbenagie</span><span class="b-pts">2</span></div>
       </div>
     </div>
   </div>
@@ -172,10 +170,24 @@ footer img{height:28px;vertical-align:middle;margin-right:8px;opacity:.6;}
   </div>
 </div>
 
-<footer>
-  <img src="Spreeliga Monolog.webp" alt="Logo" onerror="this.style.display='none'">
-  Spreeliga Monolog · KickerInter · Saison 2026/27
-</footer>
+<!-- ══ Magazin-Fuß (magazin-umbau.js) ══ -->
+<div class="fuss" role="contentinfo">
+  <div class="mz-wrap">
+    <img src="monolog-signet.webp" alt="Spreeliga Monolog" onerror="this.style.display='none'">
+    <div>
+      <nav>
+        <a href="portal.html#spieltag">Spieltag</a>
+        <a href="portal.html#liga">Liga &amp; Tabellen</a>
+        <a href="portal.html#manager">Manager</a>
+        <a href="portal.html#geschichte">Geschichte</a>
+        <a href="chronik.html">Chronik</a>
+        <a href="videos.html">Videos</a>
+      </nav>
+      Spreeliga Monolog – das Magazin zur Spreeliga · private Liga im Kicker Managerspiel Interactive
+    </div>
+  </div>
+</div>
+<script src="magazin.js"></script>
 
 </body>
 </html>

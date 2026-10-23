@@ -1,0 +1,435 @@
+/* ==========================================================================
+   magazin.css — Spreeliga Monolog · gemeinsames Designsystem
+   Medium  = Spreeliga Monolog  → Rot (aus dem Monolog-Logo)
+   Produkt = Spreeliga          → Wasserblau (aus dem Spreeliga-Logo)
+   Hell als Standard, Dunkel nach Systemeinstellung oder Schalter (data-theme).
+   ========================================================================== */
+
+/* ── Farben & Maße ─────────────────────────────────────────────────────── */
+:root {
+  --bg:        #eef0f3;   /* Seitenfläche */
+  --surface:   #ffffff;   /* Karten, Widgets */
+  --surface-2: #f6f7f9;   /* Tabellenstreifen, Hover */
+  --ink:       #12161c;   /* Text */
+  --ink-2:     #4a5361;   /* Nebentext */
+  --ink-3:     #7c8594;   /* leise */
+  --line:      #dfe2e7;
+
+  --red:       #e3020f;   /* Monolog – Medium */
+  --red-ink:   #c4000c;
+  --blue:      #1667c9;   /* Spreeliga – Produkt */
+  --blue-soft: #e5effb;
+  --gold:      #a67600;   /* Tabellenführer (website.js schreibt var(--gold)) */
+  --silver:    #6b7584;
+  --bronze:    #9a5b2a;
+  --green:     #13854a;
+
+  /* immer dunkel: Hero, Ligaleiste */
+  --night:     #07101e;
+  --night-2:   #0d1b2d;
+  --night-ink: #e6edf6;
+  --night-mute:#8fa1b8;
+
+  --radius: 4px;
+  --wrap: 1200px;
+  --shadow: 0 1px 2px rgba(16,24,40,.06), 0 1px 3px rgba(16,24,40,.08);
+
+  --f-head: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --f-body: "Source Sans 3", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:#0a111d; --surface:#111b2b; --surface-2:#16233a; --ink:#e7edf5; --ink-2:#a6b3c4; --ink-3:#74839a; --line:#22314a;
+    --red:#ff3b45; --red-ink:#ff5a62; --blue:#5aa8ff; --blue-soft:#13294a; --gold:#f5c518; --silver:#c2ccd8; --bronze:#d69a62; --green:#3ddc84;
+    --shadow: 0 1px 2px rgba(0,0,0,.4);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:#0a111d; --surface:#111b2b; --surface-2:#16233a; --ink:#e7edf5; --ink-2:#a6b3c4; --ink-3:#74839a; --line:#22314a;
+  --red:#ff3b45; --red-ink:#ff5a62; --blue:#5aa8ff; --blue-soft:#13294a; --gold:#f5c518; --silver:#c2ccd8; --bronze:#d69a62; --green:#3ddc84;
+  --shadow: 0 1px 2px rgba(0,0,0,.4);
+  color-scheme: dark;
+}
+
+/* ── Grundlagen ───────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body {
+  background: var(--bg); color: var(--ink);
+  font: 16px/1.5 var(--f-body);
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+.wrap, .mz-wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
+@media (max-width: 600px) { .wrap, .mz-wrap { padding: 0 16px; } }
+
+/* ── 1. Datumszeile ───────────────────────────────────────────────────── */
+.topline { background: var(--night); color: var(--night-mute); font-size: .78rem; }
+.topline .wrap, .topline .mz-wrap { display: flex; align-items: center; gap: 18px; min-height: 32px; }
+.topline b { color: var(--night-ink); font-weight: 600; }
+.topline .sep { opacity: .4; }
+.topline .push { margin-left: auto; }
+.theme-btn {
+  background: none; border: 1px solid rgba(255,255,255,.18); color: var(--night-ink);
+  font: inherit; font-size: .74rem; padding: 2px 10px; border-radius: 20px; cursor: pointer;
+}
+.theme-btn:hover { border-color: rgba(255,255,255,.45); }
+@media (max-width: 600px) {
+  .topline .hide-s { display: none; }
+  .topline .wrap, .topline .mz-wrap { gap: 10px; white-space: nowrap; font-size: .72rem; }
+  .theme-btn .txt { display: none; }
+}
+
+/* ── 2. Kopfband (Medium) ─────────────────────────────────────────────── */
+.masthead { background: var(--surface); border-bottom: 1px solid var(--line); }
+.masthead .wrap, .masthead .mz-wrap { display: flex; align-items: center; gap: 20px; padding-top: 18px; padding-bottom: 18px; }
+.brand { display: flex; align-items: center; gap: 16px; }
+.brand .signet { height: 88px; width: auto; border-radius: 3px; }
+.brand-name { font-family: var(--f-head); text-transform: uppercase; line-height: .86; }
+.brand-name small {
+  display: block; font-size: 1.05rem; font-weight: 700; letter-spacing: .32em; color: var(--red); margin-bottom: 2px;
+}
+.brand-name strong { display: block; font-size: 4.1rem; font-weight: 800; letter-spacing: -.005em; color: var(--ink); }
+.ausgabe { margin-left: auto; text-align: right; font-size: .8rem; color: var(--ink-3); line-height: 1.35; }
+.ausgabe b {
+  display: block; font-family: var(--f-head); font-size: 1.35rem; font-weight: 800; color: var(--ink);
+  text-transform: uppercase; letter-spacing: .02em;
+}
+@media (max-width: 760px) { .ausgabe { display: none; } }
+@media (max-width: 600px) {
+  .masthead .wrap, .masthead .mz-wrap { padding-top: 12px; padding-bottom: 12px; gap: 12px; }
+  .brand { gap: 12px; }
+  .brand .signet { height: 58px; }
+  .brand-name small { font-size: .78rem; letter-spacing: .26em; }
+  .brand-name strong { font-size: 2.7rem; }
+}
+
+/* Ressort-Navigation */
+.ressorts {
+  background: var(--surface); border-bottom: 3px solid var(--red);
+  position: sticky; top: 0; z-index: 50;
+}
+.ressorts .wrap, .ressorts .mz-wrap { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.ressorts .wrap::-webkit-scrollbar, .ressorts .mz-wrap::-webkit-scrollbar { display: none; }
+.ressorts a {
+  font-family: var(--f-head); font-weight: 700; font-size: 1.05rem; text-transform: uppercase; letter-spacing: .03em;
+  padding: 10px 14px 8px; white-space: nowrap; color: var(--ink-2); border-bottom: 3px solid transparent; margin-bottom: -3px;
+}
+.ressorts a:hover { color: var(--ink); }
+.ressorts a.aktiv { color: var(--red); border-bottom-color: var(--red); }
+/* Kompakt-Signet: erscheint, sobald das Kopfband aus dem Bild scrollt */
+.ressorts .mini {
+  flex: none; display: flex; align-items: center; padding: 0; margin-right: 0; border: 0;
+  max-width: 0; opacity: 0; overflow: hidden; transition: max-width .25s ease, opacity .2s ease, margin .25s ease;
+}
+.ressorts .mini img { height: 30px; width: auto; border-radius: 2px; }
+.kompakt .ressorts .mini { max-width: 60px; opacity: 1; margin-right: 10px; }
+.kompakt .ressorts { box-shadow: 0 2px 10px rgba(0,0,0,.12); }
+
+/* ── 3. Ligaleiste (Produkt, immer dunkel) ───────────────────────────── */
+.ligaleiste { background: var(--night-2); color: var(--night-ink); border-bottom: 1px solid #1a3050; }
+.ligaleiste .wrap, .ligaleiste .mz-wrap { display: flex; align-items: center; gap: 14px; min-height: 54px; }
+.ligaleiste .liga-logo { height: 38px; width: auto; flex: none; }
+.ligaleiste .label {
+  flex: none; font-family: var(--f-head); font-size: .8rem; font-weight: 700; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--night-mute); line-height: 1.1;
+}
+.ligaleiste .label b { display: block; color: #7fc4ff; font-size: .95rem; }
+.ticker { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 8px 0; flex: 1; }
+.ticker::-webkit-scrollbar { display: none; }
+.ticker a {
+  flex: none; display: flex; align-items: center; gap: 7px; background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08); border-radius: 20px; padding: 3px 11px 3px 3px; font-size: .82rem;
+}
+.ticker a:hover { background: rgba(127,196,255,.14); }
+.ticker img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; object-position: top; }
+.ticker .r { font-weight: 700; color: var(--night-mute); min-width: 1.1em; text-align: right; }
+.ticker .p { font-weight: 700; font-variant-numeric: tabular-nums; }
+.ticker a.erster .p { color: #f5c518; }
+
+/* ── 4. Bühne (Stadion-Hero, immer dunkel) ───────────────────────────── */
+.buehne { position: relative; background: var(--night); overflow: hidden; }
+.buehne img.bild { width: 100%; max-width: 1600px; margin: 0 auto; aspect-ratio: 1672 / 941; max-height: 560px; object-fit: cover; object-position: center 30%; }
+.buehne::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(to right, var(--night) 0, transparent 12%, transparent 88%, var(--night) 100%),
+    linear-gradient(to bottom, transparent 55%, rgba(7,16,30,.92) 100%);
+}
+/* Senderlogo – Monolog als „Sender“ der Bühne */
+.buehne .sender {
+  position: absolute; top: 18px; right: max(20px, calc((100% - var(--wrap)) / 2 + 20px)); z-index: 3;
+  display: flex; align-items: center; gap: 9px; opacity: .9;
+}
+.buehne .sender img { height: 46px; width: auto; border-radius: 2px; box-shadow: 0 2px 10px rgba(0,0,0,.45); }
+.buehne .sender span {
+  font-family: var(--f-head); font-weight: 800; font-size: 1.25rem; letter-spacing: .08em; color: #fff;
+  text-transform: uppercase; line-height: .95; text-shadow: 0 1px 8px rgba(0,0,0,.7);
+}
+.buehne .sender span small { display: block; font-size: .6em; letter-spacing: .3em; font-weight: 700; color: #ffd2d4; }
+@media (max-width: 600px) { .buehne .sender { top: 10px; right: 12px; } .buehne .sender img { height: 32px; } .buehne .sender span { display: none; } }
+.buehne .text {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; color: #fff;
+}
+.buehne .text .wrap, .buehne .text .mz-wrap { display: flex; align-items: flex-end; gap: 20px; padding-bottom: 22px; }
+.buehne .text img { height: clamp(56px, 9vw, 110px); width: auto; flex: none; }
+.buehne h1 {
+  font-family: var(--f-head); font-weight: 800; font-size: clamp(1.6rem, 4vw, 2.8rem);
+  line-height: 1; text-transform: uppercase; text-shadow: 0 2px 16px rgba(0,0,0,.7);
+}
+.buehne p { color: #c9d6e6; font-size: .95rem; margin-top: 6px; text-shadow: 0 1px 8px rgba(0,0,0,.8); }
+@media (max-width: 600px) { .buehne .text img { display: none; } .buehne p { display: none; } }
+
+/* ── Raster ───────────────────────────────────────────────────────────── */
+main { padding: 24px 0 48px; }
+.raster { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.raster > aside { display: grid; gap: 24px; position: sticky; top: 64px; }
+@media (max-width: 900px) { .raster { grid-template-columns: 1fr; } .raster > aside { position: static; } }
+.spalte { display: grid; gap: 24px; }
+
+/* Rubrik-Kopf: Linie + Titel, wie im Heft */
+.rubrik { display: flex; align-items: baseline; gap: 12px; border-top: 3px solid var(--ink); padding-top: 8px; margin-bottom: 14px; }
+.rubrik h2 {
+  font-family: var(--f-head); font-weight: 800; font-size: 1.5rem; text-transform: uppercase; letter-spacing: .01em; line-height: 1;
+}
+.rubrik .mehr { margin-left: auto; font-size: .82rem; font-weight: 600; color: var(--red-ink); white-space: nowrap; }
+.rubrik .mehr:hover { text-decoration: underline; }
+.rubrik.liga { border-top-color: var(--blue); }
+.rubrik.liga .mehr { color: var(--blue); }
+
+/* Dachzeile (Kicker-Prinzip: Schlagwort über der Überschrift) */
+.dach {
+  display: inline-block; font-family: var(--f-head); font-weight: 700; font-size: .9rem; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--red-ink); margin-bottom: 2px;
+}
+.dach.liga { color: var(--blue); }
+
+/* ── Teaser ───────────────────────────────────────────────────────────── */
+.karte { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+
+.aufmacher { display: grid; grid-template-columns: 1fr; }
+.aufmacher .medien { position: relative; background: var(--night-2); aspect-ratio: 16 / 7; overflow: hidden; }
+.aufmacher .medien .avatare { position: absolute; inset: 0; display: flex; align-items: flex-end; justify-content: center; gap: 0; }
+.aufmacher .medien .avatare img { height: 92%; width: auto; filter: drop-shadow(0 6px 20px rgba(0,0,0,.6)); }
+.aufmacher .medien .avatare img + img { margin-left: -6%; height: 78%; }
+.aufmacher .medien .zahl {
+  position: absolute; right: 18px; top: 14px; font-family: var(--f-head); font-weight: 800; color: #fff;
+  font-size: clamp(2.6rem, 7vw, 4.6rem); line-height: 1; text-shadow: 0 2px 12px rgba(0,0,0,.6);
+}
+.aufmacher .medien .zahl small { display: block; font-size: .28em; letter-spacing: .14em; color: #f5c518; text-align: right; }
+.aufmacher .inhalt { padding: 18px 20px 20px; }
+.aufmacher h3 { font-family: var(--f-head); font-weight: 800; font-size: clamp(1.6rem, 3.4vw, 2.2rem); line-height: 1.05; margin-bottom: 8px; }
+.aufmacher p { color: var(--ink-2); font-size: 1.02rem; }
+
+.teaserreihe { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+@media (max-width: 760px) { .teaserreihe { grid-template-columns: 1fr; } }
+.teaser { display: flex; flex-direction: column; }
+.teaser .medien { aspect-ratio: 16 / 9; background: var(--night-2); position: relative; overflow: hidden; display: grid; place-items: center; }
+.teaser .medien.sepia { background: radial-gradient(120% 90% at 50% 0%, #3a2a12, #120f09); }
+.teaser .medien.rekord { background: radial-gradient(120% 90% at 50% 0%, #16324a, #05090c); }
+.teaser .medien.profil { background: radial-gradient(120% 90% at 50% 0%, #2a1840, #0b0714); }
+.teaser .medien .gross { font-family: var(--f-head); font-weight: 800; color: #fff; font-size: 2.4rem; line-height: 1; text-align: center; }
+.teaser .medien .gross small { display: block; font-size: .38em; letter-spacing: .16em; color: #e9c27a; margin-top: 4px; }
+.teaser .medien img.av { height: 100%; width: auto; position: absolute; bottom: 0; }
+.teaser .inhalt { padding: 12px 14px 16px; }
+.teaser h4 { font-family: var(--f-head); font-weight: 700; font-size: 1.3rem; line-height: 1.1; margin-bottom: 4px; }
+.teaser p { color: var(--ink-2); font-size: .92rem; }
+.medien .badge {
+  position: absolute; left: 10px; top: 10px; font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  background: var(--red); color: #fff; padding: 2px 8px; border-radius: 2px;
+}
+.medien .badge.leise { background: rgba(0,0,0,.55); }
+
+a.karte { transition: transform .15s, box-shadow .15s; }
+a.karte:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(16,24,40,.14); }
+a.karte:hover h3, a.karte:hover h4 { color: var(--red-ink); }
+
+/* Linkliste (Werkzeuge, Ligen) */
+.linkliste { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1px; background: var(--line); }
+@media (max-width: 600px) { .linkliste { grid-template-columns: 1fr; } }
+.linkliste > * { background: var(--surface); padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.linkliste a:hover { background: var(--surface-2); }
+.linkliste .ico { flex: none; width: 36px; height: 36px; border-radius: 4px; display: grid; place-items: center; font-size: 1.1rem; background: var(--blue-soft); }
+.linkliste h4 { font-family: var(--f-head); font-size: 1.15rem; font-weight: 700; line-height: 1.1; }
+.linkliste p { font-size: .86rem; color: var(--ink-2); margin-top: 2px; }
+.linkliste .bald { opacity: .55; }
+.linkliste .bald h4::after { content: " · bald"; font-family: var(--f-body); font-size: .72rem; font-weight: 600; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
+
+/* ── Tabellen ─────────────────────────────────────────────────────────── */
+.widget { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+.widget-kopf { padding: 12px 14px 10px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+.widget-kopf .liga-badge { width: 6px; align-self: stretch; background: var(--blue); border-radius: 2px; }
+.widget-kopf h3 { font-family: var(--f-head); font-weight: 800; font-size: 1.2rem; text-transform: uppercase; line-height: 1; }
+.widget-kopf p { font-size: .76rem; color: var(--ink-3); margin-top: 2px; }
+.widget-fuss { padding: 10px 14px; border-top: 1px solid var(--line); font-size: .82rem; font-weight: 600; }
+.widget-fuss a { color: var(--blue); }
+.widget-fuss a:hover { text-decoration: underline; }
+
+.tabelle { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.tabelle th {
+  font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-3);
+  text-align: left; padding: 7px 10px; background: var(--surface-2); white-space: nowrap;
+}
+.tabelle td { padding: 6px 10px; border-top: 1px solid var(--line); vertical-align: middle; }
+.tabelle tbody tr:hover td { background: var(--surface-2); }
+.tabelle .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tabelle th.num { text-align: right; }
+.tabelle .rk { width: 2.6em; white-space: nowrap; text-align: center; font-weight: 700; color: var(--ink-3); }
+.tabelle .rk-1 { color: var(--gold); }
+.tabelle .rk-2 { color: var(--silver); }
+.tabelle .rk-3 { color: var(--bronze); }
+.tabelle td.name { font-weight: 600; }
+.tabelle .name a { display: flex; align-items: center; gap: 9px; }
+.tabelle td.name > img.mgr-av { display: inline-block; vertical-align: middle; margin-right: 9px; }
+.tabelle .name a:hover { color: var(--blue); }
+.tabelle .mgr-av { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--surface-2); flex: none; }
+.tabelle tr.ewige-sep td {
+  background: var(--surface-2); font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3);
+}
+.tabelle tr.former td { color: var(--ink-3); }
+.tabelle .title-pill {
+  display: inline-block; font-size: .74rem; font-weight: 700; color: var(--gold);
+  border: 1px solid currentColor; border-radius: 10px; padding: 0 7px; white-space: nowrap;
+}
+/* Erste Zeile hervorheben (Tabellenführer) */
+#zwischenstand tbody tr:first-child td { background: color-mix(in srgb, var(--gold) 8%, transparent); }
+.scroll-x { overflow-x: auto; }
+
+/* Spieltags-Wertung im Kasten */
+.st-liste { list-style: none; }
+.st-liste li { display: flex; align-items: center; gap: 10px; padding: 6px 14px; border-top: 1px solid var(--line); font-size: .9rem; }
+.st-liste li:first-child { border-top: 0; }
+.st-liste .r { width: 1.4em; text-align: right; font-weight: 700; color: var(--ink-3); }
+.st-liste img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; object-position: top; }
+.st-liste .n { flex: 1; font-weight: 600; }
+.st-liste .p { font-weight: 700; font-variant-numeric: tabular-nums; }
+.st-liste .balken { width: 70px; height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+.st-liste .balken i { display: block; height: 100%; background: var(--blue); }
+.st-liste li.sieger .p { color: var(--red-ink); }
+.st-liste li.sieger .balken i { background: var(--red); }
+
+/* ── Über die Liga ────────────────────────────────────────────────────── */
+.ueber { padding: 20px; display: grid; gap: 18px; }
+.ueber > p { font-size: 1.05rem; color: var(--ink-2); }
+.fakten { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px; background: var(--line); border-radius: var(--radius); overflow: hidden; }
+@media (max-width: 600px) { .fakten { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.fakten div { background: var(--surface-2); padding: 12px; text-align: center; }
+.fakten b { display: block; font-family: var(--f-head); font-size: 2rem; font-weight: 800; line-height: 1; color: var(--blue); }
+.fakten span { font-size: .76rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; }
+.saeulen { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px 24px; }
+@media (max-width: 600px) { .saeulen { grid-template-columns: 1fr; } }
+.saeulen h4 { font-family: var(--f-head); font-size: 1.15rem; font-weight: 700; }
+.saeulen p { font-size: .92rem; color: var(--ink-2); }
+.zitat { border-left: 4px solid var(--red); padding: 4px 0 4px 16px; }
+.zitat blockquote { font-family: var(--f-head); font-size: 1.45rem; font-weight: 600; line-height: 1.2; font-style: italic; }
+.zitat cite { display: block; font-size: .8rem; color: var(--ink-3); font-style: normal; margin-top: 6px; }
+
+/* ── Manager-Leiste ───────────────────────────────────────────────────── */
+.kader-leiste { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 10px; }
+.kader-leiste a { background: var(--surface); border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; padding: 10px 6px 10px; }
+.kader-leiste a:hover { box-shadow: 0 0 0 2px var(--blue); }
+.kader-leiste img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: top; margin: 0 auto 6px; background: var(--surface-2); }
+.kader-leiste span { font-size: .8rem; font-weight: 600; line-height: 1.2; display: block; }
+
+/* ── Fußzeile ─────────────────────────────────────────────────────────── */
+.fuss { background: var(--night); color: var(--night-mute); font-size: .84rem; padding: 28px 0 32px; }
+.fuss .wrap, .fuss .mz-wrap { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: start; }
+.fuss img { height: 64px; width: auto; }
+.fuss nav { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 8px; }
+.fuss nav a { color: var(--night-ink); font-weight: 600; }
+.fuss nav a:hover { color: #fff; text-decoration: underline; }
+@media (max-width: 600px) { .fuss .wrap, .fuss .mz-wrap { grid-template-columns: 1fr; } }
+
+/* ==========================================================================
+   UNTERSEITEN (Manager, Chronik, Saisons, Ligen, Videos)
+   Die alten Seiten behalten ihre eigenen Regeln; magazin-umbau.js entfernt dort
+   nur Kopf, Fuß und :root. Die Namen der alten Farbvariablen zeigen hier auf die
+   Magazin-Token – so folgen sie automatisch Hell und Dunkel.
+   ========================================================================== */
+:root {
+  --card: var(--surface); --card-hover: var(--surface-2); --border: var(--line);
+  --text: var(--ink); --muted: var(--ink-3); --muted2: var(--ink-2); --bg2: var(--surface-2);
+  --blue-light: var(--blue); --blue-muted: var(--blue-soft);
+}
+
+/* Kopfband in klein */
+.masthead.klein .wrap, .masthead.klein .mz-wrap { padding-top: 12px; padding-bottom: 12px; }
+.masthead.klein .brand .signet { height: 56px; }
+.masthead.klein .brand-name small { font-size: .82rem; letter-spacing: .3em; }
+.masthead.klein .brand-name strong { font-size: 2.7rem; }
+@media (max-width: 600px) {
+  .masthead.klein .brand .signet { height: 44px; }
+  .masthead.klein .brand-name strong { font-size: 2.1rem; }
+}
+
+/* Seitenkopf: Überschriften im Magazin-Schnitt, Abzeichen als Dachzeile */
+.seite .page-header h1, .seite .mgr-name, .seite-generator .page > h1 {
+  font-family: var(--f-head); font-weight: 800; letter-spacing: 0; line-height: 1.02;
+}
+.seite .page-header h1, .seite-generator .page > h1 { font-size: clamp(2.2rem, 5vw, 3.6rem); }
+.seite .mgr-name { font-size: clamp(2rem, 4vw, 3rem); }
+.seite .page-header p, .seite .page-header .subtitle { color: var(--ink-2); }
+.seite .season-chip, .seite .league-badge, .seite .page-badge, .seite .mgr-season {
+  background: none; border: 0; border-radius: 0; padding: 0; margin-bottom: 6px;
+  font-family: var(--f-head); font-size: .95rem; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--red-ink); display: block; width: fit-content;
+}
+.seite .champ-badge, .seite .t-champ {
+  background: color-mix(in srgb, var(--gold) 12%, transparent); border-color: color-mix(in srgb, var(--gold) 45%, transparent);
+}
+.seite .back-link { color: var(--red-ink); letter-spacing: .06em; }
+.seite .back-link:hover { color: var(--ink); }
+
+/* Abschnittstitel wie die Rubrik-Köpfe der Startseite */
+.seite .section-label {
+  font-family: var(--f-head); font-size: 1.3rem; font-weight: 800; letter-spacing: .01em; color: var(--ink);
+  border-top: 3px solid var(--ink); padding-top: 8px;
+}
+.seite .section-label::after { display: none; }
+.seite .era-title { font-family: var(--f-head); font-size: 1.05rem; letter-spacing: .1em; }
+
+/* Karten: weiß auf grauer Fläche, mit Schatten */
+.seite .narrative, .seite .fazit, .seite .fazit-section, .seite .record, .seite .quote-block,
+.seite .stat-box, .seite .pitch-card, .seite .season-table, .seite .mgr-tag {
+  background: var(--surface); box-shadow: var(--shadow);
+}
+.seite .narrative p, .seite .t-text, .seite .fazit p, .seite .fazit-section p { color: var(--ink-2); font-size: 1rem; }
+.seite .t-title { font-family: var(--f-head); font-size: 1.35rem; font-weight: 700; }
+.seite .t-item::before { border-color: var(--bg); }
+
+/* Tabellen der Chronik */
+.seite .season-table td { border-bottom-color: var(--line); }
+.seite .s-name { color: var(--ink); }
+.seite .s-champ td { background: color-mix(in srgb, var(--gold) 9%, transparent); }
+
+/* Blätterleiste */
+.seite .pn-link { background: var(--surface); border-color: var(--line); color: var(--ink-2); box-shadow: var(--shadow); }
+.seite .pn-link:hover { color: var(--red-ink); border-color: var(--red); background: var(--surface); }
+.seite .pn-nav { border-top-color: var(--line); }
+
+/* Managerseite: Rangfarbe nur als Rahmen und Abzeichen – die Zahl bleibt lesbar */
+.seite .stat-box.highlight { background: var(--surface); border-width: 2px; }
+body.seite .stat-box.highlight .n { color: var(--ink); }
+.seite .p-chip .pp { color: #f5c518; }            /* Punkte auf dem Spielfeld: immer auf dunklem Chip */
+.seite .back-link { display: flex; width: fit-content; }
+.seite .stat-box .n { font-family: var(--f-head); font-size: 2rem; }
+.seite .mgr-rank-badge { border-color: var(--bg); }
+.seite .transfer-note { background: var(--blue-soft); border-color: transparent; color: var(--ink-2); }
+
+/* Managerseite: Bank mit Spielerfotos (website.js schreibt sie, sobald die Seite im Magazin-Rahmen steht) */
+.seite .bench-side .b-row { align-items: center; padding: 4px 0; }
+.seite .bench-side .b-name { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.seite .bench-side .b-foto {
+  width: 28px; height: 28px; flex: none; border-radius: 50%; object-fit: cover; background: #fff;
+  border: 1px solid var(--line);
+}
+.seite .bench-side div.b-foto {
+  display: flex; align-items: center; justify-content: center; font-size: .62rem; font-weight: 700; color: #1a3050;
+}
+
+/* Werkzeugseiten (Vergleichszentrale, Spielerprofile): eigener Werkzeug-Kopf unter dem Magazin-Kopf */
+.seite-werkzeug .ressorts { position: relative; }        /* nicht kleben: das Werkzeug hat eigene Reiter */

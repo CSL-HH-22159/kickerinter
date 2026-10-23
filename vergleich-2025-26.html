@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -229,8 +229,42 @@
     .tab-btn { padding: 8px 14px; font-size: .82rem; }
   }
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="magazin.css">
 </head>
-<body>
+<body class="seite seite-werkzeug">
+<!-- ══ Magazin-Kopf (magazin-umbau.js) ══ -->
+<div class="topline">
+  <div class="mz-wrap">
+    <span><b>Spreeliga Monolog</b></span>
+    <span class="sep hide-s">|</span>
+    <span class="hide-s">Das Magazin zur Spreeliga</span>
+    <span class="push"></span>
+  </div>
+</div>
+<div class="masthead klein" id="kopfband">
+  <div class="mz-wrap">
+    <a class="brand" href="portal.html">
+      <img class="signet" src="monolog-signet.webp" alt="" onerror="this.style.display='none'">
+      <div class="brand-name"><small>Spreeliga</small><strong>Monolog</strong></div>
+    </a>
+  </div>
+</div>
+<nav class="ressorts" aria-label="Rubriken">
+  <div class="mz-wrap">
+    <a class="mini" href="portal.html" aria-label="Spreeliga Monolog – Start"><img src="monolog-signet.webp" alt=""></a>
+    <a href="portal.html">Start</a>
+    <a href="portal.html#spieltag">Spieltag</a>
+    <a class="aktiv" href="portal.html#liga">Liga &amp; Tabellen</a>
+    <a href="portal.html#manager">Manager</a>
+    <a href="portal.html#geschichte">Geschichte</a>
+    <a href="chronik.html">Chronik</a>
+    <a href="videos.html">Videos</a>
+  </div>
+</nav>
+<!-- ══ /Magazin-Kopf ══ -->
 
 <header>
   <div class="logo"><img src="Spreeliga Monolog.webp" alt="Spreeliga Monolog" style="height:6rem;width:auto;vertical-align:middle"></div>
@@ -1808,6 +1842,24 @@ initKaderSelects();
 renderKaderView();
 </script>
 
+<!-- ══ Magazin-Fuß (magazin-umbau.js) ══ -->
+<div class="fuss" role="contentinfo">
+  <div class="mz-wrap">
+    <img src="monolog-signet.webp" alt="Spreeliga Monolog" onerror="this.style.display='none'">
+    <div>
+      <nav>
+        <a href="portal.html#spieltag">Spieltag</a>
+        <a href="portal.html#liga">Liga &amp; Tabellen</a>
+        <a href="portal.html#manager">Manager</a>
+        <a href="portal.html#geschichte">Geschichte</a>
+        <a href="chronik.html">Chronik</a>
+        <a href="videos.html">Videos</a>
+      </nav>
+      Spreeliga Monolog – das Magazin zur Spreeliga · private Liga im Kicker Managerspiel Interactive
+    </div>
+  </div>
+</div>
+<script src="magazin.js"></script>
 </body>
 </html>
 
