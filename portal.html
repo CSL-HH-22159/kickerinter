@@ -89,7 +89,7 @@ try { var t = localStorage.getItem('monolog-theme'); if (t) document.documentEle
         <section id="spieltag">
           <div class="rubrik"><h2>Spieltag</h2><a class="mehr" href="videos.html">Zur Sendung →</a></div>
           <!--@aufmacher-->
-          <a class="karte aufmacher" href="videos.html" data-folge-saison="2026" data-folge-st="6">
+          <a class="karte aufmacher" href="spieltag-2026-06.html" data-bericht="1" data-folge-saison="2026" data-folge-st="6">
             <div class="medien">
               <div class="avatare"><img src="Avatare/Mary.webp" alt="Michael Marienwald"></div>
               <div class="zahl">83<small>PUNKTE</small></div>
@@ -97,9 +97,10 @@ try { var t = localStorage.getItem('monolog-theme'); if (t) document.documentEle
               <span class="folge" hidden>▶ Folge ansehen</span>
             </div>
             <div class="inhalt">
-              <span class="dach">Tagessieg für Mary</span>
-              <h3>83 Punkte! Marienwald gewinnt den 6. Spieltag – Olis Vorsprung schmilzt</h3>
-              <p>Michael Marienwald holt mit 83 Punkten den Tagessieg vor Fabian Schulz (78) und Lukas Hechmann (76). Spitzenreiter Oliver Nicklisch kommt auf 49 Punkte – der schwächste Wert der Runde. Der Abstand auf Gordon Winkel beträgt jetzt 21 Punkte (vorher 37).</p>
+              <span class="dach">6. Spieltag</span>
+              <h3>Ditsche dreht auf – und der dunkle Lord trägt die rote Laterne</h3>
+              <p>Moment, was war das denn? Der Tabellenführer als Tageslaterne? Ganz genau. Während Michael „Ditsche“ Marienwald mit sage und schreibe 83 Punkten den 6. Spieltag gewann, reichte es für Oli nur zu mickrigen 49 Zählern – Platz 11 von 11.</p>
+              <span class="weiter">Weiterlesen →</span>
             </div>
           </a>
           <!--/@aufmacher-->
@@ -482,10 +483,17 @@ try { var t = localStorage.getItem('monolog-theme'); if (t) document.documentEle
     var st = +a.getAttribute('data-folge-st'), sa = +a.getAttribute('data-folge-saison');
     var v = d.videos.filter(function (x) { return x.spieltag === st && x.saison === sa && !x.sonder; })[0];
     if (!v) return;
-    a.href = 'https://youtu.be/' + v.id; a.target = '_blank'; a.rel = 'noopener';
-    var f = a.querySelector('.folge'); if (f) f.hidden = false;
+    var yt = 'https://youtu.be/' + v.id;
+    var f = a.querySelector('.folge');
+    if (a.hasAttribute('data-bericht')) {
+      /* Aufmacher führt zum Spieltagsbericht – der rote Knopf öffnet die Folge */
+      if (f) { f.hidden = false; f.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); window.open(yt, '_blank', 'noopener'); }); }
+    } else {
+      a.href = yt; a.target = '_blank'; a.rel = 'noopener';
+      if (f) f.hidden = false;
+    }
     var m = document.querySelector('#spieltag .rubrik .mehr');
-    if (m) { m.href = a.href; m.target = '_blank'; m.rel = 'noopener'; m.textContent = 'Zur Folge →'; }
+    if (m) { m.href = yt; m.target = '_blank'; m.rel = 'noopener'; m.textContent = 'Zur Folge →'; }
   }).catch(function () {});
 })();
 /* Ligaleiste aus der Zwischenstands-Tabelle bauen – eine Datenquelle, website.js pflegt nur die Tabelle */
