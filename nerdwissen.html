@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nerdwissen · Spreeliga Monolog</title>
+<meta name="description" content="Die nerdigsten Statistiken der Spreeliga: Bank-Reue, Herdentrieb, direkter Vergleich, Anstoßzeiten, Vereinsbrille und mehr – mit Awards für die Manager.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="magazin.css">
+<script>try { var t = localStorage.getItem('monolog-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+</head>
+<body class="seite seite-geschichte">
+<!-- ══ Magazin-Kopf (magazin-umbau.js) ══ -->
+<div class="topline">
+  <div class="mz-wrap">
+    <span><b>Spreeliga Monolog</b></span>
+    <span class="sep hide-s">|</span>
+    <span class="hide-s">Das Magazin zur Spreeliga</span>
+    <span class="push"></span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Hell/Dunkel umschalten">◐<span class="txt"> Hell/Dunkel</span></button>
+  </div>
+</div>
+<div class="masthead klein" id="kopfband">
+  <div class="mz-wrap">
+    <a class="brand" href="portal.html">
+      <img class="signet" src="monolog-signet.webp" alt="" onerror="this.style.display='none'">
+      <div class="brand-name"><small>Spreeliga</small><strong>Monolog</strong></div>
+    </a>
+  </div>
+</div>
+<nav class="ressorts" aria-label="Rubriken">
+  <div class="mz-wrap">
+    <a class="mini" href="portal.html" aria-label="Spreeliga Monolog – Start"><img src="monolog-signet.webp" alt=""></a>
+    <a href="portal.html">Start</a>
+    <a href="portal.html#spieltag">Spieltag</a>
+    <a href="portal.html#liga">Liga &amp; Tabellen</a>
+    <a href="portal.html#manager">Manager</a>
+    <a href="geschichte.html">Geschichte</a>
+    <a class="aktiv" href="nerdwissen.html">Nerdwissen</a>
+    <a href="chronik.html">Chronik</a>
+    <a href="videos.html">Videos</a>
+  </div>
+</nav>
+<!-- ══ /Magazin-Kopf ══ -->
+<main class="g-main">
+  <div class="mz-wrap">
+
+    <header class="g-kopf">
+      <span class="dach">Statistik für Fortgeschrittene</span>
+      <h1>Nerdwissen</h1>
+      <p>Alles, was man aus 2021/22 bis heute (6. Spieltag 2026/27) an Daten herauskitzeln kann. Nichts geschätzt – alles aus Kicker Interactive. Awards gibt es für Manager mit mindestens 34 Spieltagen.</p>
+      <nav class="n-sprung"><a href="#awards">Awards</a><a href="#bank">Bank-Reue</a><a href="#herde">Herdentrieb</a><a href="#duell">Direkter Vergleich</a><a href="#zeit">Anstoßzeiten</a><a href="#heim">Heim/Auswärts</a><a href="#formation">Taktik</a><a href="#brille">Vereinsbrille</a><a href="#karten">Karten & MVP</a><a href="#fieber">Fieberkurve</a><a href="#comeback">Aufholjagd</a><a href="#fluch">Fluch</a></nav>
+    </header>
+    <section id="awards" class="n-abschnitt"><div class="rubrik"><h2>Die Awards</h2></div>
+      <div class="n-awards"><a class="karte n-award" href="#bank">
+        <span class="n-ico">🎯</span>
+        <span class="g-kt">Aufstellungskünstler</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'">Oliver Nicklisch</span>
+        <small>91,7 % der möglichen Punkte aufgestellt</small>
+      </a>
+      <a class="karte n-award" href="#bank">
+        <span class="n-ico">🪑</span>
+        <span class="g-kt">Bank-Reue</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'">Christoph Kemmner</span>
+        <small>8,7 Punkte je Spieltag auf der Bank liegen gelassen</small>
+      </a>
+      <a class="karte n-award" href="#herde">
+        <span class="n-ico">🐺</span>
+        <span class="g-kt">Eigenbrötler</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'">Nico Wechsel</span>
+        <small>nur 8,1 % Kader-Übereinstimmung mit den anderen</small>
+      </a>
+      <a class="karte n-award" href="#herde">
+        <span class="n-ico">🐑</span>
+        <span class="g-kt">Herdentier</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'">Oliver Nicklisch</span>
+        <small>15,9 % Kader-Übereinstimmung mit den anderen</small>
+      </a>
+      <a class="karte n-award" href="#herde">
+        <span class="n-ico">💎</span>
+        <span class="g-kt">Geheimtipp-Jäger</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'">Nico Wechsel</span>
+        <small>43,1 % seiner Punkte von Spielern, die sonst keiner hatte</small>
+      </a>
+      <a class="karte n-award" href="#duell">
+        <span class="n-ico">⚔️</span>
+        <span class="g-kt">Duellkönig</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'">Gordon Winkel</span>
+        <small>gewinnt 59,9 % aller direkten Vergleiche</small>
+      </a>
+      <a class="karte n-award" href="#zeit">
+        <span class="n-ico">🌙</span>
+        <span class="g-kt">Freitagsheld</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'">Gordon Winkel</span>
+        <small>6,18 Punkte je Spieler am Freitagabend</small>
+      </a>
+      <a class="karte n-award" href="#heim">
+        <span class="n-ico">🏠</span>
+        <span class="g-kt">Heimvorteil</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'">Marco Woelki</span>
+        <small>seine Spieler holen zu Hause 1,74 Punkte mehr</small>
+      </a>
+      <a class="karte n-award" href="#formation">
+        <span class="n-ico">🔄</span>
+        <span class="g-kt">Taktikfuchs</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'">Marco Woelki</span>
+        <small>16,8 Systemwechsel pro Saison</small>
+      </a>
+      <a class="karte n-award" href="#formation">
+        <span class="n-ico">🧱</span>
+        <span class="g-kt">Systemtreu</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'">Nico Wechsel</span>
+        <small>nur 3,8 Systemwechsel pro Saison</small>
+      </a>
+      <a class="karte n-award" href="#brille">
+        <span class="n-ico">❤️</span>
+        <span class="g-kt">Vereinsbrille</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'">Marco Woelki</span>
+        <small>Dortmund: 1,68-mal so oft wie der Ligaschnitt</small>
+      </a>
+      <a class="karte n-award" href="#karten">
+        <span class="n-ico">🟥</span>
+        <span class="g-kt">Kartensammler</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'">Christoph Kemmner</span>
+        <small>15,1 Minuspunkte durch Karten pro Saison</small>
+      </a>
+      <a class="karte n-award" href="#karten">
+        <span class="n-ico">🧤</span>
+        <span class="g-kt">Zu-null-König</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'">Michael Marienwald</span>
+        <small>8,3 Zu-null-Spiele pro Saison</small>
+      </a>
+      <a class="karte n-award" href="#karten">
+        <span class="n-ico">🌟</span>
+        <span class="g-kt">MVP-Sammler</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'">Christoph Kemmner</span>
+        <small>26,5 Spieler des Spiels pro Saison</small>
+      </a>
+      <a class="karte n-award" href="#zeit">
+        <span class="n-ico">🌅</span>
+        <span class="g-kt">Sonntagskind</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'">Gordon Winkel</span>
+        <small>5,39 Punkte je Spieler am Sonntag</small>
+      </a>
+      <a class="karte n-award" href="#heim">
+        <span class="n-ico">🧳</span>
+        <span class="g-kt">Auswärtsprofi</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'">Fabian Schulz</span>
+        <small>auswärts nur 0,58 Punkte je Spieler schwächer als zu Hause – der kleinste Unterschied</small>
+      </a>
+      <a class="karte n-award" href="#herde">
+        <span class="n-ico">👯</span>
+        <span class="g-kt">Kader-Zwilling</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'">Marco Woelki</span>
+        <small>23 % gleiche Spieler wie Tim – das ähnlichste Paar der Liga</small>
+      </a>
+      <a class="karte n-award" href="#herde">
+        <span class="n-ico">👯</span>
+        <span class="g-kt">Kader-Zwilling</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'">Tim Kurz</span>
+        <small>23 % gleiche Spieler wie Marco – das ähnlichste Paar der Liga</small>
+      </a>
+      <a class="karte n-award" href="#fieber">
+        <span class="n-ico">🎢</span>
+        <span class="g-kt">Achterbahn</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'">Nico Schneider</span>
+        <small>die größten Ausschläge zwischen Platz 1 und ganz unten</small>
+      </a>
+      <a class="karte n-award" href="#fieber">
+        <span class="n-ico">📏</span>
+        <span class="g-kt">Mister Konstant</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'">Christoph Kemmner</span>
+        <small>die geringsten Schwankungen der Liga</small>
+      </a>
+      <a class="karte n-award" href="#comeback">
+        <span class="n-ico">🚀</span>
+        <span class="g-kt">Comeback-König</span>
+        <span class="n-wer"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'">Christoph Kemmner</span>
+        <small>159 Punkte Rückstand aufgeholt (2024/25)</small>
+      </a></div>
+    </section>
+    <section id="bank" class="n-abschnitt"><div class="rubrik"><h2>Bank-Reue</h2></div>
+      <p class="n-intro">Wie viel von der bestmöglichen Elf aus dem eigenen 22er-Kader stand wirklich auf dem Platz? Gerechnet mit denselben Formationsregeln. Ligaschnitt: 88,5 %.</p>
+      
+      <div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Manager</th><th class="num">Quote</th><th class="num">liegen gelassen / ST</th><th class="num">perfekte Spieltage</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-oli.html">Oliver Nicklisch</a></span></td><td class="num">91,7 %</td><td class="num">4,7</td><td class="num">39</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">89,5 %</td><td class="num">6,3</td><td class="num">29</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-nico.html">Nico Wechsel</a></span></td><td class="num">89,1 %</td><td class="num">5,3</td><td class="num">28</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-sche.html">Nico Schneider</a></span></td><td class="num">89 %</td><td class="num">6,2</td><td class="num">26</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-gordon.html">Gordon Winkel</a></span></td><td class="num">87,9 %</td><td class="num">7,8</td><td class="num">11</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-marco.html">Marco Woelki</a></span></td><td class="num">87,6 %</td><td class="num">7,1</td><td class="num">26</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-fabi.html">Fabian Schulz</a></span></td><td class="num">87,2 %</td><td class="num">5,7</td><td class="num">16</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">86,9 %</td><td class="num">8,7</td><td class="num">28</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-mary.html">Michael Marienwald</a></span></td><td class="num">86,4 %</td><td class="num">8,4</td><td class="num">4</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-schulle.html">Chris Schulze</a><small class="n-neu">6 ST</small></span></td><td class="num">84,4 %</td><td class="num">12</td><td class="num">0</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-luki.html">Lukas Hechmann</a><small class="n-neu">6 ST</small></span></td><td class="num">75,2 %</td><td class="num">13,7</td><td class="num">0</td></tr></tbody>
+        </table></div>
+      <h3 class="n-h3">Die bittersten Spieltage</h3>
+      <div class="g-rekorde"><div class="karte g-rekord"><img class="g-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><div><span class="g-kt">28. ST 2021/22</span><b class="g-wert">48<small> Pkt verschenkt</small></b><p>Christoph Kemmner: 41 statt 89 Punkte · bester Bankspieler Takuma Asano (20)</p></div></div><div class="karte g-rekord"><img class="g-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><div><span class="g-kt">9. ST 2021/22</span><b class="g-wert">44<small> Pkt verschenkt</small></b><p>Christoph Kemmner: 50 statt 94 Punkte · bester Bankspieler Dedryck Boyata (13)</p></div></div><div class="karte g-rekord"><img class="g-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><div><span class="g-kt">3. ST 2026/27</span><b class="g-wert">42<small> Pkt verschenkt</small></b><p>Nico Schneider: 43 statt 85 Punkte · bester Bankspieler Felix Nmecha (21)</p></div></div></div>
+      <h3 class="n-h3">Bank-Allstars – die meisten Punkte auf der Bank</h3>
+      <div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=91471&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'TA'}))">
+          <b>Takuma Asano</b>
+          <span>bei Christoph Kemmner</span><span class="g-sp-p">92 Pkt auf der Bank</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=96038&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'AS'}))">
+          <b>Anton Stach</b>
+          <span>bei Gordon Winkel</span><span class="g-sp-p">75 Pkt auf der Bank</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=73311&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'AS'}))">
+          <b>Alessandro Schöpf</b>
+          <span>bei Christoph Kemmner</span><span class="g-sp-p">63 Pkt auf der Bank</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=75006&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'JG'}))">
+          <b>Jeffrey Gouweleeuw</b>
+          <span>bei Christoph Kemmner</span><span class="g-sp-p">63 Pkt auf der Bank</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=54252&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'MP'}))">
+          <b>Marvin Plattenhardt</b>
+          <span>bei Christoph Kemmner</span><span class="g-sp-p">59 Pkt auf der Bank</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=118291&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'AK'}))">
+          <b>Ansgar Knauff</b>
+          <span>bei Tim Kurz</span><span class="g-sp-p">58 Pkt auf der Bank</span>
+        </div></div>
+    </section>
+    <section id="herde" class="n-abschnitt"><div class="rubrik"><h2>Herdentrieb</h2></div>
+      <p class="n-intro">Wie ähnlich sind sich die Kader? Verglichen wird an jedem Spieltag der 22er-Kader jedes Managers mit dem jedes anderen (Anteil gemeinsamer Spieler). Exklusiv-Punkte: Startelf-Punkte von Spielern, die an diesem Spieltag kein anderer Manager im Kader hatte.</p>
+      
+      <div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Manager</th><th class="num">Übereinstimmung</th><th class="num">Kader-Zwilling</th><th class="num">Exklusiv-Punkte</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-nico.html">Nico Wechsel</a></span></td><td class="num">8,1 %</td><td class="num">Christoph Kemmner <small>(10,5 %)</small></td><td class="num">43,1 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-luki.html">Lukas Hechmann</a><small class="n-neu">6 ST</small></span></td><td class="num">9,6 %</td><td class="num">Oliver Nicklisch <small>(18,9 %)</small></td><td class="num">32,8 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-sche.html">Nico Schneider</a></span></td><td class="num">9,9 %</td><td class="num">Michael Marienwald <small>(16,8 %)</small></td><td class="num">39,7 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-schulle.html">Chris Schulze</a><small class="n-neu">6 ST</small></span></td><td class="num">12,5 %</td><td class="num">Fabian Schulz <small>(18,9 %)</small></td><td class="num">27,3 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-gordon.html">Gordon Winkel</a></span></td><td class="num">13,6 %</td><td class="num">Michael Marienwald <small>(19,9 %)</small></td><td class="num">34,9 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-marco.html">Marco Woelki</a></span></td><td class="num">13,6 %</td><td class="num">Tim Kurz <small>(22,8 %)</small></td><td class="num">28,7 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-fabi.html">Fabian Schulz</a></span></td><td class="num">14,2 %</td><td class="num">Tim Kurz <small>(22,3 %)</small></td><td class="num">28 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-mary.html">Michael Marienwald</a></span></td><td class="num">14,2 %</td><td class="num">Gordon Winkel <small>(19,9 %)</small></td><td class="num">28,2 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">15,1 %</td><td class="num">Michael Marienwald <small>(18,6 %)</small></td><td class="num">27,4 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">15,7 %</td><td class="num">Marco Woelki <small>(22,8 %)</small></td><td class="num">32,8 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-oli.html">Oliver Nicklisch</a></span></td><td class="num">15,9 %</td><td class="num">Marco Woelki <small>(21,2 %)</small></td><td class="num">29,6 %</td></tr></tbody>
+        </table></div>
+      <h3 class="n-h3">Geheimtipps – die meisten Exklusiv-Punkte</h3>
+      <div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=81465&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'AG'}))">
+          <b>Alejandro Grimaldo</b>
+          <span>exklusiv bei Tim Kurz</span><span class="g-sp-p">433 Pkt · 48 Einsätze</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=87750&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'DR'}))">
+          <b>David Raum</b>
+          <span>exklusiv bei Gordon Winkel</span><span class="g-sp-p">400 Pkt · 64 Einsätze</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=70605&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'HK'}))">
+          <b>Harry Kane</b>
+          <span>exklusiv bei Oliver Nicklisch</span><span class="g-sp-p">366 Pkt · 32 Einsätze</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=72706&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'CG'}))">
+          <b>Christian Günter</b>
+          <span>exklusiv bei Nico Wechsel</span><span class="g-sp-p">356 Pkt · 68 Einsätze</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=80174&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'WA'}))">
+          <b>Waldemar Anton</b>
+          <span>exklusiv bei Nico Wechsel</span><span class="g-sp-p">342 Pkt · 66 Einsätze</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=72478&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'MF'}))">
+          <b>Mark Flekken</b>
+          <span>exklusiv bei Nico Wechsel</span><span class="g-sp-p">273 Pkt · 34 Einsätze</span>
+        </div></div>
+    </section>
+    <section id="duell" class="n-abschnitt"><div class="rubrik"><h2>Direkter Vergleich</h2></div>
+      <p class="n-intro">Jeder Spieltag als Duell: Wer hat mehr Punkte als der andere? Zeile gegen Spalte, Prozent gewonnener Duelle (Gleichstand halb). Blasse Felder: weniger als 34 Duelle. Größter Angstgegner: Nico Wechsel verliert 70 % der Duelle gegen Michael Marienwald.</p>
+      
+      <div class="widget n-matrix-box"><table class="n-matrix">
+        <thead><tr><th></th><th title="Oliver Nicklisch"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"></th><th title="Gordon Winkel"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"></th><th title="Nico Schneider"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"></th><th title="Marco Woelki"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"></th><th title="Christoph Kemmner"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"></th><th title="Nico Wechsel"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"></th><th title="Tim Kurz"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"></th><th title="Michael Marienwald"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"></th><th title="Fabian Schulz"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"></th><th title="Lukas Hechmann"><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"></th><th title="Chris Schulze"><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"></th></tr></thead>
+        <tbody><tr><th><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"><span>Oliver Nicklisch</span></th><td class="n-diag"></td><td class="n-z" style="background:rgba(226,0,26,0.13)" title="Oliver Nicklisch gegen Gordon Winkel: 41 % aus 176 Spieltagen">41</td><td class="n-z" style="background:rgba(19,133,74,0.08)" title="Oliver Nicklisch gegen Nico Schneider: 55 % aus 176 Spieltagen">55</td><td class="n-z" style="background:rgba(19,133,74,0.01)" title="Oliver Nicklisch gegen Marco Woelki: 51 % aus 176 Spieltagen">51</td><td class="n-z" style="background:rgba(226,0,26,0.07)" title="Oliver Nicklisch gegen Christoph Kemmner: 45 % aus 176 Spieltagen">45</td><td class="n-z" style="background:rgba(19,133,74,0.17)" title="Oliver Nicklisch gegen Nico Wechsel: 61 % aus 176 Spieltagen">61</td><td class="n-z" style="background:rgba(19,133,74,0.01)" title="Oliver Nicklisch gegen Tim Kurz: 51 % aus 176 Spieltagen">51</td><td class="n-z" style="background:rgba(19,133,74,0.04)" title="Oliver Nicklisch gegen Michael Marienwald: 53 % aus 74 Spieltagen">53</td><td class="n-z" style="background:rgba(19,133,74,0.17)" title="Oliver Nicklisch gegen Fabian Schulz: 61 % aus 74 Spieltagen">61</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.12)" title="Oliver Nicklisch gegen Lukas Hechmann: 58 % aus 6 Spieltagen">58</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.26)" title="Oliver Nicklisch gegen Chris Schulze: 67 % aus 6 Spieltagen">67</td></tr>
+        <tr><th><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><span>Gordon Winkel</span></th><td class="n-z" style="background:rgba(19,133,74,0.14)" title="Gordon Winkel gegen Oliver Nicklisch: 59 % aus 176 Spieltagen">59</td><td class="n-diag"></td><td class="n-z" style="background:rgba(19,133,74,0.12)" title="Gordon Winkel gegen Nico Schneider: 58 % aus 176 Spieltagen">58</td><td class="n-z" style="background:rgba(19,133,74,0.14)" title="Gordon Winkel gegen Marco Woelki: 59 % aus 176 Spieltagen">59</td><td class="n-z" style="background:rgba(19,133,74,0.04)" title="Gordon Winkel gegen Christoph Kemmner: 53 % aus 176 Spieltagen">53</td><td class="n-z" style="background:rgba(19,133,74,0.29)" title="Gordon Winkel gegen Nico Wechsel: 69 % aus 176 Spieltagen">69</td><td class="n-z" style="background:rgba(19,133,74,0.17)" title="Gordon Winkel gegen Tim Kurz: 61 % aus 176 Spieltagen">61</td><td class="n-z" style="background:rgba(19,133,74,0.08)" title="Gordon Winkel gegen Michael Marienwald: 55 % aus 74 Spieltagen">55</td><td class="n-z" style="background:rgba(19,133,74,0.15)" title="Gordon Winkel gegen Fabian Schulz: 60 % aus 74 Spieltagen">60</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Gordon Winkel gegen Lukas Hechmann: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.75)" title="Gordon Winkel gegen Chris Schulze: 100 % aus 6 Spieltagen">100</td></tr>
+        <tr><th><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><span>Nico Schneider</span></th><td class="n-z" style="background:rgba(226,0,26,0.07)" title="Nico Schneider gegen Oliver Nicklisch: 45 % aus 176 Spieltagen">45</td><td class="n-z" style="background:rgba(226,0,26,0.11)" title="Nico Schneider gegen Gordon Winkel: 42 % aus 176 Spieltagen">42</td><td class="n-diag"></td><td class="n-z" style="background:rgba(19,133,74,0.01)" title="Nico Schneider gegen Marco Woelki: 51 % aus 176 Spieltagen">51</td><td class="n-z" style="background:rgba(226,0,26,0.14)" title="Nico Schneider gegen Christoph Kemmner: 40 % aus 176 Spieltagen">40</td><td class="n-z" style="background:rgba(19,133,74,0.12)" title="Nico Schneider gegen Nico Wechsel: 58 % aus 176 Spieltagen">58</td><td class="n-z" style="background:rgba(226,0,26,0.07)" title="Nico Schneider gegen Tim Kurz: 45 % aus 176 Spieltagen">45</td><td class="n-z" style="background:rgba(226,0,26,0.04)" title="Nico Schneider gegen Michael Marienwald: 47 % aus 74 Spieltagen">47</td><td class="n-z" style="background:rgba(19,133,74,0.01)" title="Nico Schneider gegen Fabian Schulz: 51 % aus 74 Spieltagen">51</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Nico Schneider gegen Lukas Hechmann: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Nico Schneider gegen Chris Schulze: 50 % aus 6 Spieltagen">50</td></tr>
+        <tr><th><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><span>Marco Woelki</span></th><td class="n-z" style="background:rgba(226,0,26,0.01)" title="Marco Woelki gegen Oliver Nicklisch: 49 % aus 176 Spieltagen">49</td><td class="n-z" style="background:rgba(226,0,26,0.13)" title="Marco Woelki gegen Gordon Winkel: 41 % aus 176 Spieltagen">41</td><td class="n-z" style="background:rgba(226,0,26,0.01)" title="Marco Woelki gegen Nico Schneider: 49 % aus 176 Spieltagen">49</td><td class="n-diag"></td><td class="n-z" style="background:rgba(226,0,26,0.15)" title="Marco Woelki gegen Christoph Kemmner: 39 % aus 176 Spieltagen">39</td><td class="n-z" style="background:rgba(19,133,74,0.11)" title="Marco Woelki gegen Nico Wechsel: 57 % aus 176 Spieltagen">57</td><td class="n-z" style="background:rgba(226,0,26,0.01)" title="Marco Woelki gegen Tim Kurz: 49 % aus 176 Spieltagen">49</td><td class="n-z" style="background:rgba(226,0,26,0.13)" title="Marco Woelki gegen Michael Marienwald: 41 % aus 74 Spieltagen">41</td><td class="n-z" style="background:rgba(226,0,26,0.17)" title="Marco Woelki gegen Fabian Schulz: 38 % aus 74 Spieltagen">38</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.26)" title="Marco Woelki gegen Lukas Hechmann: 67 % aus 6 Spieltagen">67</td><td class="n-z n-wenig" style="background:rgba(226,0,26,0.24)" title="Marco Woelki gegen Chris Schulze: 33 % aus 6 Spieltagen">33</td></tr>
+        <tr><th><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><span>Christoph Kemmner</span></th><td class="n-z" style="background:rgba(19,133,74,0.08)" title="Christoph Kemmner gegen Oliver Nicklisch: 55 % aus 176 Spieltagen">55</td><td class="n-z" style="background:rgba(226,0,26,0.04)" title="Christoph Kemmner gegen Gordon Winkel: 47 % aus 176 Spieltagen">47</td><td class="n-z" style="background:rgba(19,133,74,0.15)" title="Christoph Kemmner gegen Nico Schneider: 60 % aus 176 Spieltagen">60</td><td class="n-z" style="background:rgba(19,133,74,0.17)" title="Christoph Kemmner gegen Marco Woelki: 61 % aus 176 Spieltagen">61</td><td class="n-diag"></td><td class="n-z" style="background:rgba(19,133,74,0.27)" title="Christoph Kemmner gegen Nico Wechsel: 68 % aus 176 Spieltagen">68</td><td class="n-z" style="background:rgba(19,133,74,0.11)" title="Christoph Kemmner gegen Tim Kurz: 57 % aus 176 Spieltagen">57</td><td class="n-z" style="background:rgba(19,133,74,0.08)" title="Christoph Kemmner gegen Michael Marienwald: 55 % aus 74 Spieltagen">55</td><td class="n-z" style="background:rgba(19,133,74,0.15)" title="Christoph Kemmner gegen Fabian Schulz: 60 % aus 74 Spieltagen">60</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.26)" title="Christoph Kemmner gegen Lukas Hechmann: 67 % aus 6 Spieltagen">67</td><td class="n-z n-wenig" style="background:rgba(226,0,26,0.24)" title="Christoph Kemmner gegen Chris Schulze: 33 % aus 6 Spieltagen">33</td></tr>
+        <tr><th><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"><span>Nico Wechsel</span></th><td class="n-z" style="background:rgba(226,0,26,0.15)" title="Nico Wechsel gegen Oliver Nicklisch: 39 % aus 176 Spieltagen">39</td><td class="n-z" style="background:rgba(226,0,26,0.27)" title="Nico Wechsel gegen Gordon Winkel: 31 % aus 176 Spieltagen">31</td><td class="n-z" style="background:rgba(226,0,26,0.11)" title="Nico Wechsel gegen Nico Schneider: 42 % aus 176 Spieltagen">42</td><td class="n-z" style="background:rgba(226,0,26,0.10)" title="Nico Wechsel gegen Marco Woelki: 43 % aus 176 Spieltagen">43</td><td class="n-z" style="background:rgba(226,0,26,0.25)" title="Nico Wechsel gegen Christoph Kemmner: 32 % aus 176 Spieltagen">32</td><td class="n-diag"></td><td class="n-z" style="background:rgba(226,0,26,0.21)" title="Nico Wechsel gegen Tim Kurz: 35 % aus 176 Spieltagen">35</td><td class="n-z" style="background:rgba(226,0,26,0.28)" title="Nico Wechsel gegen Michael Marienwald: 30 % aus 74 Spieltagen">30</td><td class="n-z" style="background:rgba(226,0,26,0.22)" title="Nico Wechsel gegen Fabian Schulz: 34 % aus 74 Spieltagen">34</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Nico Wechsel gegen Lukas Hechmann: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(226,0,26,0.24)" title="Nico Wechsel gegen Chris Schulze: 33 % aus 6 Spieltagen">33</td></tr>
+        <tr><th><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><span>Tim Kurz</span></th><td class="n-z" style="background:rgba(226,0,26,0.01)" title="Tim Kurz gegen Oliver Nicklisch: 49 % aus 176 Spieltagen">49</td><td class="n-z" style="background:rgba(226,0,26,0.15)" title="Tim Kurz gegen Gordon Winkel: 39 % aus 176 Spieltagen">39</td><td class="n-z" style="background:rgba(19,133,74,0.08)" title="Tim Kurz gegen Nico Schneider: 55 % aus 176 Spieltagen">55</td><td class="n-z" style="background:rgba(19,133,74,0.01)" title="Tim Kurz gegen Marco Woelki: 51 % aus 176 Spieltagen">51</td><td class="n-z" style="background:rgba(226,0,26,0.10)" title="Tim Kurz gegen Christoph Kemmner: 43 % aus 176 Spieltagen">43</td><td class="n-z" style="background:rgba(19,133,74,0.22)" title="Tim Kurz gegen Nico Wechsel: 65 % aus 176 Spieltagen">65</td><td class="n-diag"></td><td class="n-z" style="background:rgba(19,133,74,0.01)" title="Tim Kurz gegen Michael Marienwald: 51 % aus 74 Spieltagen">51</td><td class="n-z" style="background:rgba(19,133,74,0.14)" title="Tim Kurz gegen Fabian Schulz: 59 % aus 74 Spieltagen">59</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Tim Kurz gegen Lukas Hechmann: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(226,0,26,0.24)" title="Tim Kurz gegen Chris Schulze: 33 % aus 6 Spieltagen">33</td></tr>
+        <tr><th><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"><span>Michael Marienwald</span></th><td class="n-z" style="background:rgba(226,0,26,0.04)" title="Michael Marienwald gegen Oliver Nicklisch: 47 % aus 74 Spieltagen">47</td><td class="n-z" style="background:rgba(226,0,26,0.07)" title="Michael Marienwald gegen Gordon Winkel: 45 % aus 74 Spieltagen">45</td><td class="n-z" style="background:rgba(19,133,74,0.04)" title="Michael Marienwald gegen Nico Schneider: 53 % aus 74 Spieltagen">53</td><td class="n-z" style="background:rgba(19,133,74,0.14)" title="Michael Marienwald gegen Marco Woelki: 59 % aus 74 Spieltagen">59</td><td class="n-z" style="background:rgba(226,0,26,0.07)" title="Michael Marienwald gegen Christoph Kemmner: 45 % aus 74 Spieltagen">45</td><td class="n-z" style="background:rgba(19,133,74,0.30)" title="Michael Marienwald gegen Nico Wechsel: 70 % aus 74 Spieltagen">70</td><td class="n-z" style="background:rgba(226,0,26,0.01)" title="Michael Marienwald gegen Tim Kurz: 49 % aus 74 Spieltagen">49</td><td class="n-diag"></td><td class="n-z" style="background:rgba(19,133,74,0.03)" title="Michael Marienwald gegen Fabian Schulz: 52 % aus 74 Spieltagen">52</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.26)" title="Michael Marienwald gegen Lukas Hechmann: 67 % aus 6 Spieltagen">67</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Michael Marienwald gegen Chris Schulze: 50 % aus 6 Spieltagen">50</td></tr>
+        <tr><th><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><span>Fabian Schulz</span></th><td class="n-z" style="background:rgba(226,0,26,0.15)" title="Fabian Schulz gegen Oliver Nicklisch: 39 % aus 74 Spieltagen">39</td><td class="n-z" style="background:rgba(226,0,26,0.14)" title="Fabian Schulz gegen Gordon Winkel: 40 % aus 74 Spieltagen">40</td><td class="n-z" style="background:rgba(226,0,26,0.01)" title="Fabian Schulz gegen Nico Schneider: 49 % aus 74 Spieltagen">49</td><td class="n-z" style="background:rgba(19,133,74,0.18)" title="Fabian Schulz gegen Marco Woelki: 62 % aus 74 Spieltagen">62</td><td class="n-z" style="background:rgba(226,0,26,0.14)" title="Fabian Schulz gegen Christoph Kemmner: 40 % aus 74 Spieltagen">40</td><td class="n-z" style="background:rgba(19,133,74,0.24)" title="Fabian Schulz gegen Nico Wechsel: 66 % aus 74 Spieltagen">66</td><td class="n-z" style="background:rgba(226,0,26,0.13)" title="Fabian Schulz gegen Tim Kurz: 41 % aus 74 Spieltagen">41</td><td class="n-z" style="background:rgba(226,0,26,0.03)" title="Fabian Schulz gegen Michael Marienwald: 48 % aus 74 Spieltagen">48</td><td class="n-diag"></td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Fabian Schulz gegen Lukas Hechmann: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(226,0,26,0.46)" title="Fabian Schulz gegen Chris Schulze: 17 % aus 6 Spieltagen">17</td></tr>
+        <tr><th><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"><span>Lukas Hechmann</span></th><td class="n-z n-wenig" style="background:rgba(226,0,26,0.11)" title="Lukas Hechmann gegen Oliver Nicklisch: 42 % aus 6 Spieltagen">42</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Lukas Hechmann gegen Gordon Winkel: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Lukas Hechmann gegen Nico Schneider: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(226,0,26,0.24)" title="Lukas Hechmann gegen Marco Woelki: 33 % aus 6 Spieltagen">33</td><td class="n-z n-wenig" style="background:rgba(226,0,26,0.24)" title="Lukas Hechmann gegen Christoph Kemmner: 33 % aus 6 Spieltagen">33</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Lukas Hechmann gegen Nico Wechsel: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Lukas Hechmann gegen Tim Kurz: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(226,0,26,0.24)" title="Lukas Hechmann gegen Michael Marienwald: 33 % aus 6 Spieltagen">33</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Lukas Hechmann gegen Fabian Schulz: 50 % aus 6 Spieltagen">50</td><td class="n-diag"></td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Lukas Hechmann gegen Chris Schulze: 50 % aus 6 Spieltagen">50</td></tr>
+        <tr><th><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"><span>Chris Schulze</span></th><td class="n-z n-wenig" style="background:rgba(226,0,26,0.24)" title="Chris Schulze gegen Oliver Nicklisch: 33 % aus 6 Spieltagen">33</td><td class="n-z n-wenig" style="background:rgba(226,0,26,0.70)" title="Chris Schulze gegen Gordon Winkel: 0 % aus 6 Spieltagen">0</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Chris Schulze gegen Nico Schneider: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.26)" title="Chris Schulze gegen Marco Woelki: 67 % aus 6 Spieltagen">67</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.26)" title="Chris Schulze gegen Christoph Kemmner: 67 % aus 6 Spieltagen">67</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.26)" title="Chris Schulze gegen Nico Wechsel: 67 % aus 6 Spieltagen">67</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.26)" title="Chris Schulze gegen Tim Kurz: 67 % aus 6 Spieltagen">67</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Chris Schulze gegen Michael Marienwald: 50 % aus 6 Spieltagen">50</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.49)" title="Chris Schulze gegen Fabian Schulz: 83 % aus 6 Spieltagen">83</td><td class="n-z n-wenig" style="background:rgba(19,133,74,0.00)" title="Chris Schulze gegen Lukas Hechmann: 50 % aus 6 Spieltagen">50</td><td class="n-diag"></td></tr></tbody>
+      </table></div>
+      <div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Manager</th><th class="num">Duelle gewonnen</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-gordon.html">Gordon Winkel</a></span></td><td class="num">59,9 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">57,8 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-schulle.html">Chris Schulze</a><small class="n-neu">6 ST</small></span></td><td class="num">53,3 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-mary.html">Michael Marienwald</a></span></td><td class="num">52,6 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-oli.html">Oliver Nicklisch</a></span></td><td class="num">51,4 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">50,7 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-fabi.html">Fabian Schulz</a></span></td><td class="num">47,7 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-sche.html">Nico Schneider</a></span></td><td class="num">47,2 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-marco.html">Marco Woelki</a></span></td><td class="num">46,4 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-luki.html">Lukas Hechmann</a><small class="n-neu">6 ST</small></span></td><td class="num">44,2 %</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-nico.html">Nico Wechsel</a></span></td><td class="num">36,4 %</td></tr></tbody>
+        </table></div>
+    </section>
+    <section id="zeit" class="n-abschnitt"><div class="rubrik"><h2>Anstoßzeit-Typen</h2></div>
+      <p class="n-intro">Wann holen die Spieler eines Managers ihre Punkte? Punkte je eingesetztem Spieler nach Anstoßzeit seines Spiels.</p>
+      
+      <div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Manager</th><th class="num">Freitagabend</th><th class="num">Samstag 15:30</th><th class="num">Samstag Topspiel</th><th class="num">Sonntag</th><th class="num">Englische Woche</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">5,47</td><td class="num">5,3</td><td class="num">6,29</td><td class="num">5,17</td><td class="num">4,09</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-fabi.html">Fabian Schulz</a></span></td><td class="num">6,04</td><td class="num">4,93</td><td class="num">5,48</td><td class="num">4,34</td><td class="num">5</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-gordon.html">Gordon Winkel</a></span></td><td class="num">6,18</td><td class="num">5,47</td><td class="num">5,46</td><td class="num">5,39</td><td class="num">4,16</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-luki.html">Lukas Hechmann</a><small class="n-neu">6 ST</small></span></td><td class="num">10,67</td><td class="num">6,19</td><td class="num">3</td><td class="num">1,68</td><td class="num">–</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-marco.html">Marco Woelki</a></span></td><td class="num">5,48</td><td class="num">5,17</td><td class="num">5,23</td><td class="num">4,39</td><td class="num">5,23</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-mary.html">Michael Marienwald</a></span></td><td class="num">5,79</td><td class="num">4,71</td><td class="num">5,79</td><td class="num">4,83</td><td class="num">4,78</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-nico.html">Nico Wechsel</a></span></td><td class="num">4,16</td><td class="num">4,27</td><td class="num">4,58</td><td class="num">4,91</td><td class="num">4,7</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-oli.html">Oliver Nicklisch</a></span></td><td class="num">5,13</td><td class="num">5,31</td><td class="num">5,23</td><td class="num">4,83</td><td class="num">4,66</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-sche.html">Nico Schneider</a></span></td><td class="num">4,73</td><td class="num">4,92</td><td class="num">5,15</td><td class="num">5,09</td><td class="num">4,54</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-schulle.html">Chris Schulze</a><small class="n-neu">6 ST</small></span></td><td class="num">3,71</td><td class="num">5,61</td><td class="num">6,8</td><td class="num">6,22</td><td class="num">–</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">5,37</td><td class="num">5,35</td><td class="num">5,37</td><td class="num">4,71</td><td class="num">3,83</td></tr></tbody>
+        </table></div>
+      <h3 class="n-h3">Die Könige der Anstoßzeiten</h3>
+      <div class="n-slots"><div><span class="g-kt">Freitagabend</span><div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=70605&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'HK'}))">
+          <b>Harry Kane</b>
+          <span class="g-sp-p">141 Pkt in 12 Spielen</span>
+        </div></div></div><div><span class="g-kt">Samstag 15:30</span><div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=72759&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'VG'}))">
+          <b>Vincenzo Grifo</b>
+          <span class="g-sp-p">431 Pkt in 66 Spielen</span>
+        </div></div></div><div><span class="g-kt">Samstag Topspiel</span><div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=70605&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'HK'}))">
+          <b>Harry Kane</b>
+          <span class="g-sp-p">222 Pkt in 23 Spielen</span>
+        </div></div></div><div><span class="g-kt">Sonntag</span><div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=107693&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'FW'}))">
+          <b>Florian Wirtz</b>
+          <span class="g-sp-p">246 Pkt in 31 Spielen</span>
+        </div></div></div><div><span class="g-kt">Englische Woche</span><div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=59041&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'AK'}))">
+          <b>Andrej Kramaric</b>
+          <span class="g-sp-p">48 Pkt in 4 Spielen</span>
+        </div></div></div></div>
+    </section>
+    <section id="heim" class="n-abschnitt"><div class="rubrik"><h2>Heim oder auswärts</h2></div>
+      <p class="n-intro">Punkte je eingesetztem Spieler, aufgeteilt nach Heim- und Auswärtsspiel seines Vereins. Liga: 5,3 zu Hause, 4,1 auswärts.</p>
+      
+      <div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Manager</th><th class="num">Heim</th><th class="num">Auswärts</th><th class="num">Unterschied</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-schulle.html">Chris Schulze</a><small class="n-neu">6 ST</small></span></td><td class="num">7,18</td><td class="num">4,15</td><td class="num">3,03</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-luki.html">Lukas Hechmann</a><small class="n-neu">6 ST</small></span></td><td class="num">5,85</td><td class="num">3,67</td><td class="num">2,18</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-marco.html">Marco Woelki</a></span></td><td class="num">5,88</td><td class="num">4,13</td><td class="num">1,74</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">6,1</td><td class="num">4,6</td><td class="num">1,5</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-gordon.html">Gordon Winkel</a></span></td><td class="num">6,22</td><td class="num">4,73</td><td class="num">1,49</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-nico.html">Nico Wechsel</a></span></td><td class="num">5,11</td><td class="num">3,81</td><td class="num">1,31</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-oli.html">Oliver Nicklisch</a></span></td><td class="num">5,8</td><td class="num">4,49</td><td class="num">1,31</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">5,77</td><td class="num">4,52</td><td class="num">1,24</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-sche.html">Nico Schneider</a></span></td><td class="num">5,48</td><td class="num">4,41</td><td class="num">1,06</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-mary.html">Michael Marienwald</a></span></td><td class="num">5,52</td><td class="num">4,54</td><td class="num">0,97</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-fabi.html">Fabian Schulz</a></span></td><td class="num">5,27</td><td class="num">4,68</td><td class="num">0,58</td></tr></tbody>
+        </table></div>
+      <div class="g-zwei">
+        <div><h3 class="n-h3">Heimhelden</h3><div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=102117&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'MN'}))">
+          <b>Moussa Niakhaté</b>
+          <span class="g-sp-p">9,1 heim · 1,9 auswärts</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=133398&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'BS'}))">
+          <b>Benjamin Sesko</b>
+          <span class="g-sp-p">7,1 heim · 1,8 auswärts</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=86166&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'RG'}))">
+          <b>Raphael Guerreiro</b>
+          <span class="g-sp-p">6,5 heim · 2 auswärts</span>
+        </div></div></div>
+        <div><h3 class="n-h3">Reisekönige</h3><div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=106313&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'SM'}))">
+          <b>Shuto Machino</b>
+          <span class="g-sp-p">6 auswärts · 1,6 heim</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=86106&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'PT'}))">
+          <b>Phillip Tietz</b>
+          <span class="g-sp-p">5,9 auswärts · 3,8 heim</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=90273&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'RG'}))">
+          <b>Robin Gosens</b>
+          <span class="g-sp-p">5,2 auswärts · 3,3 heim</span>
+        </div></div></div>
+      </div>
+    </section>
+    <section id="formation" class="n-abschnitt"><div class="rubrik"><h2>Taktiktafel</h2></div>
+      <p class="n-intro">Wie oft wird das System gewechselt – und lohnt es sich? Nach einem schwachen Spieltag (unteres Viertel) wechseln die Manager in 40 % der Fälle, sonst in 42 %. Mit Wechsel holt die Liga im Schnitt 55,2 Punkte, ohne 54,8.</p>
+      
+      <div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Manager</th><th class="num">Wechsel / Saison</th><th class="num">Systeme</th><th class="num">Ø mit Wechsel</th><th class="num">Ø ohne</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-marco.html">Marco Woelki</a></span></td><td class="num">16,8</td><td class="num">7</td><td class="num">55,2</td><td class="num">52,3</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-sche.html">Nico Schneider</a></span></td><td class="num">15,3</td><td class="num">6</td><td class="num">54,1</td><td class="num">53,1</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">13,7</td><td class="num">7</td><td class="num">54,1</td><td class="num">57,6</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">12,3</td><td class="num">6</td><td class="num">58,1</td><td class="num">58,4</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-gordon.html">Gordon Winkel</a></span></td><td class="num">11,5</td><td class="num">5</td><td class="num">58,7</td><td class="num">59,3</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-oli.html">Oliver Nicklisch</a></span></td><td class="num">11,2</td><td class="num">7</td><td class="num">54</td><td class="num">56,8</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-fabi.html">Fabian Schulz</a></span></td><td class="num">8,3</td><td class="num">5</td><td class="num">50,9</td><td class="num">52,7</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-mary.html">Michael Marienwald</a></span></td><td class="num">7,3</td><td class="num">6</td><td class="num">56,2</td><td class="num">54,9</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-nico.html">Nico Wechsel</a></span></td><td class="num">3,8</td><td class="num">6</td><td class="num">51,7</td><td class="num">48,4</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-luki.html">Lukas Hechmann</a><small class="n-neu">6 ST</small></span></td><td class="num">0</td><td class="num">1</td><td class="num">–</td><td class="num">56,8</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-schulle.html">Chris Schulze</a><small class="n-neu">6 ST</small></span></td><td class="num">0</td><td class="num">1</td><td class="num">–</td><td class="num">62,2</td></tr></tbody>
+        </table></div>
+    </section>
+    <section id="brille" class="n-abschnitt"><div class="rubrik"><h2>Vereinsbrille</h2></div>
+      <p class="n-intro">Wie oft stellt ein Manager Spieler seines Lieblingsvereins auf – im Vergleich dazu, wie oft dieser Verein in der ganzen Liga aufgestellt wird? Und lohnt sich das?</p>
+      
+      <div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Manager</th><th class="num">Lieblingsverein</th><th class="num">Anteil</th><th class="num">Liga</th><th class="num">Faktor</th><th class="num">Ø Pkt Verein</th><th class="num">Ø Pkt Rest</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-luki.html">Lukas Hechmann</a><small class="n-neu">6 ST</small></span></td><td class="num">HSV</td><td class="num">36,4 %</td><td class="num">6,5 %</td><td class="num">5,62×</td><td class="num">1,33</td><td class="num">6,71</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-marco.html">Marco Woelki</a></span></td><td class="num">Dortmund</td><td class="num">14,2 %</td><td class="num">8,5 %</td><td class="num">1,68×</td><td class="num">4,81</td><td class="num">4,99</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-schulle.html">Chris Schulze</a><small class="n-neu">6 ST</small></span></td><td class="num">M’gladbach</td><td class="num">21,2 %</td><td class="num">12,8 %</td><td class="num">1,66×</td><td class="num">3,57</td><td class="num">6,23</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-mary.html">Michael Marienwald</a></span></td><td class="num">Bayern</td><td class="num">21,8 %</td><td class="num">13,6 %</td><td class="num">1,61×</td><td class="num">7,75</td><td class="num">4,29</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-nico.html">Nico Wechsel</a></span></td><td class="num">Freiburg</td><td class="num">14,6 %</td><td class="num">9,9 %</td><td class="num">1,47×</td><td class="num">5,33</td><td class="num">4,3</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">Dortmund</td><td class="num">11,9 %</td><td class="num">8,5 %</td><td class="num">1,41×</td><td class="num">4,66</td><td class="num">5,15</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-gordon.html">Gordon Winkel</a></span></td><td class="num">Freiburg</td><td class="num">12,8 %</td><td class="num">9,9 %</td><td class="num">1,29×</td><td class="num">5,54</td><td class="num">5,41</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-sche.html">Nico Schneider</a></span></td><td class="num">Frankfurt</td><td class="num">10,4 %</td><td class="num">8,2 %</td><td class="num">1,27×</td><td class="num">5,04</td><td class="num">4,91</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-oli.html">Oliver Nicklisch</a></span></td><td class="num">Bayern</td><td class="num">11,2 %</td><td class="num">9 %</td><td class="num">1,24×</td><td class="num">6,79</td><td class="num">4,88</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-fabi.html">Fabian Schulz</a></span></td><td class="num">Bayern</td><td class="num">15,4 %</td><td class="num">13,6 %</td><td class="num">1,14×</td><td class="num">8,5</td><td class="num">4,16</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">Freiburg</td><td class="num">8,7 %</td><td class="num">9,9 %</td><td class="num">0,88×</td><td class="num">3,73</td><td class="num">5,44</td></tr></tbody>
+        </table></div>
+    </section>
+    <section id="karten" class="n-abschnitt"><div class="rubrik"><h2>Karten, Zu-null und MVP</h2></div>
+      <p class="n-intro">Startelf-Einsätze, auf eine Saison (34 Spieltage) umgerechnet, damit auch Neulinge vergleichbar sind.</p>
+      
+      <div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Manager</th><th class="num">Karten-Minus / Saison</th><th class="num">Zu-null / Saison</th><th class="num">MVP / Saison</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">15,1</td><td class="num">4,6</td><td class="num">26,5</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-mary.html">Michael Marienwald</a></span></td><td class="num">13,8</td><td class="num">8,3</td><td class="num">23</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-marco.html">Marco Woelki</a></span></td><td class="num">10,4</td><td class="num">7,9</td><td class="num">21,4</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-nico.html">Nico Wechsel</a></span></td><td class="num">10,4</td><td class="num">6,4</td><td class="num">19,3</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-gordon.html">Gordon Winkel</a></span></td><td class="num">9,9</td><td class="num">8,1</td><td class="num">24,5</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">9,3</td><td class="num">5</td><td class="num">21,4</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-sche.html">Nico Schneider</a></span></td><td class="num">7,5</td><td class="num">6</td><td class="num">18,7</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-fabi.html">Fabian Schulz</a></span></td><td class="num">5,5</td><td class="num">4,6</td><td class="num">18,4</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-oli.html">Oliver Nicklisch</a></span></td><td class="num">5,2</td><td class="num">4,8</td><td class="num">23,4</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-luki.html">Lukas Hechmann</a><small class="n-neu">6 ST</small></span></td><td class="num">0</td><td class="num">11,3</td><td class="num">22,7</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-schulle.html">Chris Schulze</a><small class="n-neu">6 ST</small></span></td><td class="num">0</td><td class="num">0</td><td class="num">11,3</td></tr></tbody>
+        </table></div>
+      <div class="g-drei">
+        <div><h3 class="n-h3">Kartensünder</h3><div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=100591&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'PN'}))">
+          <b>Paul Nebel</b>
+          <span>bei Michael Marienwald</span><span class="g-sp-p">-12 Pkt · 2× Karte</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=153779&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'JM'}))">
+          <b>Johan Manzambi</b>
+          <span>bei Marco Woelki</span><span class="g-sp-p">-12 Pkt · 2× Karte</span>
+        </div></div></div>
+        <div><h3 class="n-h3">Zu-null-Könige</h3><div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=105845&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'NA'}))">
+          <b>Noah Atubolu</b>
+          <span>bei Marco Woelki</span><span class="g-sp-p">20× zu null</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=105845&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'NA'}))">
+          <b>Noah Atubolu</b>
+          <span>bei Gordon Winkel</span><span class="g-sp-p">20× zu null</span>
+        </div></div></div>
+        <div><h3 class="n-h3">MVP-Maschinen</h3><div class="g-elf n-spieler"><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=125181&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'MO'}))">
+          <b>Michael Olise</b>
+          <span>bei Michael Marienwald</span><span class="g-sp-p">11× Spieler des Spiels</span>
+        </div><div class="g-spieler">
+          <img class="g-foto" src="https://sportsfeed.kicker.de/MediaService/PlayerLogo?playerId=70605&amp;width=160" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'g-foto g-ini',textContent:'HK'}))">
+          <b>Harry Kane</b>
+          <span>bei Fabian Schulz</span><span class="g-sp-p">11× Spieler des Spiels</span>
+        </div></div></div>
+      </div>
+    </section>
+    <section id="fieber" class="n-abschnitt"><div class="rubrik"><h2>Fieberkurve</h2></div>
+      <p class="n-intro">Wie sehr schwankt ein Manager von Spieltag zu Spieltag? Spieltagsplätze auf 1–11 umgerechnet (die Liga war nicht immer gleich groß); Bewegung = Ø Plätze, die er sich in der Tabelle pro Spieltag verschiebt (ab dem 5. Spieltag).</p>
+      
+      <div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Manager</th><th class="num">Schwankung</th><th class="num">Ø Spieltagsplatz</th><th class="num">Tabellen-Bewegung</th><th class="num">Tagessiege</th><th class="num">Letzter</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Luki.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-luki.html">Lukas Hechmann</a><small class="n-neu">6 ST</small></span></td><td class="num">4,59</td><td class="num">6,5</td><td class="num">1</td><td class="num">0</td><td class="num">2</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-sche.html">Nico Schneider</a></span></td><td class="num">3,38</td><td class="num">6,21</td><td class="num">0,32</td><td class="num">24</td><td class="num">28</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-marco.html">Marco Woelki</a></span></td><td class="num">3,34</td><td class="num">6,17</td><td class="num">0,24</td><td class="num">26</td><td class="num">21</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-gordon.html">Gordon Winkel</a></span></td><td class="num">3,27</td><td class="num">4,96</td><td class="num">0,23</td><td class="num">35</td><td class="num">17</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-fabi.html">Fabian Schulz</a></span></td><td class="num">3,25</td><td class="num">6,16</td><td class="num">0,44</td><td class="num">8</td><td class="num">11</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Oli.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-oli.html">Oliver Nicklisch</a></span></td><td class="num">3,24</td><td class="num">5,85</td><td class="num">0,39</td><td class="num">27</td><td class="num">21</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Nico.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-nico.html">Nico Wechsel</a></span></td><td class="num">3,19</td><td class="num">7,17</td><td class="num">0,22</td><td class="num">13</td><td class="num">36</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Mary.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-mary.html">Michael Marienwald</a></span></td><td class="num">3,17</td><td class="num">5,61</td><td class="num">0,63</td><td class="num">8</td><td class="num">5</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">3,13</td><td class="num">5,94</td><td class="num">0,35</td><td class="num">17</td><td class="num">17</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">2,99</td><td class="num">5,11</td><td class="num">0,44</td><td class="num">30</td><td class="num">5</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Schulle.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-schulle.html">Chris Schulze</a><small class="n-neu">6 ST</small></span></td><td class="num">2,5</td><td class="num">5,67</td><td class="num">0,5</td><td class="num">0</td><td class="num">0</td></tr></tbody>
+        </table></div>
+    </section>
+    <section id="comeback" class="n-abschnitt"><div class="rubrik"><h2>Aufholjagd und verspielte Führung</h2></div>
+      <p class="n-intro">Der größte Rückstand des späteren Meisters auf Platz 1 – und die größten Vorsprünge, die am Ende doch nicht gereicht haben.</p>
+      
+      <div class="g-zwei">
+        <div><div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Meister</th><th class="num">Saison</th><th class="num">max. Rückstand</th><th class="num">auf</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">2024/25</td><td class="num">159 <small>(ST 17)</small></td><td class="num">Nico Schneider</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-chris.html">Christoph Kemmner</a></span></td><td class="num">2023/24</td><td class="num">94 <small>(ST 14)</small></td><td class="num">Tim Kurz</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Gordon.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-gordon.html">Gordon Winkel</a></span></td><td class="num">2025/26</td><td class="num">91 <small>(ST 8)</small></td><td class="num">Tim Kurz</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Marco.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-marco.html">Marco Woelki</a></span></td><td class="num">2022/23</td><td class="num">36 <small>(ST 3)</small></td><td class="num">Gordon Winkel</td></tr></tbody>
+        </table></div></div>
+        <div><div class="widget n-tab"><table class="tabelle">
+          <thead><tr><th>Verspielt</th><th class="num">Saison</th><th class="num">max. Vorsprung</th><th class="num">Meister</th></tr></thead>
+          <tbody><tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">2023/24</td><td class="num">94 <small>(ST 14)</small></td><td class="num">Christoph Kemmner</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Sche.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-sche.html">Nico Schneider</a></span></td><td class="num">2024/25</td><td class="num">84 <small>(ST 17)</small></td><td class="num">Christoph Kemmner</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Tim.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-tim.html">Tim Kurz</a></span></td><td class="num">2025/26</td><td class="num">57 <small>(ST 10)</small></td><td class="num">Gordon Winkel</td></tr>
+          <tr><td class="name"><span class="n-m"><img class="mgr-av" src="Avatare/Fabi.webp" alt="" onerror="this.style.visibility='hidden'"><a href="profil-fabi.html">Fabian Schulz</a></span></td><td class="num">2024/25</td><td class="num">38 <small>(ST 31)</small></td><td class="num">Christoph Kemmner</td></tr></tbody>
+        </table></div></div>
+      </div>
+    </section>
+    <section id="fluch" class="n-abschnitt"><div class="rubrik"><h2>Der Fluch des Tagessiegers</h2></div>
+      <p class="n-intro">Bricht man nach einem Tagessieg ein? Nein.</p>
+      
+      <div class="g-rekorde">
+        <div class="karte g-rekord"><span class="n-ico gross">🤓</span><div><span class="g-kt">Nach einem Tagessieg</span><b class="g-wert">4,12<small> Ø Platz</small></b><p>am folgenden Spieltag</p></div></div>
+        <div class="karte g-rekord"><span class="n-ico gross">🤓</span><div><span class="g-kt">Sonst</span><b class="g-wert">4,52<small> Ø Platz</small></b><p>am folgenden Spieltag</p></div></div>
+        <div class="karte g-rekord"><img class="g-av" src="Avatare/Chris.webp" alt="" onerror="this.style.visibility='hidden'"><div><span class="g-kt">Doppelschlag</span><b class="g-wert">32<small> ×</small></b><p>zwei Tagessiege hintereinander – am häufigsten Christoph Kemmner (10×)</p></div></div>
+      </div>
+    </section>
+    <p class="g-hinweis">Alle Werte ab 2021/22 (seitdem doppelte Punkte für Startelf und Einwechslung), Stand 6. Spieltag 2026/27. Spieler werden ihrem Verein laut kicker zugeordnet. Quelle: Kicker Interactive.</p>
+  </div>
+</main>
+<!-- ══ Magazin-Fuß (magazin-umbau.js) ══ -->
+<div class="fuss" role="contentinfo">
+  <div class="mz-wrap">
+    <img src="monolog-signet.webp" alt="Spreeliga Monolog" onerror="this.style.display='none'">
+    <div>
+      <nav>
+        <a href="portal.html#spieltag">Spieltag</a>
+        <a href="portal.html#liga">Liga &amp; Tabellen</a>
+        <a href="portal.html#manager">Manager</a>
+        <a href="geschichte.html">Geschichte</a>
+        <a href="nerdwissen.html">Nerdwissen</a>
+        <a href="chronik.html">Chronik</a>
+        <a href="videos.html">Videos</a>
+      </nav>
+      Spreeliga Monolog – das Magazin zur Spreeliga · private Liga im Kicker Managerspiel Interactive
+    </div>
+  </div>
+</div>
+<script src="magazin.js"></script>
+</body>
+</html>

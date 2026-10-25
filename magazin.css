@@ -588,3 +588,49 @@ body.seite .stat-box.highlight .n { color: var(--ink); }
 .g-te-teaser:hover h4 { color: var(--red-ink); }
 @media (max-width: 900px) { .g-te-liga, .g-te-teaser { grid-template-columns: 1fr; } }
 @media (max-width: 420px) { .g-te-raster { grid-template-columns: 1fr; } .g-fs { width: 54px; } .g-feld.gross .g-fs { width: 60px; } .g-feld.gross .g-fs .g-foto { width: 44px; height: 44px; } }
+/* Nerdwissen (nerdwissen.html, Award-Leiste in profil-*.html) */
+.n-sprung { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.n-sprung a { font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 14px; background: var(--surface); box-shadow: var(--shadow); color: var(--ink-2); }
+.n-sprung a:hover { color: var(--red-ink); }
+.n-abschnitt { scroll-margin-top: 90px; }
+.n-intro { color: var(--ink-2); max-width: 80ch; margin: -4px 0 14px; font-size: .95rem; }
+.n-h3 { font-family: var(--f-head); font-weight: 800; font-size: 1.1rem; text-transform: uppercase; letter-spacing: .03em; margin: 22px 0 10px; }
+.n-ico { font-size: 1.9rem; line-height: 1; }
+.n-ico.gross { font-size: 2.6rem; width: 56px; text-align: center; flex: none; }
+.n-awards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+.n-award { padding: 14px; display: flex; flex-direction: column; gap: 6px; transition: box-shadow .15s; }
+.n-award:hover { box-shadow: 0 0 0 2px var(--red); }
+.n-award .n-wer { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.n-award small { color: var(--ink-3); font-size: .8rem; line-height: 1.3; }
+.n-m { display: inline-flex; align-items: center; gap: 8px; }
+.n-m a:hover { color: var(--red-ink); }
+.n-tab { overflow-x: auto; }
+.n-tab .tabelle td small { color: var(--ink-3); }
+.n-spieler { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+.n-spieler .g-foto { width: 56px; height: 56px; }
+.n-spieler .g-spieler b { font-size: 1rem; }
+.n-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.n-slots .g-kt { margin-bottom: 6px; }
+.n-slots .n-spieler { grid-template-columns: 1fr; }
+.n-matrix-box { overflow-x: auto; margin-bottom: 14px; }
+.n-matrix { border-collapse: collapse; font-size: .82rem; min-width: 560px; width: 100%; }
+.n-matrix th, .n-matrix td { padding: 4px; text-align: center; border: 1px solid var(--line); }
+.n-matrix thead th { background: var(--surface-2); }
+.n-matrix tbody th { text-align: left; white-space: nowrap; background: var(--surface-2); font-weight: 600; }
+.n-matrix tbody th span { margin-left: 6px; }
+.n-matrix .mgr-av { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; object-position: top; vertical-align: middle; }
+.n-matrix .n-z { font-weight: 700; font-variant-numeric: tabular-nums; cursor: default; }
+.n-matrix .n-diag { background: var(--surface-2); }
+.n-badges { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+.n-badge { display: flex; align-items: center; gap: 12px; background: var(--surface); box-shadow: var(--shadow); border-radius: var(--radius); padding: 10px 14px; }
+.n-badge:hover { box-shadow: 0 0 0 2px var(--red); }
+.n-badge b { display: block; font-family: var(--f-head); font-weight: 800; text-transform: uppercase; letter-spacing: .03em; }
+.n-badge small { color: var(--ink-3); font-size: .78rem; line-height: 1.3; display: block; }
+@media (max-width: 600px) { .n-matrix tbody th span { display: none; } }
+.n-award .mgr-av, .n-m .mgr-av { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--surface-2); flex: none; }
+.n-spieler { grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); }
+.g-zwei .n-spieler { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.n-matrix .mgr-av { display: inline-block; }
+.n-matrix .n-wenig { opacity: .45; }
+.n-neu { margin-left: 6px; font-size: .68rem; font-weight: 700; color: var(--ink-3); background: var(--surface-2); padding: 1px 6px; border-radius: 8px; }
+.n-abschnitt .g-zwei > div, .n-abschnitt .g-drei > div { min-width: 0; }
