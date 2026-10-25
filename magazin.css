@@ -548,3 +548,43 @@ body.seite .stat-box.highlight .n { color: var(--ink); }
 .g-archiv a:hover { color: var(--red-ink); }
 .g-archiv small { color: var(--ink-3); }
 .g-leer { padding: 18px 20px; color: var(--ink-2); max-width: 640px; }
+
+.g-held .g-link + .g-link { margin-left: 18px; }
+
+/* Traum-Elf (traumelf.html, Teaser auf geschichte.html) */
+.g-feld { position: relative; border-radius: var(--radius); padding: 30px 6px 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 12px;
+  background: repeating-linear-gradient(180deg, #1f8a4c 0 34px, #23965a 34px 68px); border: 2px solid #1a7a43;
+  box-shadow: inset 0 0 0 4px rgba(255,255,255,.18); min-height: 330px; overflow: hidden; }
+.g-feld::before { content: ""; position: absolute; left: 50%; top: 0; width: 110px; height: 55px; transform: translateX(-50%); border: 2px solid rgba(255,255,255,.35); border-top: 0; border-radius: 0 0 60px 60px; }
+.g-feld::after { content: ""; position: absolute; left: 50%; bottom: 0; width: 150px; height: 48px; transform: translateX(-50%); border: 2px solid rgba(255,255,255,.35); border-bottom: 0; }
+.g-formation { position: absolute; top: 7px; left: 10px; font-family: var(--f-head); font-weight: 800; font-size: .85rem; letter-spacing: .06em; color: #fff; background: rgba(0,0,0,.28); padding: 1px 8px; border-radius: 10px; z-index: 1; }
+.g-reihe { position: relative; z-index: 1; display: flex; justify-content: space-evenly; gap: 2px; }
+.g-fs { display: flex; flex-direction: column; align-items: center; width: 64px; min-width: 0; text-align: center; color: #fff; cursor: default; }
+.g-fs .g-foto { width: 42px; height: 42px; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,.3); }
+.g-fs b { margin-top: 3px; font-size: .72rem; line-height: 1.15; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,.6); }
+.g-fs span { font-size: .68rem; font-weight: 700; background: rgba(0,0,0,.35); padding: 0 6px; border-radius: 8px; margin-top: 1px; }
+.g-feld.gross { min-height: 470px; padding-top: 40px; }
+.g-feld.gross .g-fs { width: 86px; }
+.g-feld.gross .g-fs .g-foto { width: 58px; height: 58px; }
+.g-feld.gross .g-fs b { font-size: .82rem; }
+.g-feld.gross .g-fs span { font-size: .75rem; }
+.g-te-liga { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.g-te-liste li { gap: 10px; }
+.g-te-liste .g-mini { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; object-position: top; background: #fff; border: 1px solid var(--line); flex: none; }
+.g-te-liste .g-mini.g-ini { font-size: .72rem; }
+.g-te-liste .n { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.g-te-liste .n small { color: var(--ink-3); font-size: .74rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.g-te-liste .p { font-weight: 700; font-variant-numeric: tabular-nums; }
+.g-te-raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+.g-te { padding: 14px; scroll-margin-top: 90px; }
+.g-te-kopf { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+.g-te-kopf h3 { font-family: var(--f-head); font-weight: 800; font-size: 1.25rem; line-height: 1.1; }
+.g-te-kopf h3 a:hover { color: var(--red-ink); }
+.g-te-kopf p { font-size: .8rem; color: var(--ink-3); }
+.g-te:target { box-shadow: 0 0 0 3px var(--red); }
+.g-te-teaser { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 18px; padding: 14px; align-items: center; }
+.g-te-teaser h4 { font-family: var(--f-head); font-weight: 800; font-size: 1.4rem; line-height: 1.1; margin: 6px 0; }
+.g-te-teaser p { color: var(--ink-2); }
+.g-te-teaser:hover h4 { color: var(--red-ink); }
+@media (max-width: 900px) { .g-te-liga, .g-te-teaser { grid-template-columns: 1fr; } }
+@media (max-width: 420px) { .g-te-raster { grid-template-columns: 1fr; } .g-fs { width: 54px; } .g-feld.gross .g-fs { width: 60px; } .g-feld.gross .g-fs .g-foto { width: 44px; height: 44px; } }
