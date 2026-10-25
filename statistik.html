@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Statistik · Spreeliga Monolog</title>
+<meta name="description" content="Statistik-Zentrale und Nerdwissen: alle Zahlen der Spreeliga an einem Ort.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="magazin.css">
+<script>try { var t = localStorage.getItem('monolog-theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+</head>
+<body class="seite seite-geschichte">
+<!-- ══ Magazin-Kopf (magazin-umbau.js) ══ -->
+<div class="topline">
+  <div class="mz-wrap">
+    <span><b>Spreeliga Monolog</b></span>
+    <span class="sep hide-s">|</span>
+    <span class="hide-s">Das Magazin zur Spreeliga</span>
+    <span class="push"></span>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Hell/Dunkel umschalten">◐<span class="txt"> Hell/Dunkel</span></button>
+  </div>
+</div>
+<div class="masthead klein" id="kopfband">
+  <div class="mz-wrap">
+    <a class="brand" href="portal.html">
+      <img class="signet" src="monolog-signet.webp" alt="" onerror="this.style.display='none'">
+      <div class="brand-name"><small>Spreeliga</small><strong>Monolog</strong></div>
+    </a>
+  </div>
+</div>
+<nav class="ressorts" aria-label="Rubriken">
+  <div class="mz-wrap">
+    <a class="mini" href="portal.html" aria-label="Spreeliga Monolog – Start"><img src="monolog-signet.webp" alt=""></a>
+    <a href="portal.html">Start</a>
+    <a href="portal.html#spieltag">Spieltag</a>
+    <a href="portal.html#liga">Liga &amp; Tabellen</a>
+    <a href="portal.html#manager">Manager</a>
+    <a href="geschichte.html">Geschichte</a>
+    <a class="aktiv" href="statistik.html">Statistik</a>
+    <a href="chronik.html">Chronik</a>
+    <a href="videos.html">Videos</a>
+  </div>
+</nav>
+<!-- ══ /Magazin-Kopf ══ -->
+<main class="g-main">
+  <div class="mz-wrap">
+
+    <header class="g-kopf">
+      <span class="dach">Zahlen, Daten, Duelle</span>
+      <h1>Statistik</h1>
+      <p>Alle Werkzeuge und Auswertungen der Spreeliga an einem Ort – vom Live-Vergleich der laufenden Saison bis zur nerdigsten Kennzahl.</p>
+    </header>
+    <a class="karte s-zentrale" href="vergleich.html">
+      <div class="s-ico">📊</div>
+      <div class="s-text">
+        <span class="dach">Statistik-Zentrale · Saison 2026/27 · <b class="s-live">● Live</b></span>
+        <h2>Manager gegen Manager, Kader gegen Kader</h2>
+        <p>Verläufe und Formkurven von bis zu drei Managern, Kaderanalyse nach Positionen, Spielerprofile mit Powerindex und Direktvergleiche – Spieltag für Spieltag aktualisiert.</p>
+        <span class="s-knopf">Statistik-Zentrale öffnen →</span>
+      </div>
+    </a>
+    <div class="s-unter">
+      <a href="spieler.html">⚽ <b>Spielerprofile</b><small>Powerindex jedes Bundesliga-Spielers</small></a>
+      <a href="vergleich-2025-26.html">🗄️ <b>Saison 2025/26</b><small>Archiv mit allen 34 Spieltagen</small></a>
+      <a href="generator.html">ℹ️ <b>So funktioniert's</b><small>Alle Funktionen im Überblick</small></a>
+    </div>
+    <section><div class="rubrik"><h2>Mehr Zahlen</h2></div>
+      <div class="s-kacheln">
+        <a class="karte s-kachel s-nerd" href="nerdwissen.html">
+          <div class="s-kopf">🤓<span class="s-aws"><span class="s-aw" title="Aufstellungskünstler: Oliver Nicklisch">🎯</span><span class="s-aw" title="Bank-Reue: Christoph Kemmner">🪑</span><span class="s-aw" title="Eigenbrötler: Nico Wechsel">🐺</span><span class="s-aw" title="Herdentier: Oliver Nicklisch">🐑</span><span class="s-aw" title="Geheimtipp-Jäger: Nico Wechsel">💎</span><span class="s-aw" title="Duellkönig: Gordon Winkel">⚔️</span></span></div>
+          <span class="dach">Nerdwissen</span><h3>Bank-Reue, Herdentrieb und der Fluch des Tagessiegers</h3>
+          <p>21 Awards für die Manager, der direkte Vergleich jeder gegen jeden, Anstoßzeit-Typen, Vereinsbrille und mehr.</p>
+          <span class="s-mehr">Zum Nerdwissen →</span></a>
+        <a class="karte s-kachel" href="rekorde.html">
+          <div class="s-kopf">🏅</div>
+          <span class="dach">Rekorde</span><h3>127 Punkte an einem Spieltag</h3>
+          <p>Nico Wechsel hält den Spieltagsrekord – alle Bestmarken seit 2020/21.</p>
+          <span class="s-mehr">Zu den Rekorden →</span></a>
+        <a class="karte s-kachel" href="traumelf.html">
+          <div class="s-kopf">⭐</div>
+          <span class="dach">Traum-Elf</span><h3>Die Allzeit-Elf im 3-4-3</h3>
+          <p>Und die Best-of-Elf jedes Managers – berechnet aus allen Startelf-Punkten.</p>
+          <span class="s-mehr">Zur Traum-Elf →</span></a>
+        <a class="karte s-kachel" href="portal.html#ewige-tabelle">
+          <div class="s-kopf">🏆</div>
+          <span class="dach">Ewige Tabelle</span><h3>Alle Punkte seit 2005/06</h3>
+          <p>Titel, Spieltagssiege und Gesamtpunkte aller Manager.</p>
+          <span class="s-mehr">Zur Ewigen Tabelle →</span></a>
+      </div>
+    </section>
+  </div>
+</main>
+<!-- ══ Magazin-Fuß (magazin-umbau.js) ══ -->
+<div class="fuss" role="contentinfo">
+  <div class="mz-wrap">
+    <img src="monolog-signet.webp" alt="Spreeliga Monolog" onerror="this.style.display='none'">
+    <div>
+      <nav>
+        <a href="portal.html#spieltag">Spieltag</a>
+        <a href="portal.html#liga">Liga &amp; Tabellen</a>
+        <a href="portal.html#manager">Manager</a>
+        <a href="geschichte.html">Geschichte</a>
+        <a href="statistik.html">Statistik</a>
+        <a href="chronik.html">Chronik</a>
+        <a href="videos.html">Videos</a>
+      </nav>
+      Spreeliga Monolog – das Magazin zur Spreeliga · private Liga im Kicker Managerspiel Interactive
+    </div>
+  </div>
+</div>
+<script src="magazin.js"></script>
+</body>
+</html>
