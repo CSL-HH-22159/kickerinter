@@ -469,3 +469,82 @@ body.seite .stat-box.highlight .n { color: var(--ink); }
 /* Startseite: Aufmacher mit Bericht */
 .aufmacher .weiter { display: inline-block; margin-top: 10px; font-weight: 700; color: var(--red-ink); }
 .aufmacher .medien .folge { cursor: pointer; }
+
+/* ==========================================================================
+   GESCHICHTE (geschichte.html, profil-*.html, rekorde.html, blick-*.html)
+   ========================================================================== */
+.g-main { padding: 24px 0 48px; }
+.g-main section { margin-top: 28px; }
+.g-kopf { margin: 8px 0 8px; }
+.g-kopf h1 { font-family: var(--f-head); font-weight: 800; font-size: clamp(2.2rem, 5vw, 3.6rem); line-height: 1.02; }
+.g-kopf p { color: var(--ink-2); max-width: 70ch; margin-top: 6px; }
+.g-kopf p a { color: var(--red-ink); font-weight: 600; }
+.g-zurueck { display: block; width: fit-content; font-size: .78rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--red-ink); margin-bottom: 10px; }
+.g-kt { display: block; font-family: var(--f-head); font-weight: 700; font-size: .85rem; letter-spacing: .06em; text-transform: uppercase; color: var(--red-ink); }
+.g-hinweis { font-size: .8rem; color: var(--ink-3); margin-top: 10px; }
+.g-link { display: inline-block; margin-top: 10px; font-weight: 700; color: var(--red-ink); }
+.g-foto { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: top; background: #fff; border: 1px solid var(--line); flex: none; }
+.g-ini { display: flex; align-items: center; justify-content: center; font-weight: 700; color: #1a3050; font-size: 1.05rem; }
+.g-av { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: top; background: var(--surface-2); flex: none; }
+.g-wappen { width: 22px; height: 22px; object-fit: contain; flex: none; }
+
+/* Profil */
+.g-held { display: flex; align-items: center; gap: 22px; padding: 20px 24px; background: var(--night-2); color: var(--night-ink); }
+.g-held-av { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; object-position: top; background: rgba(255,255,255,.08); flex: none; }
+.g-held h1, .g-held h2 { font-family: var(--f-head); font-weight: 800; font-size: clamp(2rem, 4.4vw, 3rem); line-height: 1; color: #fff; }
+.g-held p { color: var(--night-mute); margin-top: 4px; }
+.g-held .dach { color: #ff8a90; }
+.g-held .g-link { color: #ffd2d4; }
+@media (max-width: 600px) { .g-held { flex-direction: column; text-align: center; } .g-held-av { width: 110px; height: 110px; } .g-held .dach { margin: 0 auto; } }
+.g-fakten { margin-top: 16px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.g-fakten span { font-size: .7rem; }
+.g-plaetze { display: flex; flex-wrap: wrap; gap: 8px; }
+.g-platz { background: var(--surface); box-shadow: var(--shadow); border-radius: var(--radius); padding: 8px 14px; text-align: center; min-width: 92px; }
+.g-platz b { display: block; font-family: var(--f-head); font-size: 1.8rem; font-weight: 800; line-height: 1; }
+.g-platz span { font-size: .74rem; color: var(--ink-3); }
+.g-platz.meister { box-shadow: 0 0 0 2px var(--gold); }
+.g-platz.meister b { color: var(--gold); }
+.g-kacheln { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+.g-kachel { display: flex; gap: 14px; align-items: center; padding: 14px; }
+.g-kachel h4 { font-family: var(--f-head); font-size: 1.25rem; font-weight: 700; line-height: 1.05; }
+.g-kachel p { font-size: .86rem; color: var(--ink-2); }
+.g-kachel p b { font-family: var(--f-head); font-size: 1.15rem; color: var(--ink); }
+.g-steck { list-style: none; padding: 6px 18px; }
+.g-steck li { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
+.g-steck li:first-child { border-top: 0; }
+.g-steck span { color: var(--ink-3); }
+.g-steck small { color: var(--ink-3); font-weight: 400; }
+
+/* Rekorde */
+.g-rekorde { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.g-rekord { display: flex; gap: 14px; align-items: center; padding: 14px 16px; }
+.g-wert { display: block; font-family: var(--f-head); font-size: 2.1rem; font-weight: 800; line-height: 1; margin: 2px 0; }
+.g-wert small { font-size: .45em; font-weight: 700; color: var(--ink-3); letter-spacing: .04em; }
+.g-rekord p { font-size: .86rem; color: var(--ink-2); }
+.g-zwei { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 24px; }
+.g-drei { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+@media (max-width: 900px) { .g-zwei, .g-drei { grid-template-columns: 1fr; } }
+.g-main .st-liste img { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; object-position: top; }
+
+/* Blick in die Geschichte */
+.g-sieger { margin-top: 16px; }
+.g-elf { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.g-spieler { background: var(--surface); box-shadow: var(--shadow); border-radius: var(--radius); padding: 12px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.g-spieler b { font-family: var(--f-head); font-size: 1.15rem; }
+.g-spieler span { font-size: .78rem; color: var(--ink-3); }
+.g-spieler .g-sp-p { color: var(--ink); font-weight: 600; }
+.g-pf { font-size: .78rem; color: var(--ink-3); }
+.g-pf.hoch { color: var(--green); }
+.g-pf.runter { color: var(--red-ink); }
+.g-bl { list-style: none; }
+.g-bl li { display: grid; grid-template-columns: 22px 1fr auto 1fr 22px; align-items: center; gap: 8px; padding: 7px 12px; border-top: 1px solid var(--line); font-size: .88rem; }
+.g-bl li:first-child { border-top: 0; }
+.g-bl .h { text-align: right; }
+.g-bl b { font-family: var(--f-head); font-size: 1.1rem; }
+.g-blick { max-width: 560px; }
+.g-archiv { list-style: none; margin-top: 12px; padding: 6px 16px; max-width: 560px; }
+.g-archiv li { padding: 6px 0; border-top: 1px solid var(--line); }
+.g-archiv li:first-child { border-top: 0; }
+.g-archiv a:hover { color: var(--red-ink); }
+.g-archiv small { color: var(--ink-3); }
+.g-leer { padding: 18px 20px; color: var(--ink-2); max-width: 640px; }
