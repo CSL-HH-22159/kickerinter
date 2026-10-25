@@ -660,3 +660,14 @@ body.seite .stat-box.highlight .n { color: var(--ink); }
 .s-mehr { font-weight: 700; color: var(--red-ink); margin-top: 8px; font-size: .9rem; }
 .s-nerd { background: linear-gradient(135deg, var(--surface) 60%, var(--blue-soft)); }
 @media (max-width: 700px) { .s-zentrale { flex-direction: column; align-items: flex-start; padding: 22px; gap: 12px; } .s-ico { font-size: 3rem; } .s-unter { grid-template-columns: 1fr; } }
+/* Startseite: Rubrik Statistik */
+.teaser .medien.zentrale { background: radial-gradient(120% 120% at 0% 0%, #1d4f9a, #0a1730); }
+.teaser .medien.zentrale .gross { font-size: 3.4rem; }
+.teaser .medien.zentrale .gross small { color: #9cc7ff; }
+.teaser .medien .badge.live { background: #13854a; }
+.teaser .medien.nerd { background: radial-gradient(120% 120% at 100% 0%, #3b2a66, #0d0a1c); display: flex; align-items: center; justify-content: center; gap: 14px; }
+.teaser .medien.nerd .ico { font-size: 3.6rem; line-height: 1; filter: drop-shadow(0 4px 10px rgba(0,0,0,.4)); }
+.teaser .medien.duell { background: radial-gradient(120% 120% at 50% 0%, #5a0d14, #120406); display: flex; align-items: center; justify-content: center; gap: 12px; }
+.teaser .medien.duell .vs { font-family: var(--f-head); font-weight: 800; font-size: 1.8rem; color: #fff; letter-spacing: .04em; }
+.teaser .medien.nerd img.av, .teaser .medien.duell img.av { position: static; height: 86%; align-self: flex-end; }
+.teaser .medien.duell .vs { align-self: center; }
