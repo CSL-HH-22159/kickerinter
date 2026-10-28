@@ -1,5 +1,5 @@
 {
- "stand": "2026-10-23",
+ "stand": "2026-10-28",
  "videos": [
   {
    "id": "0McD48jQJ6g",
@@ -55,6 +55,14 @@
    "bereich": "sl2627",
    "saison": 2026,
    "spieltag": 6,
+   "sonder": false
+  },
+  {
+   "id": "D6NaFrkPHfw",
+   "titel": "Spieltag 7",
+   "bereich": "sl2627",
+   "saison": 2026,
+   "spieltag": 7,
    "sonder": false
   },
   {
