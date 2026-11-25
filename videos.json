@@ -1,5 +1,5 @@
 {
- "stand": "2026-11-02",
+ "stand": "2026-11-25",
  "videos": [
   {
    "id": "0McD48jQJ6g",
@@ -71,6 +71,14 @@
    "bereich": "sl2627",
    "saison": 2026,
    "spieltag": 8,
+   "sonder": false
+  },
+  {
+   "id": "mezFlVKygoI",
+   "titel": "Spieltag 9",
+   "bereich": "sl2627",
+   "saison": 2026,
+   "spieltag": 9,
    "sonder": false
   },
   {
